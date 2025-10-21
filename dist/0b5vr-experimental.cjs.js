@@ -1,8 +1,8 @@
 /*!
-* @0b5vr/experimental v0.9.6
+* @0b5vr/experimental v0.9.7
 * Experimental edition of 0b5vr
 *
-* Copyright (c) 2019-2023 0b5vr
+* Copyright (c) 2019-2024 0b5vr
 * @0b5vr/experimental is distributed under MIT License
 * https://github.com/0b5vr/experimental-npm/blob/release/LICENSE
 */
@@ -170,6 +170,7 @@ __export(src_exports, {
   planes3FromProjectionMatrix: () => planes3FromProjectionMatrix,
   planes3IntersectBox3: () => planes3IntersectBox3,
   planes3IntersectSphere3: () => planes3IntersectSphere3,
+  pokerCardToUnicode: () => pokerCardToUnicode,
   pokerHandStrengthMap: () => pokerHandStrengthMap,
   pokerHandsByStrength: () => pokerHandsByStrength,
   pokerRankStrengthMap: () => pokerRankStrengthMap,
@@ -218,6 +219,7 @@ __export(src_exports, {
   vecDot: () => vecDot,
   vecLength: () => vecLength,
   vecLengthSq: () => vecLengthSq,
+  vecLerp: () => vecLerp,
   vecManhattanLength: () => vecManhattanLength,
   vecMultiply: () => vecMultiply,
   vecNeg: () => vecNeg,
@@ -485,8 +487,8 @@ function colorFromAtariST(stColor) {
 }
 
 // src/math/utils.ts
-function lerp(a, b, x) {
-  return a + (b - a) * x;
+function lerp(a, b, t) {
+  return a + (b - a) * t;
 }
 function clamp(x, l, h) {
   return Math.min(Math.max(x, l), h);
@@ -924,6 +926,11 @@ function vecLengthSq(vec) {
   return vec.reduce((sum, v) => sum + v * v, 0);
 }
 
+// src/math/vec/vecLerp.ts
+function vecLerp(vecA, vecB, t) {
+  return vecA.map((v, i) => v + (vecB[i] - v) * t);
+}
+
 // src/math/vec/vecManhattanLength.ts
 function vecManhattanLength(vec) {
   return vec.reduce((sum, v) => sum + Math.abs(v), 0);
@@ -998,6 +1005,9 @@ var Vector = class {
   }
   scale(scalar) {
     return this.__new(vecScale(this.elements, scalar));
+  }
+  lerp(vector, t) {
+    return this.__new(vecLerp(this.elements, vector.elements, t));
   }
   dot(vector) {
     return vecDot(this.elements, vector.elements);
@@ -2956,6 +2966,34 @@ function evaluatePokerHand(cards) {
       strength
     };
   }
+}
+
+// src/poker/pokerCardToUnicode.ts
+var rankMap = {
+  "A": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "T": 10,
+  "J": 11,
+  "Q": 13,
+  "K": 14
+};
+var suitMap = {
+  "s": 0,
+  "h": 16,
+  "d": 32,
+  "c": 48
+};
+function pokerCardToUnicode(card) {
+  const rank = card[0];
+  const suit = card[1];
+  return String.fromCodePoint(127136 + rankMap[rank] + suitMap[suit]);
 }
 
 // src/poker/pokerHandsByStrength.ts

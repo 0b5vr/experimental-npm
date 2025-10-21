@@ -123,6 +123,7 @@ declare module '@0b5vr/experimental/poker' {
     export * from '@0b5vr/experimental/poker/createPokerDeck';
     export * from '@0b5vr/experimental/poker/evaluatePokerHand';
     export * from '@0b5vr/experimental/poker/PokerCard';
+    export * from '@0b5vr/experimental/poker/pokerCardToUnicode';
     export * from '@0b5vr/experimental/poker/PokerHand';
     export * from '@0b5vr/experimental/poker/pokerHandsByStrength';
     export * from '@0b5vr/experimental/poker/pokerHandStrengthMap';
@@ -832,6 +833,7 @@ declare module '@0b5vr/experimental/math/vec' {
     export { vecDot } from '@0b5vr/experimental/math/vec/vecDot';
     export { vecLength } from '@0b5vr/experimental/math/vec/vecLength';
     export { vecLengthSq } from '@0b5vr/experimental/math/vec/vecLengthSq';
+    export { vecLerp } from '@0b5vr/experimental/math/vec/vecLerp';
     export { vecManhattanLength } from '@0b5vr/experimental/math/vec/vecManhattanLength';
     export { vecMultiply } from '@0b5vr/experimental/math/vec/vecMultiply';
     export { vecNeg } from '@0b5vr/experimental/math/vec/vecNeg';
@@ -875,9 +877,15 @@ declare module '@0b5vr/experimental/math/sanitizeAngle' {
 
 declare module '@0b5vr/experimental/math/utils' {
     /**
-        * `lerp`, or `mix`
+        * `lerp`, or `mix`.
+        * Return a linear interpolation of two numbers.
+        * The {@link t} won't be clamped.
+        *
+        * @param a - A number
+        * @param b - Another number
+        * @param t - A number interpolating two numbers. Usually in range [0, 1] but not clamped
         */
-    export function lerp(a: number, b: number, x: number): number;
+    export function lerp(a: number, b: number, t: number): number;
     /**
         * `clamp`
         */
@@ -963,6 +971,11 @@ declare module '@0b5vr/experimental/poker/PokerCard' {
     import { PokerRank } from '@0b5vr/experimental/poker/PokerRank';
     import { PokerSuit } from '@0b5vr/experimental/poker/PokerSuit';
     export type PokerCard = `${PokerRank}${PokerSuit}`;
+}
+
+declare module '@0b5vr/experimental/poker/pokerCardToUnicode' {
+    import { PokerCard } from '@0b5vr/experimental/poker/PokerCard';
+    export function pokerCardToUnicode(card: PokerCard): string;
 }
 
 declare module '@0b5vr/experimental/poker/PokerHand' {
@@ -2640,6 +2653,18 @@ declare module '@0b5vr/experimental/math/vec/vecLengthSq' {
     export function vecLengthSq<T extends number[]>(vec: T): number;
 }
 
+declare module '@0b5vr/experimental/math/vec/vecLerp' {
+    /**
+      * Return a linear interpolation of two vectors.
+      * The {@link t} won't be clamped.
+      *
+      * @param vecA - A vector
+      * @param vecB - Another vector
+      * @param t - A number interpolating two vectors. Usually in range [0, 1] but not clamped
+      */
+    export function vecLerp<T extends number[]>(vecA: T, vecB: T, t: number): T;
+}
+
 declare module '@0b5vr/experimental/math/vec/vecManhattanLength' {
     /**
       * Return a manhattan length of given vector.
@@ -2744,6 +2769,14 @@ declare module '@0b5vr/experimental/math/vec/Vector' {
                 * @param scalar A scalar
                 */
             scale(scalar: number): T;
+            /**
+                * Linearly interpolate the vector with another vector.
+                * The {@link t} won't be clamped.
+                *
+                * @param vector - Another vector
+                * @param t - A number interpolating two vectors. Usually in range [0, 1] but not clamped
+                */
+            lerp(vector: T, t: number): T;
             /**
                 * Dot two Vectors.
                 * @param vector Another vector

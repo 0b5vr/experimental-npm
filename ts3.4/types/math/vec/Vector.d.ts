@@ -40,6 +40,14 @@ export declare abstract class Vector<T extends Vector<T>> {
      */
     scale(scalar: number): T;
     /**
+     * Linearly interpolate the vector with another vector.
+     * The {@link t} won't be clamped.
+     *
+     * @param vector - Another vector
+     * @param t - A number interpolating two vectors. Usually in range [0, 1] but not clamped
+     */
+    lerp(vector: T, t: number): T;
+    /**
      * Dot two Vectors.
      * @param vector Another vector
      */
