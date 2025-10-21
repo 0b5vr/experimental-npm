@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Fetch Deps
@@ -22,7 +22,7 @@ jobs:
     needs: fetch
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Lint
@@ -33,13 +33,13 @@ jobs:
     needs: fetch
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Test
       run: yarn test --coverage
     - name: Upload Coverage
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: coverage
         path: |
@@ -50,13 +50,13 @@ jobs:
     needs: fetch
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Build
       run: yarn build
     - name: Upload Coverage
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build
         path: |
@@ -69,17 +69,17 @@ jobs:
     needs: build
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Download Builds
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: build
     - name: Build Docs
       run: yarn docs
     - name: Upload Coverage
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: docs
         path: |
@@ -93,16 +93,16 @@ jobs:
     - docs
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Download Builds
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: build
         path: public
     - name: Download Docs
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: docs
         path: public/docs
@@ -110,7 +110,7 @@ jobs:
       run: |
         cp -r examples public/examples
     - name: Deploy to gh-pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: public

@@ -1,0 +1,35 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'npm version'
+        required: true
+        type: string
+      distTag:
+        description: 'npm dist-tag'
+        default: 'latest'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    permissions:
+      id-token: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+    - name: Init Stuff
+      uses: ./.github/actions/init
+    - name: Fetch Deps
+      run: yarn install --frozen-lockfile
+    - name: Bump version
+      run: npm version ${{ inputs.version }}
+    - name: Publish
+      run: npm publish --tag ${{ inputs.distTag }}
+    - name: Git push version up commits
+      run: |
+        git push origin --tags ${{ github.ref_name }}

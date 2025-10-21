@@ -26,7 +26,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "version": "yarn all",
+    "version": "yarn clean && yarn build",
     "dev": "cross-env SERVE=1 node bin/build.js",
     "all": "yarn lint && yarn test && yarn clean && yarn build && yarn docs",
     "clean": "rimraf dist/ docs/ ts*/ types/",
