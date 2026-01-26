@@ -13,6 +13,7 @@ export * from './ExpSmooth';
 export * from './GPUTimer';
 export * from './HistoryMeanCalculator';
 export * from './MapOfSet';
+export * from './dsp';
 export * from './math';
 export * from './midi';
 export * from './poker';
@@ -28,5 +29,7 @@ export * from './yugop';
 
 export * from './BinaryHeap';
 export { debounce } from './debounce';
+export { float32ArrayToWav } from './float32ArrayToWav';
+export { int16ArrayToWav } from './int16ArrayToWav';
 export { Observer, notifyObservers } from './notifyObservers';
 export { throttle } from './throttle';
