@@ -43,7 +43,7 @@
     "gh-pages": "node ./utils/gh-pages.js"
   },
   "devDependencies": {
-    "@types/node": "^13.1.0",
+    "@types/node": "^24.10.9",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vitest/coverage-v8": "4.0.18",
