@@ -8,7 +8,10 @@ import { clamp } from './math';
  * @param sampleRate The output sample rate.
  * @returns An ArrayBuffer containing the wav data.
  */
-export function float32ArrayToWav(src: Float32Array[], sampleRate: number): ArrayBuffer {
+export function float32ArrayToWav(
+  src: Float32Array[],
+  sampleRate: number,
+): ArrayBuffer {
   const int16Src = new Array<Int16Array>(src.length);
   for (let iCh = 0; iCh < src.length; iCh++) {
     const channel = src[iCh];

@@ -1,7 +1,7 @@
 /**
  * An utility type definition to use along with {@link notifyObservers}.
  */
-export type Observer<TEvent = void> = ( event: TEvent ) => void;
+export type Observer<TEvent = void> = (event: TEvent) => void;
 
 /**
  * A bare function to notify observers.
@@ -22,10 +22,16 @@ export type Observer<TEvent = void> = ( event: TEvent ) => void;
  * @param observers The iterator of observers
  * @param param The param you want to give to observers
  */
-export function notifyObservers( observers: Iterable<Observer<void>> ): void;
-export function notifyObservers<T>( observers: Iterable<Observer<T>>, param: T ): void;
-export function notifyObservers( observers: Iterable<Observer<any>>, param?: any ): void {
-  for ( const observer of observers ) {
-    observer( param );
+export function notifyObservers(observers: Iterable<Observer<void>>): void;
+export function notifyObservers<T>(
+  observers: Iterable<Observer<T>>,
+  param: T,
+): void;
+export function notifyObservers<T>(
+  observers: Iterable<Observer<T>>,
+  param?: T,
+): void {
+  for (const observer of observers) {
+    observer(param as T);
   }
 }

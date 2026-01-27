@@ -1,40 +1,45 @@
 import { describe, expect, it } from 'vitest';
 import { retry } from '../retry';
 
-describe( 'retry', () => {
-  it( 'returns the content if there was no error', () => {
-    const subject = retry( () => 'haha', 3 );
-    expect( subject ).toBe( 'haha' );
-  } );
+describe('retry', () => {
+  it('returns the content if there was no error', () => {
+    const subject = retry(() => 'haha', 3);
+    expect(subject).toBe('haha');
+  });
 
-  it( 'throws an error if it fails n times', () => {
+  it('throws an error if it fails n times', () => {
     let tries = 0;
 
-    const subject = (): void => retry( () => {
-      tries ++;
-      throw new Error( 'nice' );
-    }, 69 );
+    const subject = (): void =>
+      retry(() => {
+        tries++;
+        throw new Error('nice');
+      }, 69);
 
-    expect( subject ).toThrow( 'nice' );
-    expect( tries ).toBe( 69 );
-  } );
+    expect(subject).toThrow('nice');
+    expect(tries).toBe(69);
+  });
 
-  it( 'retries until the function returns a value successfully', () => {
+  it('retries until the function returns a value successfully', () => {
     let str = '';
     let tries = 0;
 
-    const subject = retry( () => {
-      tries ++;
+    const subject = retry(() => {
+      tries++;
 
-      if ( str === 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん' ) {
+      if (
+        str === 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん'
+      ) {
         return str;
       } else {
         str += 'すとらちゃん';
-        throw new Error( 'no enough すとらちゃん' );
+        throw new Error('no enough すとらちゃん');
       }
-    }, 10 );
+    }, 10);
 
-    expect( subject ).toBe( 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん' );
-    expect( tries ).toBe( 6 );
-  } );
-} );
+    expect(subject).toBe(
+      'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん',
+    );
+    expect(tries).toBe(6);
+  });
+});

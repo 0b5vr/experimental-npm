@@ -17,8 +17,5 @@ export function quatLog(quat: RawQuaternion): RawQuaternion {
     return [0.0, 0.0, 0.0, Math.log(ql)];
   }
 
-  return [
-    ...vecScale(v, Math.acos(w / ql) / vl),
-    Math.log(ql)
-  ];
+  return [...vecScale(v, Math.acos(w / ql) / vl), Math.log(ql)];
 }

@@ -5,7 +5,7 @@ export class Swap<T> {
   public i: T;
   public o: T;
 
-  public constructor( a: T, b: T ) {
+  public constructor(a: T, b: T) {
     this.i = a;
     this.o = b;
   }

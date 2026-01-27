@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { dagEdgesResolve } from '../dagEdgesResolve';
 import { shuffleArray } from '../../array/utils';
+import { dagEdgesResolve } from '../dagEdgesResolve';
 import type { RawDagEdge } from '../RawDagEdge';
 
-describe( 'dagEdgesResolve', () => {
-  it( 'resolves the given dag', () => {
-    const nodes = shuffleArray( [
+describe('dagEdgesResolve', () => {
+  it('resolves the given dag', () => {
+    const nodes = shuffleArray([
       'time',
       'resolution',
       'p',
@@ -14,25 +14,27 @@ describe( 'dagEdgesResolve', () => {
       'isect',
       'alpha',
       'color',
-    ] );
+    ]);
 
-    const edges: RawDagEdge<string>[] = shuffleArray( [
-      [ 'time', 'ro' ],
-      [ 'resolution', 'p' ],
-      [ 'p', 'rd' ],
-      [ 'time', 'rd' ],
-      [ 'ro', 'isect' ],
-      [ 'rd', 'isect' ],
-      [ 'isect', 'color' ],
-    ] );
+    const edges: RawDagEdge<string>[] = shuffleArray([
+      ['time', 'ro'],
+      ['resolution', 'p'],
+      ['p', 'rd'],
+      ['time', 'rd'],
+      ['ro', 'isect'],
+      ['rd', 'isect'],
+      ['isect', 'color'],
+    ]);
 
-    const subject = dagEdgesResolve( edges, nodes );
+    const subject = dagEdgesResolve(edges, nodes);
 
-    expect( subject ).toEqual( expect.arrayContaining( nodes ) );
+    expect(subject).toEqual(expect.arrayContaining(nodes));
 
-    expect( subject.indexOf( 'ro' ) ).toBeGreaterThan( subject.indexOf( 'time' ) );
-    expect( subject.indexOf( 'p' ) ).toBeGreaterThan( subject.indexOf( 'resolution' ) );
-    expect( subject.indexOf( 'color' ) ).toBeGreaterThan( subject.indexOf( 'resolution' ) );
-    expect( subject.indexOf( 'color' ) ).toBeGreaterThan( subject.indexOf( 'time' ) );
-  } );
-} );
+    expect(subject.indexOf('ro')).toBeGreaterThan(subject.indexOf('time'));
+    expect(subject.indexOf('p')).toBeGreaterThan(subject.indexOf('resolution'));
+    expect(subject.indexOf('color')).toBeGreaterThan(
+      subject.indexOf('resolution'),
+    );
+    expect(subject.indexOf('color')).toBeGreaterThan(subject.indexOf('time'));
+  });
+});

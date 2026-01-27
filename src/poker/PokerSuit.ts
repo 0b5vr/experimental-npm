@@ -1,5 +1,1 @@
-export type PokerSuit =
-  | 's'
-  | 'c'
-  | 'h'
-  | 'd';
+export type PokerSuit = 's' | 'c' | 'h' | 'd';

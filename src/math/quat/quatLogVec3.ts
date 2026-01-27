@@ -1,6 +1,6 @@
 import { vecLength, vecScale } from '../vec';
-import type { RawQuaternion } from './RawQuaternion';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawQuaternion } from './RawQuaternion';
 
 const EPSILON = 1e-6;
 

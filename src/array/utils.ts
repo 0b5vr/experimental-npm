@@ -1,13 +1,13 @@
 /**
  * Shuffle given `array` using given `dice` RNG. **Destructive**.
  */
-export function shuffleArray<T>( array: T[], dice?: () => number ): T[] {
+export function shuffleArray<T>(array: T[], dice?: () => number): T[] {
   const f = dice ? dice : () => Math.random();
-  for ( let i = 0; i < array.length - 1; i ++ ) {
-    const ir = i + Math.floor( f() * ( array.length - i ) );
-    const temp = array[ ir ];
-    array[ ir ] = array[ i ];
-    array[ i ] = temp;
+  for (let i = 0; i < array.length - 1; i++) {
+    const ir = i + Math.floor(f() * (array.length - i));
+    const temp = array[ir];
+    array[ir] = array[i];
+    array[i] = temp;
   }
   return array;
 }
@@ -17,14 +17,17 @@ export function shuffleArray<T>( array: T[], dice?: () => number ): T[] {
  *
  * `triIndexToLineIndex( [ 0, 1, 2, 5, 6, 7 ] )` -> `[ 0, 1, 1, 2, 2, 0, 5, 6, 6, 7, 7, 5 ]`
  */
-export function triIndexToLineIndex<T>( array: T[] ): T[] {
+export function triIndexToLineIndex<T>(array: T[]): T[] {
   const ret: T[] = [];
-  for ( let i = 0; i < array.length / 3; i ++ ) {
+  for (let i = 0; i < array.length / 3; i++) {
     const head = i * 3;
     ret.push(
-      array[ head     ], array[ head + 1 ],
-      array[ head + 1 ], array[ head + 2 ],
-      array[ head + 2 ], array[ head     ]
+      array[head],
+      array[head + 1],
+      array[head + 1],
+      array[head + 2],
+      array[head + 2],
+      array[head],
     );
   }
   return ret;
@@ -33,11 +36,11 @@ export function triIndexToLineIndex<T>( array: T[] ): T[] {
 /**
  * `matrix2d( 3, 2 )` -> `[ 0, 0, 0, 1, 0, 2, 1, 0, 1, 1, 1, 2 ]`
  */
-export function matrix2d( w: number, h: number ): number[] {
+export function matrix2d(w: number, h: number): number[] {
   const arr: number[] = [];
-  for ( let iy = 0; iy < h; iy ++ ) {
-    for ( let ix = 0; ix < w; ix ++ ) {
-      arr.push( ix, iy );
+  for (let iy = 0; iy < h; iy++) {
+    for (let ix = 0; ix < w; ix++) {
+      arr.push(ix, iy);
     }
   }
   return arr;
@@ -46,12 +49,12 @@ export function matrix2d( w: number, h: number ): number[] {
 /**
  * See also: {@link matrix2d}
  */
-export function matrix3d( w: number, h: number, d: number ): number[] {
+export function matrix3d(w: number, h: number, d: number): number[] {
   const arr: number[] = [];
-  for ( let iz = 0; iz < d; iz ++ ) {
-    for ( let iy = 0; iy < h; iy ++ ) {
-      for ( let ix = 0; ix < w; ix ++ ) {
-        arr.push( ix, iy, iz );
+  for (let iz = 0; iz < d; iz++) {
+    for (let iy = 0; iy < h; iy++) {
+      for (let ix = 0; ix < w; ix++) {
+        arr.push(ix, iy, iz);
       }
     }
   }

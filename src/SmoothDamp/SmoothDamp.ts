@@ -12,14 +12,14 @@ export class SmoothDamp {
   public value = 0.0;
   public target = 0.0;
 
-  public update( deltaTime: number ): number {
+  public update(deltaTime: number): number {
     const omega = 2.0 / this.smoothTime;
     const x = omega * deltaTime;
-    const exp = 1.0 / ( 1.0 + x + 0.48 * x * x + 0.235 * x * x * x );
+    const exp = 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
     const delta = this.value - this.target;
-    const temp = ( this.velocity + omega * delta ) * deltaTime;
-    this.velocity = ( this.velocity - omega * temp ) * exp;
-    this.value = this.target + ( delta + temp ) * exp;
+    const temp = (this.velocity + omega * delta) * deltaTime;
+    this.velocity = (this.velocity - omega * temp) * exp;
+    this.value = this.target + (delta + temp) * exp;
     return this.value;
   }
 }

@@ -19,6 +19,4 @@ export interface STNICCCFrameNonIndexed {
   }[];
 }
 
-export type STNICCCFrame =
-  | STNICCCFrameIndexed
-  | STNICCCFrameNonIndexed;
+export type STNICCCFrame = STNICCCFrameIndexed | STNICCCFrameNonIndexed;

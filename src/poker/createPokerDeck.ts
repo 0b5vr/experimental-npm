@@ -1,6 +1,6 @@
+import type { PokerCard } from './PokerCard';
 import { pokerRanksByStrength } from './pokerRanksByStrength';
 import { pokerSuitsByIndex } from './pokerSuitsByIndex';
-import type { PokerCard } from './PokerCard';
 
 /**
  * Create a 52-card deck.
@@ -9,11 +9,9 @@ import type { PokerCard } from './PokerCard';
 export function createPokerDeck(): PokerCard[] {
   const array: PokerCard[] = [];
 
-  pokerSuitsByIndex.map( ( suit ) => (
-    pokerRanksByStrength.map( ( rank ) => (
-      array.push( rank + suit as PokerCard )
-    ) )
-  ) );
+  pokerSuitsByIndex.map((suit) =>
+    pokerRanksByStrength.map((rank) => array.push((rank + suit) as PokerCard)),
+  );
 
   return array;
 }

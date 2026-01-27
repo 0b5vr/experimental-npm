@@ -1,1 +1,1 @@
-export type RawQuaternion = [ number, number, number, number ];
+export type RawQuaternion = [number, number, number, number];

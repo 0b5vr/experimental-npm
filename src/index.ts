@@ -1,35 +1,33 @@
 export * from './algorithm';
 export * from './array';
+export * from './BinaryHeap';
 export * from './CDS';
 export * from './Clock';
 export * from './color';
 export * from './dag';
-export * from './edt';
+export { debounce } from './debounce';
+export * from './dsp';
 export * from './ExpSmooth';
-
-// This is somehow very not treeshaking friendly so removing
-// export * from './FizzBuzz';
-
+export * from './edt';
+export { float32ArrayToWav } from './float32ArrayToWav';
 export * from './GPUTimer';
 export * from './HistoryMeanCalculator';
+export { int16ArrayToWav } from './int16ArrayToWav';
 export * from './MapOfSet';
-export * from './dsp';
 export * from './math';
 export * from './midi';
-export * from './poker';
+export { notifyObservers, Observer } from './notifyObservers';
 export * from './Pool';
+export * from './poker';
 export * from './retry';
-export * from './stniccc';
 export * from './SmoothDamp';
 export * from './Swap';
+export * from './stniccc';
 export * from './TapTempo';
+export { throttle } from './throttle';
 export * from './tinyseq';
 export * from './Xorshift';
 export * from './yugop';
 
-export * from './BinaryHeap';
-export { debounce } from './debounce';
-export { float32ArrayToWav } from './float32ArrayToWav';
-export { int16ArrayToWav } from './int16ArrayToWav';
-export { Observer, notifyObservers } from './notifyObservers';
-export { throttle } from './throttle';
+// This is somehow very not treeshaking friendly so removing
+// export * from './FizzBuzz';

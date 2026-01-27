@@ -1,2 +1,2 @@
-export { midiParse } from './midiParse';
 export * from './MidiParseResult';
+export { midiParse } from './midiParse';

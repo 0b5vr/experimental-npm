@@ -1,8 +1,3 @@
 import type { PokerSuit } from './PokerSuit';
 
-export const pokerSuitsByIndex: PokerSuit[] = [
-  'c',
-  'd',
-  'h',
-  's',
-];
+export const pokerSuitsByIndex: PokerSuit[] = ['c', 'd', 'h', 's'];

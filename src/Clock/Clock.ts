@@ -22,23 +22,29 @@ export class Clock {
   /**
    * Its current time.
    */
-  public get time(): number { return this.__time; }
+  public get time(): number {
+    return this.__time;
+  }
 
   /**
    * Its deltaTime of last update.
    */
-  public get deltaTime(): number { return this.__deltaTime; }
+  public get deltaTime(): number {
+    return this.__deltaTime;
+  }
 
   /**
    * Whether its currently playing or not.
    */
-  public get isPlaying(): boolean { return this.__isPlaying; }
+  public get isPlaying(): boolean {
+    return this.__isPlaying;
+  }
 
   /**
    * Update the clock.
    * @param time Time. You need to set manually when you are using manual Clock
    */
-  public update( time?: number ): void {
+  public update(time?: number): void {
     const prevTime = this.__time;
     this.__time = time || 0.0;
     this.__deltaTime = this.__time - prevTime;
@@ -62,7 +68,7 @@ export class Clock {
    * Set the time manually.
    * @param time Time
    */
-  public setTime( time: number ): void {
+  public setTime(time: number): void {
     this.__time = time;
   }
 }

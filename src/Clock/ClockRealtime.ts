@@ -18,7 +18,9 @@ export class ClockRealtime extends Clock {
   /**
    * The clock is realtime. yeah.
    */
-  public get isRealtime(): boolean { return true; }
+  public get isRealtime(): boolean {
+    return true;
+  }
 
   /**
    * Update the clock. Time is calculated based on time in real world.
@@ -26,9 +28,9 @@ export class ClockRealtime extends Clock {
   public update(): void {
     const now = performance.now();
 
-    if ( this.__isPlaying ) {
+    if (this.__isPlaying) {
       const prevTime = this.__time;
-      const deltaDate = ( now - this.__rtDate );
+      const deltaDate = now - this.__rtDate;
       this.__time = this.__rtTime + deltaDate / 1000.0;
       this.__deltaTime = this.time - prevTime;
     } else {
@@ -42,7 +44,7 @@ export class ClockRealtime extends Clock {
    * Set the time manually.
    * @param time Time
    */
-  public setTime( time: number ): void {
+  public setTime(time: number): void {
     this.__time = time;
     this.__rtTime = this.time;
     this.__rtDate = performance.now();

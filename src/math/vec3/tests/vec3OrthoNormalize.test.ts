@@ -1,45 +1,45 @@
 import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
-import { vec3OrthoNormalize } from '../vec3OrthoNormalize';
 import { vecLengthSq } from '../../vec/vecLengthSq';
 import type { RawVector3 } from '../RawVector3';
+import { vec3OrthoNormalize } from '../vec3OrthoNormalize';
 
-describe( 'vec3OrthoNormalize', () => {
-  it( 'returns a orthogonal tangent, without the input tangent', () => {
-    const normal: RawVector3 = [ 0.0, 0.0, 5.0 ];
-    const subject = vec3OrthoNormalize( normal );
+describe('vec3OrthoNormalize', () => {
+  it('returns a orthogonal tangent, without the input tangent', () => {
+    const normal: RawVector3 = [0.0, 0.0, 5.0];
+    const subject = vec3OrthoNormalize(normal);
 
-    expect( subject.normal ).toBeCloseToArray( [ 0.0, 0.0, 1.0 ] );
-    expect( subject.tangent ).toBeCloseToArray( [ 0.0, 1.0, 0.0 ] );
-    expect( subject.binormal ).toBeCloseToArray( [ 1.0, 0.0, 0.0 ] );
-  } );
+    expect(subject.normal).toBeCloseToArray([0.0, 0.0, 1.0]);
+    expect(subject.tangent).toBeCloseToArray([0.0, 1.0, 0.0]);
+    expect(subject.binormal).toBeCloseToArray([1.0, 0.0, 0.0]);
+  });
 
-  it( 'returns a orthogonal tangent', () => {
-    const normal: RawVector3 = [ 0.0, 0.0, 5.0 ];
-    const tangent: RawVector3 = [ 1.0, 1.0, 1.0 ];
-    const subject = vec3OrthoNormalize( normal, tangent );
+  it('returns a orthogonal tangent', () => {
+    const normal: RawVector3 = [0.0, 0.0, 5.0];
+    const tangent: RawVector3 = [1.0, 1.0, 1.0];
+    const subject = vec3OrthoNormalize(normal, tangent);
 
-    expect( subject.normal ).toBeCloseToArray( [ 0.0, 0.0, 1.0 ] );
-    expect( subject.tangent ).toBeCloseToArray( [ 0.707, 0.707, 0.0 ] );
-    expect( subject.binormal ).toBeCloseToArray( [ 0.707, -0.707, 0.0 ] );
-  } );
+    expect(subject.normal).toBeCloseToArray([0.0, 0.0, 1.0]);
+    expect(subject.tangent).toBeCloseToArray([0.707, 0.707, 0.0]);
+    expect(subject.binormal).toBeCloseToArray([0.707, -0.707, 0.0]);
+  });
 
-  it( 'returns a orthogonal tangent and binormal', () => {
-    const normal: RawVector3 = [ 0.0, 0.0, 5.0 ];
-    const tangent: RawVector3 = [ 1.0, 1.0, 1.0 ];
-    const binormal: RawVector3 = [ 0.0, 1.0, 0.0 ];
-    const subject = vec3OrthoNormalize( normal, tangent, binormal );
+  it('returns a orthogonal tangent and binormal', () => {
+    const normal: RawVector3 = [0.0, 0.0, 5.0];
+    const tangent: RawVector3 = [1.0, 1.0, 1.0];
+    const binormal: RawVector3 = [0.0, 1.0, 0.0];
+    const subject = vec3OrthoNormalize(normal, tangent, binormal);
 
-    expect( subject.normal ).toBeCloseToArray( [ 0.0, 0.0, 1.0 ] );
-    expect( subject.tangent ).toBeCloseToArray( [ 0.707, 0.707, 0.0 ] );
-    expect( subject.binormal ).toBeCloseToArray( [ -0.707, 0.707, 0.0 ] );
-  } );
+    expect(subject.normal).toBeCloseToArray([0.0, 0.0, 1.0]);
+    expect(subject.tangent).toBeCloseToArray([0.707, 0.707, 0.0]);
+    expect(subject.binormal).toBeCloseToArray([-0.707, 0.707, 0.0]);
+  });
 
-  it( 'does its job even when normal and tangent is same', () => {
-    const normal: RawVector3 = [ 0.0, 0.0, -1.0 ];
-    const subject = vec3OrthoNormalize( normal, normal );
+  it('does its job even when normal and tangent is same', () => {
+    const normal: RawVector3 = [0.0, 0.0, -1.0];
+    const subject = vec3OrthoNormalize(normal, normal);
 
-    expect( subject.normal ).toBeCloseToArray( [ 0.0, 0.0, -1.0 ] );
-    expect( vecLengthSq( subject.tangent ) ).toBeCloseTo( 1.0 );
-  } );
-} );
+    expect(subject.normal).toBeCloseToArray([0.0, 0.0, -1.0]);
+    expect(vecLengthSq(subject.tangent)).toBeCloseTo(1.0);
+  });
+});

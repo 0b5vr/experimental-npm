@@ -12,23 +12,20 @@
  * func();
  * ```
  */
-export function debounce(
-  func: () => void,
-  timeoutMs: number,
-): () => void {
+export function debounce(func: () => void, timeoutMs: number): () => void {
   /** Timeout ID for the queued function call */
   let queueId: ReturnType<typeof setTimeout> | null | undefined;
 
   return () => {
     // clear any previously queued calls
-    if ( queueId ) {
-      clearTimeout( queueId );
+    if (queueId) {
+      clearTimeout(queueId);
     }
 
     // queue for execution after the timeout
-    queueId = setTimeout( () => {
+    queueId = setTimeout(() => {
       func();
       queueId = null;
-    }, timeoutMs );
+    }, timeoutMs);
   };
 }

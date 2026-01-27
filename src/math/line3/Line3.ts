@@ -1,4 +1,4 @@
-import { Matrix4 } from '../mat4/Matrix4';
+import type { Matrix4 } from '../mat4/Matrix4';
 import { Ray3 } from '../ray3/Ray3';
 import { Vector3 } from '../vec3/Vector3';
 import { line3ApplyMatrix4 } from './line3ApplyMatrix4';
@@ -15,7 +15,10 @@ export class Line3 {
   public start: Vector3;
   public end: Vector3;
 
-  public constructor( start: Vector3 = Vector3.zero, end: Vector3 = Vector3.zero ) {
+  public constructor(
+    start: Vector3 = Vector3.zero,
+    end: Vector3 = Vector3.zero,
+  ) {
     this.start = start;
     this.end = end;
   }
@@ -24,21 +27,21 @@ export class Line3 {
    * Itself but {@link RawLine3} form.
    */
   public get raw(): RawLine3 {
-    return [ this.start.elements, this.end.elements ];
+    return [this.start.elements, this.end.elements];
   }
 
   /**
    * Itself but a ray.
    */
   public get ray(): Ray3 {
-    return Ray3.fromLine3( this );
+    return Ray3.fromLine3(this);
   }
 
   /**
    * A vector that represents delta of the line.
    */
   public delta(): Vector3 {
-    return new Vector3( line3Delta( this.raw ) );
+    return new Vector3(line3Delta(this.raw));
   }
 
   /**
@@ -54,8 +57,8 @@ export class Line3 {
    *
    * @param t A parameter t
    */
-  public at( t: number ): Vector3 {
-    return new Vector3( line3At( this.raw, t ) );
+  public at(t: number): Vector3 {
+    return new Vector3(line3At(this.raw, t));
   }
 
   /**
@@ -63,13 +66,8 @@ export class Line3 {
    *
    * @param matrix A matrix4 which will be applied to the line
    */
-  public applyMatrix4( matrix: Matrix4 ): Line3 {
-    return Line3.fromRaw(
-      line3ApplyMatrix4(
-        this.raw,
-        matrix.elements,
-      )
-    );
+  public applyMatrix4(matrix: Matrix4): Line3 {
+    return Line3.fromRaw(line3ApplyMatrix4(this.raw, matrix.elements));
   }
 
   /**
@@ -81,8 +79,10 @@ export class Line3 {
    * @param point A point
    * @param segment Is the line a segment?
    */
-  public closestPointToPoint( point: Vector3, segment: boolean ): Vector3 {
-    return new Vector3( line3ClosestPointToPoint( this.raw, point.elements, segment ) );
+  public closestPointToPoint(point: Vector3, segment: boolean): Vector3 {
+    return new Vector3(
+      line3ClosestPointToPoint(this.raw, point.elements, segment),
+    );
   }
 
   /**
@@ -94,15 +94,15 @@ export class Line3 {
    * @param point A point
    * @param segment Is the line a segment?
    */
-  public distanceToPoint( point: Vector3, segment: boolean ): number {
-    return line3DistanceToPoint( this.raw, point.elements, segment );
+  public distanceToPoint(point: Vector3, segment: boolean): number {
+    return line3DistanceToPoint(this.raw, point.elements, segment);
   }
 
   /**
    * Convert {@link RawLine3} to class form.
    * @param line A {@link RawLine3}
    */
-  public static fromRaw( line: RawLine3 ): Line3 {
-    return new Line3( new Vector3( line[ 0 ] ), new Vector3( line[ 1 ] ) );
+  public static fromRaw(line: RawLine3): Line3 {
+    return new Line3(new Vector3(line[0]), new Vector3(line[1]));
   }
 }

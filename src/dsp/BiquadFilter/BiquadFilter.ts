@@ -29,13 +29,12 @@ export class BiquadFilter {
    * @returns Output sample.
    */
   public process(x0: number): number {
-    const y0 = (
-      this.b0a0 * x0
-      + this.b1a0 * this.x1
-      + this.b2a0 * this.x2
-      - this.a1a0 * this.y1
-      - this.a2a0 * this.y2
-    );
+    const y0 =
+      this.b0a0 * x0 +
+      this.b1a0 * this.x1 +
+      this.b2a0 * this.x2 -
+      this.a1a0 * this.y1 -
+      this.a2a0 * this.y2;
 
     this.x2 = this.x1;
     this.x1 = x0;

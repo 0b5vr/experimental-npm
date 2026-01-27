@@ -8,9 +8,9 @@ import { arraySerial } from '../array';
 export function createTinyseqReader(
   buffer: Uint8Array,
   options: {
-    blockSize?: number,
-    sampleRate?: number,
-    stepsPerSecond?: number,
+    blockSize?: number;
+    sampleRate?: number;
+    stepsPerSecond?: number;
   } = {},
 ): () => Float32Array {
   const blockSize = options.blockSize ?? 128;
@@ -25,38 +25,40 @@ export function createTinyseqReader(
   let nextStep = 0;
 
   return () => {
-    return new Float32Array( arraySerial( blockSize ).map( () => {
-      const t = samples / sampleRate;
-      const s = t * stepsPerSecond;
+    return new Float32Array(
+      arraySerial(blockSize).flatMap(() => {
+        const t = samples / sampleRate;
+        const s = t * stepsPerSecond;
 
-      if ( s >= nextStep ) {
-        const eventNote = buffer[ pos ];
-        const eventDeltaStep = buffer[ pos + 1 ];
+        if (s >= nextStep) {
+          const eventNote = buffer[pos];
+          const eventDeltaStep = buffer[pos + 1];
 
-        note = ( ( pos === 0 ? 60 : note ) + eventNote ) & 127;
-        if ( eventNote & 128 ) {
-          if ( noteOffTime < noteTime ) {
-            noteOffTime = t;
+          note = ((pos === 0 ? 60 : note) + eventNote) & 127;
+          if (eventNote & 128) {
+            if (noteOffTime < noteTime) {
+              noteOffTime = t;
+            }
+          } else {
+            if (noteOffTime >= noteTime) {
+              noteTime = t;
+            }
           }
-        } else {
-          if ( noteOffTime >= noteTime ) {
-            noteTime = t;
-          }
+
+          nextStep += eventDeltaStep;
+
+          pos = (pos + 2) % buffer.length;
         }
 
-        nextStep += eventDeltaStep;
+        samples++;
 
-        pos = ( pos + 2 ) % buffer.length;
-      }
-
-      samples ++;
-
-      return [
-        t - noteTime, // time
-        noteOffTime < noteTime ? 0.0 : t - noteOffTime, // offTime
-        note, // note
-        0.0, // reserved
-      ];
-    } ).flat() );
+        return [
+          t - noteTime, // time
+          noteOffTime < noteTime ? 0.0 : t - noteOffTime, // offTime
+          note, // note
+          0.0, // reserved
+        ];
+      }),
+    );
   };
 }

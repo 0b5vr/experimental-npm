@@ -26,7 +26,7 @@ jobs:
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Lint
-      run: yarn lint
+      run: yarn lint-ci
 
   test:
     runs-on: ubuntu-latest

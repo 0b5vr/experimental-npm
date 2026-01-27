@@ -5,10 +5,10 @@ import type { RawRGB } from './RawRGB';
  *
  * @param stColor A color in Atari-ST format
  */
-export function colorFromAtariST( stColor: number ): RawRGB {
+export function colorFromAtariST(stColor: number): RawRGB {
   return [
-    ( stColor >> 8 & 7 ) / 7.0,
-    ( stColor >> 4 & 7 ) / 7.0,
-    ( stColor & 7 ) / 7.0,
+    ((stColor >> 8) & 7) / 7.0,
+    ((stColor >> 4) & 7) / 7.0,
+    (stColor & 7) / 7.0,
   ];
 }

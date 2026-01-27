@@ -23,7 +23,7 @@ export class BPF extends BiquadFilter {
     const omega0 = 2.0 * Math.PI * f0Norm;
     const cosOmega0 = Math.cos(omega0);
     const sinOmega0 = Math.sin(omega0);
-    const alpha = 0.5 * sinOmega0 / Q;
+    const alpha = (0.5 * sinOmega0) / Q;
 
     const a0 = 1.0 + alpha;
     this.a1a0 = (-2.0 * cosOmega0) / a0;

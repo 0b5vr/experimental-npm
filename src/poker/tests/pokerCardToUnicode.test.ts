@@ -1,28 +1,28 @@
 import { describe, expect, it } from 'vitest';
 import { pokerCardToUnicode } from '../pokerCardToUnicode';
 
-describe( 'pokerCardToUnicode', () => {
-  it( 'handles 2c', () => {
-    const subject = pokerCardToUnicode( '2c' );
+describe('pokerCardToUnicode', () => {
+  it('handles 2c', () => {
+    const subject = pokerCardToUnicode('2c');
 
-    expect( subject ).toBe( '🃒' );
-  } );
+    expect(subject).toBe('🃒');
+  });
 
-  it( 'handles Th', () => {
-    const subject = pokerCardToUnicode( 'Th' );
+  it('handles Th', () => {
+    const subject = pokerCardToUnicode('Th');
 
-    expect( subject ).toBe( '🂺' );
-  } );
+    expect(subject).toBe('🂺');
+  });
 
-  it( 'handles As', () => {
-    const subject = pokerCardToUnicode( 'As' );
+  it('handles As', () => {
+    const subject = pokerCardToUnicode('As');
 
-    expect( subject ).toBe( '🂡' );
-  } );
+    expect(subject).toBe('🂡');
+  });
 
-  it( 'handles Kd', () => {
-    const subject = pokerCardToUnicode( 'Kd' );
+  it('handles Kd', () => {
+    const subject = pokerCardToUnicode('Kd');
 
-    expect( subject ).toBe( '🃎' );
-  } );
-} );
+    expect(subject).toBe('🃎');
+  });
+});

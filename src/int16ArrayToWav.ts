@@ -5,7 +5,10 @@
  * @param sampleRate The output sample rate.
  * @returns An ArrayBuffer containing the wav data.
  */
-export function int16ArrayToWav(src: Int16Array[], sampleRate: number): ArrayBuffer {
+export function int16ArrayToWav(
+  src: Int16Array[],
+  sampleRate: number,
+): ArrayBuffer {
   const channels = src.length;
   const samples = src[0].length;
   const byteLength = channels * samples * 2 + 44;
@@ -21,7 +24,7 @@ export function int16ArrayToWav(src: Int16Array[], sampleRate: number): ArrayBuf
 
   // chunk size
   const riffChunkSize = byteLength - 8;
-  array[head++] = (riffChunkSize) & 255;
+  array[head++] = riffChunkSize & 255;
   array[head++] = (riffChunkSize >> 8) & 255;
   array[head++] = (riffChunkSize >> 16) & 255;
   array[head++] = (riffChunkSize >> 24) & 255;
@@ -53,14 +56,14 @@ export function int16ArrayToWav(src: Int16Array[], sampleRate: number): ArrayBuf
   array[head++] = 0;
 
   // samples per sec
-  array[head++] = (sampleRate) & 255;
+  array[head++] = sampleRate & 255;
   array[head++] = (sampleRate >> 8) & 255;
   array[head++] = (sampleRate >> 16) & 255;
   array[head++] = (sampleRate >> 24) & 255;
 
   // avg bytes per sec
   const avgBytesPerSec = 2 * channels * sampleRate;
-  array[head++] = (avgBytesPerSec) & 255;
+  array[head++] = avgBytesPerSec & 255;
   array[head++] = (avgBytesPerSec >> 8) & 255;
   array[head++] = (avgBytesPerSec >> 16) & 255;
   array[head++] = (avgBytesPerSec >> 24) & 255;
@@ -81,7 +84,7 @@ export function int16ArrayToWav(src: Int16Array[], sampleRate: number): ArrayBuf
 
   // chunk size
   const dataChunkSize = 2 * channels * samples;
-  array[head++] = (dataChunkSize) & 255;
+  array[head++] = dataChunkSize & 255;
   array[head++] = (dataChunkSize >> 8) & 255;
   array[head++] = (dataChunkSize >> 16) & 255;
   array[head++] = (dataChunkSize >> 24) & 255;
@@ -89,8 +92,8 @@ export function int16ArrayToWav(src: Int16Array[], sampleRate: number): ArrayBuf
   // data
   for (let iSample = 0; iSample < samples; iSample++) {
     for (let iCh = 0; iCh < channels; iCh++) {
-      let data = src[iCh][iSample];
-      array[head++] = (data) & 255;
+      const data = src[iCh][iSample];
+      array[head++] = data & 255;
       array[head++] = (data >> 8) & 255;
     }
   }

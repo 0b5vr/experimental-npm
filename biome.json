@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "useIterableCallbackReturn": "off",
+        "noAssignInExpressions": "info",
+        "noApproximativeNumericConstant": "off",
+        "useAdjacentOverloadSignatures": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "info"
+      }
+    }
+  }
+}

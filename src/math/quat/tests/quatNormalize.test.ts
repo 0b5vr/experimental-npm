@@ -3,20 +3,20 @@ import '../../../tests/matchers/toBeCloseToArray';
 import { quatNormalize } from '../quatNormalize';
 import type { RawQuaternion } from '../RawQuaternion';
 
-describe( 'quatNormalize', () => {
-  it( 'returns a normalized quaternion', () => {
-    const quat: RawQuaternion = [ 1.0, 2.0, 3.0, 4.0 ];
-    const subject = quatNormalize( quat );
+describe('quatNormalize', () => {
+  it('returns a normalized quaternion', () => {
+    const quat: RawQuaternion = [1.0, 2.0, 3.0, 4.0];
+    const subject = quatNormalize(quat);
 
-    expect( subject ).toBeCloseToArray( [ 0.183, 0.365, 0.548, 0.730 ] );
-  } );
+    expect(subject).toBeCloseToArray([0.183, 0.365, 0.548, 0.73]);
+  });
 
-  describe( 'when given vector is zero vector', () => {
-    it( 'returns a zero vector', () => {
-      const quat: RawQuaternion = [ 0.0, 0.0, 0.0, 0.0 ];
-      const subject = quatNormalize( quat );
+  describe('when given vector is zero vector', () => {
+    it('returns a zero vector', () => {
+      const quat: RawQuaternion = [0.0, 0.0, 0.0, 0.0];
+      const subject = quatNormalize(quat);
 
-      expect( subject ).toBeCloseToArray( [ 0.0, 0.0, 0.0, 1.0 ] );
-    } );
-  } );
-} );
+      expect(subject).toBeCloseToArray([0.0, 0.0, 0.0, 1.0]);
+    });
+  });
+});

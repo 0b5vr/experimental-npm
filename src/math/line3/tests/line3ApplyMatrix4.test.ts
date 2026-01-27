@@ -1,22 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
-import { line3ApplyMatrix4 } from '../line3ApplyMatrix4';
 import { mat4Multiply } from '../../mat4/mat4Multiply';
 import { mat4RotationY } from '../../mat4/mat4RotationY';
 import { mat4Translate } from '../../mat4/mat4Translate';
+import { line3ApplyMatrix4 } from '../line3ApplyMatrix4';
 import type { RawLine3 } from '../RawLine3';
 
-describe( 'line3ApplyMatrix4', () => {
-  it( 'transforms given line using given matrix', () => {
-    const line: RawLine3 = [ [ 1.0, 1.0, 1.0 ], [ 2.0, 2.0, 2.0 ] ];
+describe('line3ApplyMatrix4', () => {
+  it('transforms given line using given matrix', () => {
+    const line: RawLine3 = [
+      [1.0, 1.0, 1.0],
+      [2.0, 2.0, 2.0],
+    ];
     const matrix = mat4Multiply(
-      mat4RotationY( Math.PI / 4.0 ),
-      mat4Translate( [ 0.0, 0.0, 5.0 ] ),
+      mat4RotationY(Math.PI / 4.0),
+      mat4Translate([0.0, 0.0, 5.0]),
     );
 
-    const subject = line3ApplyMatrix4( line, matrix );
+    const subject = line3ApplyMatrix4(line, matrix);
 
-    expect( subject[ 0 ] ).toBeCloseToArray( [ -3.536, 1.0, 4.950 ] );
-    expect( subject[ 1 ] ).toBeCloseToArray( [ -3.536, 2.0, 6.364 ] );
-  } );
-} );
+    expect(subject[0]).toBeCloseToArray([-3.536, 1.0, 4.95]);
+    expect(subject[1]).toBeCloseToArray([-3.536, 2.0, 6.364]);
+  });
+});

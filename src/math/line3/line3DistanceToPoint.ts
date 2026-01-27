@@ -1,8 +1,8 @@
-import { line3ClosestPointToPoint } from './line3ClosestPointToPoint';
 import { vecLength } from '../vec/vecLength';
 import { vecSub } from '../vec/vecSub';
-import type { RawLine3 } from './RawLine3';
 import type { RawVector3 } from '../vec3/RawVector3';
+import { line3ClosestPointToPoint } from './line3ClosestPointToPoint';
+import type { RawLine3 } from './RawLine3';
 
 /**
  * Return a distance from the given line to the given point.
@@ -19,8 +19,7 @@ export function line3DistanceToPoint(
   point: RawVector3,
   segment?: boolean,
 ): number {
-  return vecLength( vecSub(
-    line3ClosestPointToPoint( line, point, segment ),
-    point,
-  ) );
+  return vecLength(
+    vecSub(line3ClosestPointToPoint(line, point, segment), point),
+  );
 }

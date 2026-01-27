@@ -1,4 +1,4 @@
-import { RawDagEdge } from './RawDagEdge';
+import type { RawDagEdge } from './RawDagEdge';
 
 /**
  * Return all children destinations the specified source has.
@@ -7,8 +7,6 @@ import { RawDagEdge } from './RawDagEdge';
  *
  * See also: {@link dagEdgesDescendant}
  */
-export function dagEdgesChildren<T>( edges: RawDagEdge<T>[], source: T ): T[] {
-  return edges
-    .filter( ( edge ) => edge[ 0 ] === source )
-    .map( ( edge ) => edge[ 1 ] );
+export function dagEdgesChildren<T>(edges: RawDagEdge<T>[], source: T): T[] {
+  return edges.filter((edge) => edge[0] === source).map((edge) => edge[1]);
 }

@@ -24,22 +24,22 @@
  */
 export function traverse<TNode>(
   root: TNode,
-  traverser: ( node: TNode ) => TNode[] | false,
+  traverser: (node: TNode) => TNode[] | false,
 ): void {
-  const nodesNeedProcess: TNode[] = [ root ];
-  const nodesSeen = new Set<TNode>( nodesNeedProcess );
+  const nodesNeedProcess: TNode[] = [root];
+  const nodesSeen = new Set<TNode>(nodesNeedProcess);
 
-  while ( nodesNeedProcess.length > 0 ) {
+  while (nodesNeedProcess.length > 0) {
     const currentNode = nodesNeedProcess.shift()!;
 
-    const children = traverser( currentNode );
+    const children = traverser(currentNode);
 
-    if ( !children ) {
+    if (!children) {
       break;
     }
 
-    const nodesFound = children.filter( ( node ) => !nodesSeen.has( node ) );
-    nodesNeedProcess.unshift( ...nodesFound );
-    nodesFound.map( ( node ) => nodesSeen.add( node ) );
+    const nodesFound = children.filter((node) => !nodesSeen.has(node));
+    nodesNeedProcess.unshift(...nodesFound);
+    nodesFound.map((node) => nodesSeen.add(node));
   }
 }

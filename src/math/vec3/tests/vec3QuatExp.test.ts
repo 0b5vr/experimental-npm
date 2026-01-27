@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
-import { vec3QuatExp } from '../vec3QuatExp';
 import { quatFromAxisAngle } from '../../quat/quatFromAxisAngle';
 import { vecNormalize } from '../../vec/vecNormalize';
 import type { RawVector3 } from '../RawVector3';
+import { vec3QuatExp } from '../vec3QuatExp';
 
 describe('vec3QuatExp', () => {
   it('returns an exponential map of a vector quaternion', () => {
@@ -12,7 +12,7 @@ describe('vec3QuatExp', () => {
 
     const expected = quatFromAxisAngle(
       vecNormalize([1.0, 1.0, 1.0] as RawVector3),
-      Math.PI / 2.0 * Math.sqrt(3.0)
+      (Math.PI / 2.0) * Math.sqrt(3.0),
     );
     expect(subject).toBeCloseToArray(expected);
   });

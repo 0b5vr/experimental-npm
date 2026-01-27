@@ -14,12 +14,24 @@ export function mat4Perspective(
   far = 100.0,
   aspect = 1.0,
 ): RawMatrix4 {
-  const p = 1.0 / Math.tan( fov * Math.PI / 360.0 );
-  const d = ( far - near );
+  const p = 1.0 / Math.tan((fov * Math.PI) / 360.0);
+  const d = far - near;
   return [
-    p / aspect, 0.0, 0.0, 0.0,
-    0.0, p, 0.0, 0.0,
-    0.0, 0.0, -( far + near ) / d, -1.0,
-    0.0, 0.0, -2 * far * near / d, 0.0
+    p / aspect,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    p,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -(far + near) / d,
+    -1.0,
+    0.0,
+    0.0,
+    (-2 * far * near) / d,
+    0.0,
   ];
 }

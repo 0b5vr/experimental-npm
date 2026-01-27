@@ -12,10 +12,7 @@
  * func();
  * ```
  */
-export function throttle(
-  func: () => void,
-  rateMs: number,
-): () => void {
+export function throttle(func: () => void, rateMs: number): () => void {
   /** Timeout ID for the queued function call */
   let queueId: ReturnType<typeof setTimeout> | null | undefined;
 
@@ -27,20 +24,20 @@ export function throttle(
     const untilNextExec = lastTime + rateMs - now;
 
     // clear any previously queued calls
-    if ( queueId ) {
-      clearTimeout( queueId );
+    if (queueId) {
+      clearTimeout(queueId);
     }
 
-    if ( untilNextExec <= 0 ) {
+    if (untilNextExec <= 0) {
       // if enough time has passed, execute immediately
       lastTime = now;
       func();
     } else {
       // if not, queue for execution after the next good time
-      queueId = setTimeout( () => {
+      queueId = setTimeout(() => {
         lastTime = Date.now();
         func();
-      }, untilNextExec );
+      }, untilNextExec);
     }
   };
 }

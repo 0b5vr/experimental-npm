@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { traverse } from '../traverse';
 
-describe( 'traverse', () => {
-  it( 'can be used to find all children in a hierarchy', () => {
+describe('traverse', () => {
+  it('can be used to find all children in a hierarchy', () => {
     type Node = {
       name: string;
       children?: Node[];
-    }
+    };
 
     const a: Node = {
       name: 'a',
@@ -19,7 +19,7 @@ describe( 'traverse', () => {
             },
             {
               name: 'd',
-            }
+            },
           ],
         },
         {
@@ -37,20 +37,20 @@ describe( 'traverse', () => {
     };
 
     const nodeNames: string[] = [];
-    traverse( a, ( node ) => {
-      nodeNames.push( node.name );
+    traverse(a, (node) => {
+      nodeNames.push(node.name);
       return node.children ?? [];
-    } );
+    });
 
-    expect( nodeNames ).toEqual( [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ] );
-  } );
+    expect(nodeNames).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g']);
+  });
 
-  it( 'can be used to find a funky descendant in a hierarchy', () => {
+  it('can be used to find a funky descendant in a hierarchy', () => {
     type Node = {
       name: string;
       isFunky?: true;
       children?: Node[];
-    }
+    };
 
     const a: Node = {
       name: 'a',
@@ -64,7 +64,7 @@ describe( 'traverse', () => {
             },
             {
               name: 'd',
-            }
+            },
           ],
         },
         {
@@ -83,18 +83,18 @@ describe( 'traverse', () => {
 
     let callCount = 0;
     let funkyOne: Node | undefined;
-    traverse( a, ( node ) => {
-      callCount ++;
+    traverse(a, (node) => {
+      callCount++;
 
-      if ( node.isFunky ) {
+      if (node.isFunky) {
         funkyOne = node;
         return false;
       }
 
       return node.children ?? [];
-    } );
+    });
 
-    expect( funkyOne ).toEqual( { name: 'c', isFunky: true } );
-    expect( callCount ).toBe( 3 );
-  } );
-} );
+    expect(funkyOne).toEqual({ name: 'c', isFunky: true });
+    expect(callCount).toBe(3);
+  });
+});

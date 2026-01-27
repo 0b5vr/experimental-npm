@@ -1,5 +1,5 @@
-import { dagEdgesParents } from './dagEdgesParents';
 import { traverse } from '../algorithm/traverse';
+import { dagEdgesParents } from './dagEdgesParents';
 import type { RawDagEdge } from './RawDagEdge';
 
 /**
@@ -9,14 +9,17 @@ import type { RawDagEdge } from './RawDagEdge';
  *
  * See also: {@link dagEdgesChildren}
  */
-export function dagEdgesAncestors<T>( edges: RawDagEdge<T>[], destination: T ): T[] {
+export function dagEdgesAncestors<T>(
+  edges: RawDagEdge<T>[],
+  destination: T,
+): T[] {
   const ancestors = new Set<T>();
 
-  traverse( destination, ( node ) => {
-    const parents = dagEdgesParents( edges, node );
-    parents.map( ( parent ) => ancestors.add( parent ) );
+  traverse(destination, (node) => {
+    const parents = dagEdgesParents(edges, node);
+    parents.map((parent) => ancestors.add(parent));
     return parents;
-  } );
+  });
 
-  return Array.from( ancestors );
+  return Array.from(ancestors);
 }

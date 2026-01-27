@@ -1,8 +1,8 @@
-import { Box3 } from '../box3/Box3';
-import { Matrix4 } from '../mat4/Matrix4';
+import type { Box3 } from '../box3/Box3';
+import type { Matrix4 } from '../mat4/Matrix4';
+import type { Sphere3 } from '../sphere3/Sphere3';
+import type { Vector3 } from '../vec3/Vector3';
 import { Plane3 } from './Plane3';
-import { Sphere3 } from '../sphere3/Sphere3';
-import { Vector3 } from '../vec3/Vector3';
 import { planes3ContainPoint } from './planes3ContainPoint';
 import { planes3FromBox3 } from './planes3FromBox3';
 import { planes3FromProjectionMatrix } from './planes3FromProjectionMatrix';
@@ -20,10 +20,10 @@ export class Planes3 {
    * Itself but {@link RawPlane3}[] form.
    */
   public get raw(): RawPlane3[] {
-    return this.planes.map( ( plane ) => plane.raw );
+    return this.planes.map((plane) => plane.raw);
   }
 
-  public constructor( planes: Plane3[] ) {
+  public constructor(planes: Plane3[]) {
     this.planes = planes;
   }
 
@@ -32,8 +32,8 @@ export class Planes3 {
    *
    * @param point A point
    */
-  public containPoint( point: Vector3 ): boolean {
-    return planes3ContainPoint( this.raw, point.elements );
+  public containPoint(point: Vector3): boolean {
+    return planes3ContainPoint(this.raw, point.elements);
   }
 
   /**
@@ -41,8 +41,8 @@ export class Planes3 {
    *
    * @param box A box3
    */
-  public intersectBox3( box: Box3 ): boolean {
-    return planes3IntersectBox3( this.raw, box.raw );
+  public intersectBox3(box: Box3): boolean {
+    return planes3IntersectBox3(this.raw, box.raw);
   }
 
   /**
@@ -53,8 +53,8 @@ export class Planes3 {
    *
    * @param sphere A sphere3
    */
-  public intersectSphere3( sphere: Sphere3 ): boolean {
-    return planes3IntersectSphere3( this.raw, sphere.raw );
+  public intersectSphere3(sphere: Sphere3): boolean {
+    return planes3IntersectSphere3(this.raw, sphere.raw);
   }
 
   /**
@@ -62,8 +62,8 @@ export class Planes3 {
    *
    * @param planes A {@link RawPlane3}[]
    */
-  public static fromRaw( planes: RawPlane3[] ): Planes3 {
-    return new Planes3( planes.map( ( plane ) => Plane3.fromRaw( plane ) ) );
+  public static fromRaw(planes: RawPlane3[]): Planes3 {
+    return new Planes3(planes.map((plane) => Plane3.fromRaw(plane)));
   }
 
   /**
@@ -71,8 +71,8 @@ export class Planes3 {
    *
    * @param box A box
    */
-  public static fromBox3( box: Box3 ): Planes3 {
-    return Planes3.fromRaw( planes3FromBox3( box.raw ) );
+  public static fromBox3(box: Box3): Planes3 {
+    return Planes3.fromRaw(planes3FromBox3(box.raw));
   }
 
   /**
@@ -80,7 +80,7 @@ export class Planes3 {
    *
    * @param matrix A projection matrix
    */
-  public static fromProjectionMatrix( matrix: Matrix4 ): Planes3 {
-    return Planes3.fromRaw( planes3FromProjectionMatrix( matrix.elements ) );
+  public static fromProjectionMatrix(matrix: Matrix4): Planes3 {
+    return Planes3.fromRaw(planes3FromProjectionMatrix(matrix.elements));
   }
 }

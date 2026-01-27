@@ -36,10 +36,10 @@ export class CDS {
   public target = 0.0;
 
   public update(deltaTime: number): number {
-    this.velocity += (
-      this.factor * (this.target - this.value)
-      - 2.0 * this.velocity * Math.sqrt(this.factor) * this.ratio
-    ) * deltaTime;
+    this.velocity +=
+      (this.factor * (this.target - this.value) -
+        2.0 * this.velocity * Math.sqrt(this.factor) * this.ratio) *
+      deltaTime;
 
     this.value += this.velocity * deltaTime;
     return this.value;

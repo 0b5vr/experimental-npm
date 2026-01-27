@@ -5,16 +5,16 @@ export class MapOfSet<K, V> {
     this.map = new Map();
   }
 
-  public get( key: K ): Set<V> {
-    return this.map.get( key ) ?? new Set();
+  public get(key: K): Set<V> {
+    return this.map.get(key) ?? new Set();
   }
 
-  public add( key: K, value: V ): void {
-    let set = this.map.get( key );
-    if ( set == null ) {
+  public add(key: K, value: V): void {
+    let set = this.map.get(key);
+    if (set == null) {
       set = new Set();
-      this.map.set( key, set );
+      this.map.set(key, set);
     }
-    set.add( value );
+    set.add(value);
   }
 }
