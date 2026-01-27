@@ -15,18 +15,8 @@ Test is your friend
 
 ### Releasing
 
-```
-git switch dev
-npm version <new-version>
-git push origin dev --tags
-git switch release
-git merge dev
-git push origin release --tags
-git switch dev
-```
-
-Pushing to `release` automatically deploys.
-See `deploy-release` workflow on GitHub Actions
+Run [Publish Workflow](https://github.com/0b5vr/experimental-npm/actions/workflows/publish.yml) on GitHub Actions.
+After the workflow is done, merge the version commit to `release` branch.
 
 Don't forget to make a [release](https://github.com/0b5vr/experimental-npm/releases)!
 
