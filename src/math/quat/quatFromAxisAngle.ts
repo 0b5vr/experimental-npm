@@ -3,6 +3,7 @@ import type { RawVector3 } from '../vec3/RawVector3';
 
 /**
  * Generate a Quaternion out of axis and angle.
+ * Assumes axis is normalized.
  */
 export function quatFromAxisAngle( axis: RawVector3, angle: number ): RawQuaternion {
   const halfAngle = angle / 2.0;
