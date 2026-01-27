@@ -5,6 +5,7 @@ import { vec3ApplyMatrix4 } from './vec3ApplyMatrix4';
 import { vec3ApplyQuaternion } from './vec3ApplyQuaternion';
 import { vec3Cross } from './vec3Cross';
 import { vec3OrthoNormalize } from './vec3OrthoNormalize';
+import { vec3QuatExp } from './vec3QuatExp';
 import type { RawVector3 } from './RawVector3';
 
 /**
@@ -76,6 +77,13 @@ export class Vector3 extends Vector<Vector3> {
    */
   public applyMatrix4( matrix: Matrix4 ): Vector3 {
     return new Vector3( vec3ApplyMatrix4( this.elements, matrix.elements ) );
+  }
+
+  /**
+   * Treating this as a quaternion with w = 0, an exponential map of the quaternion.
+   */
+  public get quatExp(): Quaternion {
+    return new Quaternion( vec3QuatExp( this.elements ) );
   }
 
   protected __new( v: RawVector3 ): Vector3 {

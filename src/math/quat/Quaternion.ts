@@ -3,7 +3,10 @@ import { Vector3 } from '../vec3/Vector3';
 import { mat4FromQuaternion } from '../mat4/mat4FromQuaternion';
 import { quatFromAxisAngle } from './quatFromAxisAngle';
 import { quatFromMatrix4 } from './quatFromMatrix4';
+import { quatExp } from './quatExp';
 import { quatInverse } from './quatInverse';
+import { quatLog } from './quatLog';
+import { quatLogVec3 } from './quatLogVec3';
 import { quatLookRotation } from './quatLookRotation';
 import { quatMultiply } from './quatMultiply';
 import { quatNormalize } from './quatNormalize';
@@ -99,6 +102,27 @@ export class Quaternion {
    */
   public get normalized(): Quaternion {
     return new Quaternion( quatNormalize( this.elements ) );
+  }
+
+  /**
+   * An exponential map of this.
+   */
+  public get exp(): Quaternion {
+    return new Quaternion( quatExp( this.elements ) );
+  }
+
+  /**
+   * A logarithm map of this.
+   */
+  public get log(): Quaternion {
+    return new Quaternion( quatLog( this.elements ) );
+  }
+
+  /**
+   * A logarithm map of this as a Vector3.
+   */
+  public get logVec3(): Vector3 {
+    return new Vector3( quatLogVec3( this.elements ) );
   }
 
   /**
