@@ -16,20 +16,31 @@ export function throttle(
   func: () => void,
   rateMs: number,
 ): () => void {
-  let waiting = false;
+  /** Timeout ID for the queued function call */
+  let queueId: ReturnType<typeof setTimeout> | null | undefined;
+
+  /** Timestamp of the last execution */
   let lastTime = -Infinity;
 
   return () => {
     const now = Date.now();
-    const untilNext = Math.max( 0, lastTime + rateMs - now );
+    const untilNextExec = lastTime + rateMs - now;
 
-    if ( !waiting ) {
-      setTimeout( () => {
+    // clear any previously queued calls
+    if ( queueId ) {
+      clearTimeout( queueId );
+    }
+
+    if ( untilNextExec <= 0 ) {
+      // if enough time has passed, execute immediately
+      lastTime = now;
+      func();
+    } else {
+      // if not, queue for execution after the next good time
+      queueId = setTimeout( () => {
         lastTime = Date.now();
         func();
-        waiting = false;
-      }, untilNext );
-      waiting = true;
+      }, untilNextExec );
     }
   };
 }

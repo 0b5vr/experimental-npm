@@ -16,16 +16,19 @@ export function debounce(
   func: () => void,
   timeoutMs: number,
 ): () => void {
-  let id: ReturnType<typeof setTimeout> | null | undefined;
+  /** Timeout ID for the queued function call */
+  let queueId: ReturnType<typeof setTimeout> | null | undefined;
 
   return () => {
-    if ( id ) {
-      clearTimeout( id );
+    // clear any previously queued calls
+    if ( queueId ) {
+      clearTimeout( queueId );
     }
 
-    id = setTimeout( () => {
+    // queue for execution after the timeout
+    queueId = setTimeout( () => {
       func();
-      id = null;
+      queueId = null;
     }, timeoutMs );
   };
 }
