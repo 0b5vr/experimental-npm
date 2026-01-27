@@ -1,1 +1,1 @@
-export declare type RawDagEdge<T> = [T, T];
+export type RawDagEdge<T> = [T, T];

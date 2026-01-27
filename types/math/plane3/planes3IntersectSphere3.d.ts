@@ -1,4 +1,4 @@
-import { RawSphere3 } from '../sphere3/RawSphere3';
+import type { RawSphere3 } from '../sphere3/RawSphere3';
 import type { RawPlane3 } from './RawPlane3';
 /**
  * Test if given sphere intersects with planes or not.

@@ -1,5 +1,5 @@
 import { Matrix4 } from '../mat4/Matrix4';
-import { Quaternion } from '../quat/Quaternion';
+import type { Quaternion } from '../quat/Quaternion';
 import type { RawMatrix3 } from './RawMatrix3';
 /**
  * A Matrix3.

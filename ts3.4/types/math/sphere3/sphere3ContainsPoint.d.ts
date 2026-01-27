@@ -1,5 +1,5 @@
-import { RawSphere3 } from './RawSphere3';
 import { RawVector3 } from '../vec3/RawVector3';
+import { RawSphere3 } from './RawSphere3';
 /**
  * Test if given point is contained in given sphere or not.
  * @param sphere A sphere

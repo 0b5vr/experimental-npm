@@ -1,5 +1,5 @@
-import type { RawPlane3 } from './RawPlane3';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawPlane3 } from './RawPlane3';
 /**
  * Test if given point is contained in given planes or not.
  *

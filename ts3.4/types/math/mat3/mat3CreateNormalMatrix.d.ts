@@ -1,5 +1,5 @@
-import { RawMatrix3 } from './RawMatrix3';
 import { RawMatrix4 } from '../mat4/RawMatrix4';
+import { RawMatrix3 } from './RawMatrix3';
 /**
  * Create a normal matrix out of a matrix4.
  *

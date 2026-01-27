@@ -1,5 +1,5 @@
-import type { RawRay3 } from './RawRay3';
 import type { RawSphere3 } from '../sphere3/RawSphere3';
+import type { RawRay3 } from './RawRay3';
 /**
  * Return distances from given ray to sphere.
  *

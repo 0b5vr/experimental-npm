@@ -17,4 +17,4 @@ export interface STNICCCFrameNonIndexed {
         vertices: number[];
     }[];
 }
-export declare type STNICCCFrame = STNICCCFrameIndexed | STNICCCFrameNonIndexed;
+export type STNICCCFrame = STNICCCFrameIndexed | STNICCCFrameNonIndexed;

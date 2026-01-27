@@ -1,5 +1,5 @@
-import type { RawLine3 } from './RawLine3';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawLine3 } from './RawLine3';
 /**
  * Return a vector that represents delta of given line.
  *

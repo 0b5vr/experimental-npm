@@ -1,4 +1,4 @@
-import { RawDagEdge } from './RawDagEdge';
+import type { RawDagEdge } from './RawDagEdge';
 /**
  * Resolve dag dependency relationship and give you a correct order.
  *

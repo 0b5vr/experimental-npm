@@ -1,5 +1,5 @@
-import { RawMatrix3 } from './RawMatrix3';
 import { RawQuaternion } from '../quat/RawQuaternion';
+import { RawMatrix3 } from './RawMatrix3';
 /**
  * Convert a quaternion into a matrix3.
  *

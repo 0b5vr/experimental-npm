@@ -1,5 +1,5 @@
-import { RawRay3 } from './RawRay3';
 import { RawSphere3 } from '../sphere3/RawSphere3';
+import { RawRay3 } from './RawRay3';
 /**
  * Return distances from given ray to sphere.
  *

@@ -1,8 +1,8 @@
-import { Matrix3 } from '../mat3/Matrix3';
-import { Matrix4 } from '../mat4/Matrix4';
+import type { Matrix3 } from '../mat3/Matrix3';
+import type { Matrix4 } from '../mat4/Matrix4';
 import { Quaternion } from '../quat/Quaternion';
-import type { EulerOrder } from './EulerOrder';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { EulerOrder } from './EulerOrder';
 /**
  * An Euler rotations.
  */

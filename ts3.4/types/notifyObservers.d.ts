@@ -1,7 +1,7 @@
 /**
  * An utility type definition to use along with {@link notifyObservers}.
  */
-export declare type Observer<TEvent = void> = (event: TEvent) => void;
+export type Observer<TEvent = void> = (event: TEvent) => void;
 /**
  * A bare function to notify observers.
  * The incredibly cheap implementation of the observer pattern.

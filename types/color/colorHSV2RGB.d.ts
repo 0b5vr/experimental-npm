@@ -1,4 +1,4 @@
-import { RawRGB } from './RawRGB';
+import type { RawRGB } from './RawRGB';
 /**
  * Convert a color from HSV to RGB.
  * Each component of the HSV must be given in [0 - 1] range.

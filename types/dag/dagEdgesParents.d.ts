@@ -1,4 +1,4 @@
-import { RawDagEdge } from './RawDagEdge';
+import type { RawDagEdge } from './RawDagEdge';
 /**
  * Return all parent sources the specified destination has.
  * @param edges An array of dag edge

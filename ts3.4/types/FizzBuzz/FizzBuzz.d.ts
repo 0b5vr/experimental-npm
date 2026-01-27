@@ -7,6 +7,6 @@ export declare class FizzBuzz implements Iterable<number | string> {
     private __index;
     private __end;
     constructor(words?: Map<number, string>, index?: number, end?: number);
-    [Symbol.iterator](): Iterator<string | number, any, undefined>;
-    next(): IteratorResult<number | string>;
+    [Symbol.iterator](): Iterator<number | string, null, undefined>;
+    next(): IteratorResult<number | string, null>;
 }

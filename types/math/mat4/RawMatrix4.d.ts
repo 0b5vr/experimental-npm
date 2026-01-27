@@ -1,4 +1,4 @@
-export declare type RawMatrix4 = [
+export type RawMatrix4 = [
     number,
     number,
     number,

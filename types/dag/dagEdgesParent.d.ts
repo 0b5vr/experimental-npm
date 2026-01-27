@@ -1,4 +1,4 @@
-import { RawDagEdge } from './RawDagEdge';
+import type { RawDagEdge } from './RawDagEdge';
 /**
  * Return first parent source the specified destination has.
  * If it can't find a parent, it will return `null` instead.

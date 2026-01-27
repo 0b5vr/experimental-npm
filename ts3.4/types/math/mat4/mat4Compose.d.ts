@@ -1,6 +1,6 @@
-import { RawMatrix4 } from './RawMatrix4';
 import { RawQuaternion } from '../quat/RawQuaternion';
 import { RawVector3 } from '../vec3/RawVector3';
+import { RawMatrix4 } from './RawMatrix4';
 /**
  * Compose a matrix out of position, scale, and rotation.
  * Yoinked from Three.js.

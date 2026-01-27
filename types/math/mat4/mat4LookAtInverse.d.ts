@@ -1,5 +1,5 @@
-import type { RawMatrix4 } from './RawMatrix4';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawMatrix4 } from './RawMatrix4';
 /**
  * Generate an inverse of "LookAt" matrix. Good for creating a view matrix.
  *

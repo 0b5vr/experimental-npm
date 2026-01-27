@@ -1,1 +1,1 @@
-export declare type RawQuaternion = [number, number, number, number];
+export type RawQuaternion = [number, number, number, number];

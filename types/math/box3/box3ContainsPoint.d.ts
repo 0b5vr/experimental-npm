@@ -1,5 +1,5 @@
-import type { RawBox3 } from './RawBox3';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawBox3 } from './RawBox3';
 /**
  * Test if given point is contained in given box or not.
  * @param box A box

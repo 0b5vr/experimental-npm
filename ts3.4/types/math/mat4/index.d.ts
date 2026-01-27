@@ -1,3 +1,4 @@
+export { Matrix4 } from './Matrix4';
 export { mat4Compose } from './mat4Compose';
 export { mat4Decompose } from './mat4Decompose';
 export { mat4Determinant } from './mat4Determinant';
@@ -15,5 +16,4 @@ export { mat4Scale } from './mat4Scale';
 export { mat4ScaleScalar } from './mat4ScaleScalar';
 export { mat4Translate } from './mat4Translate';
 export { mat4Transpose } from './mat4Transpose';
-export { Matrix4 } from './Matrix4';
 export { RawMatrix4 } from './RawMatrix4';

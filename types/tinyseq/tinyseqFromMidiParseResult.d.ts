@@ -1,4 +1,4 @@
-import { MidiParseResult } from '../midi';
+import type { MidiParseResult } from '../midi';
 /**
  * Convert the parsed midi result to a tinyseq binary.
  *
@@ -9,7 +9,7 @@ import { MidiParseResult } from '../midi';
  * @param tickMultiplier Multiply this value to tick
  * @returns A tinyseq binary
  */
-export declare function tinyseqFromMidiParseResult(midi: MidiParseResult, { track, tickMultiplier }?: {
+export declare function tinyseqFromMidiParseResult(midi: MidiParseResult, { track, tickMultiplier, }?: {
     track?: number;
     tickMultiplier?: number;
 }): Uint8Array;

@@ -1,5 +1,5 @@
-import { Line3 } from '../line3/Line3';
-import { Sphere3 } from '../sphere3/Sphere3';
+import type { Line3 } from '../line3/Line3';
+import type { Sphere3 } from '../sphere3/Sphere3';
 import { Vector3 } from '../vec3/Vector3';
 import type { RawRay3 } from './RawRay3';
 /**

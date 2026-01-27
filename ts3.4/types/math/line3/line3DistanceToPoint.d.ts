@@ -1,5 +1,5 @@
-import { RawLine3 } from './RawLine3';
 import { RawVector3 } from '../vec3/RawVector3';
+import { RawLine3 } from './RawLine3';
 /**
  * Return a distance from the given line to the given point.
  *

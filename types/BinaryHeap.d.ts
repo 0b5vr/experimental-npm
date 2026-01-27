@@ -2,7 +2,7 @@ export declare class BinaryHeap<T> {
     readonly array: T[];
     readonly elementIndexMap: Map<T, number>;
     comparator: (a: T, b: T) => number;
-    static defaultComparator(a: any, b: any): number;
+    static defaultComparator(a: unknown, b: unknown): number;
     get length(): number;
     get isEmpty(): boolean;
     get root(): T;

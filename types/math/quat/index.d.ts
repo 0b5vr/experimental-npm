@@ -1,9 +1,12 @@
 export { Quaternion } from './Quaternion';
+export { quatExp } from './quatExp';
 export { quatFromAxisAngle } from './quatFromAxisAngle';
 export { quatFromEuler } from './quatFromEuler';
 export { quatFromMatrix3 } from './quatFromMatrix3';
 export { quatFromMatrix4 } from './quatFromMatrix4';
 export { quatInverse } from './quatInverse';
+export { quatLog } from './quatLog';
+export { quatLogVec3 } from './quatLogVec3';
 export { quatLookRotation } from './quatLookRotation';
 export { quatMultiply } from './quatMultiply';
 export { quatNormalize } from './quatNormalize';

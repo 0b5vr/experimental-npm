@@ -1,5 +1,5 @@
-import type { RawMatrix3 } from './RawMatrix3';
 import type { RawMatrix4 } from '../mat4/RawMatrix4';
+import type { RawMatrix3 } from './RawMatrix3';
 /**
  * Create a matrix3 from matrix4.
  */

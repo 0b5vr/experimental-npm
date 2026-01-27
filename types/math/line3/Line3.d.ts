@@ -1,4 +1,4 @@
-import { Matrix4 } from '../mat4/Matrix4';
+import type { Matrix4 } from '../mat4/Matrix4';
 import { Ray3 } from '../ray3/Ray3';
 import { Vector3 } from '../vec3/Vector3';
 import type { RawLine3 } from './RawLine3';

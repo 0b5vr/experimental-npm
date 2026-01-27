@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.7
+* @0b5vr/experimental v0.9.8
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2024 0b5vr
@@ -11,6 +11,7 @@ var OBSVR_EXPERIMENTAL = (() => {
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __pow = Math.pow;
   var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
   var __export = (target, all) => {
     for (var name in all)
@@ -53,7 +54,9 @@ var OBSVR_EXPERIMENTAL = (() => {
   // src/index.ts
   var src_exports = {};
   __export(src_exports, {
+    BPF: () => BPF,
     BinaryHeap: () => BinaryHeap,
+    BiquadFilter: () => BiquadFilter,
     Box3: () => Box3,
     CDS: () => CDS,
     Clock: () => Clock,
@@ -62,27 +65,34 @@ var OBSVR_EXPERIMENTAL = (() => {
     Euler: () => Euler,
     ExpSmooth: () => ExpSmooth,
     GPUTimer: () => GPUTimer,
+    HPF: () => HPF,
     HistoryMeanCalculator: () => HistoryMeanCalculator,
     HistoryMedianCalculator: () => HistoryMedianCalculator,
     HistoryPercentileCalculator: () => HistoryPercentileCalculator,
+    LPF: () => LPF,
     Line3: () => Line3,
     MapOfSet: () => MapOfSet,
     Matrix2: () => Matrix2,
     Matrix3: () => Matrix3,
     Matrix4: () => Matrix4,
+    Phasor: () => Phasor,
     Plane3: () => Plane3,
     Planes3: () => Planes3,
     Pool: () => Pool,
     Quaternion: () => Quaternion,
     Ray3: () => Ray3,
+    SawtoothOscillator: () => SawtoothOscillator,
+    SineOscillator: () => SineOscillator,
     SmoothDamp: () => SmoothDamp,
     Sphere3: () => Sphere3,
+    SquareOscillator: () => SquareOscillator,
     Swap: () => Swap,
     TRIANGLE_STRIP_QUAD: () => TRIANGLE_STRIP_QUAD,
     TRIANGLE_STRIP_QUAD_3D: () => TRIANGLE_STRIP_QUAD_3D,
     TRIANGLE_STRIP_QUAD_NORMAL: () => TRIANGLE_STRIP_QUAD_NORMAL,
     TRIANGLE_STRIP_QUAD_UV: () => TRIANGLE_STRIP_QUAD_UV,
     TapTempo: () => TapTempo,
+    TriangleOscillator: () => TriangleOscillator,
     Vector: () => Vector,
     Vector3: () => Vector3,
     Vector4: () => Vector4,
@@ -119,7 +129,9 @@ var OBSVR_EXPERIMENTAL = (() => {
     eulerFromMat4: () => eulerFromMat4,
     eulerFromQuaternion: () => eulerFromQuaternion,
     evaluatePokerHand: () => evaluatePokerHand,
+    float32ArrayToWav: () => float32ArrayToWav,
     getYugopText: () => getYugopText,
+    int16ArrayToWav: () => int16ArrayToWav,
     lerp: () => lerp,
     line3ApplyMatrix4: () => line3ApplyMatrix4,
     line3At: () => line3At,
@@ -178,11 +190,14 @@ var OBSVR_EXPERIMENTAL = (() => {
     pokerRanksByStrength: () => pokerRanksByStrength,
     pokerSuitIndexMap: () => pokerSuitIndexMap,
     pokerSuitsByIndex: () => pokerSuitsByIndex,
+    quatExp: () => quatExp,
     quatFromAxisAngle: () => quatFromAxisAngle,
     quatFromEuler: () => quatFromEuler,
     quatFromMatrix3: () => quatFromMatrix3,
     quatFromMatrix4: () => quatFromMatrix4,
     quatInverse: () => quatInverse,
+    quatLog: () => quatLog,
+    quatLogVec3: () => quatLogVec3,
     quatLookRotation: () => quatLookRotation,
     quatMultiply: () => quatMultiply,
     quatNormalize: () => quatNormalize,
@@ -212,6 +227,7 @@ var OBSVR_EXPERIMENTAL = (() => {
     vec3ApplyQuaternion: () => vec3ApplyQuaternion,
     vec3Cross: () => vec3Cross,
     vec3OrthoNormalize: () => vec3OrthoNormalize,
+    vec3QuatExp: () => vec3QuatExp,
     vec4ApplyMatrix3: () => vec4ApplyMatrix3,
     vec4ApplyMatrix4: () => vec4ApplyMatrix4,
     vecAbs: () => vecAbs,
@@ -372,6 +388,126 @@ var OBSVR_EXPERIMENTAL = (() => {
     return arr;
   }
 
+  // src/BinaryHeap.ts
+  var BinaryHeap = class {
+    static defaultComparator(a, b) {
+      const aStr = `${a}`;
+      const bStr = `${b}`;
+      if (aStr > bStr) {
+        return 1;
+      } else if (aStr < bStr) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    get length() {
+      return this.array.length;
+    }
+    get isEmpty() {
+      return this.array.length === 0;
+    }
+    get root() {
+      return this.array[0];
+    }
+    constructor(init, comparator) {
+      this.array = [];
+      this.elementIndexMap = /* @__PURE__ */ new Map();
+      this.comparator = comparator != null ? comparator : BinaryHeap.defaultComparator;
+      if (init != null) {
+        for (const el of init) {
+          this.push(el);
+        }
+      }
+    }
+    push(...elements) {
+      elements.map((el) => {
+        const i = this.length;
+        this.array.push(el);
+        this.elementIndexMap.set(el, i);
+        this.__up(i, el);
+      });
+    }
+    pop() {
+      if (this.isEmpty) {
+        return null;
+      }
+      const el = this.array[0];
+      this.elementIndexMap.delete(el);
+      if (this.length === 1) {
+        this.array.splice(0);
+      } else {
+        const rep = this.array.pop();
+        this.__down(0, rep);
+      }
+      return el;
+    }
+    delete(i) {
+      this.elementIndexMap.delete(this.array[i]);
+      const rep = this.array.pop();
+      if (rep != null) {
+        i = this.__up(i, rep);
+        i = this.__down(i, rep);
+      }
+      return true;
+    }
+    replace(i, rep) {
+      if (i != null) {
+        this.elementIndexMap.delete(this.array[i]);
+        i = this.__up(i, rep);
+        i = this.__down(i, rep);
+      }
+      return i != null ? i : null;
+    }
+    __up(i, el) {
+      let ic = i;
+      while (ic !== 0) {
+        const ip = ic - 1 >> 1;
+        const p = this.array[ip];
+        if (this.comparator(el, p) < 0) {
+          this.array[ic] = p;
+          this.elementIndexMap.set(p, ic);
+          ic = ip;
+        } else {
+          break;
+        }
+      }
+      this.array[ic] = el;
+      this.elementIndexMap.set(el, ic);
+      return ic;
+    }
+    __down(i, el) {
+      let ip = i;
+      while ((ip << 1) + 1 < this.length) {
+        const ic1 = (ip << 1) + 1;
+        const ic2 = (ip << 1) + 2;
+        if (ic2 < this.length) {
+          const c1 = this.array[ic1];
+          const c2 = this.array[ic2];
+          const pickLeft = this.comparator(c1, c2) < 0;
+          const c = pickLeft ? c1 : c2;
+          const ic = pickLeft ? ic1 : ic2;
+          if (this.comparator(c, el) < 0) {
+            this.array[ip] = c;
+            this.elementIndexMap.set(c, ip);
+            ip = ic;
+          } else {
+            break;
+          }
+        } else if (this.comparator(this.array[ic1], el) < 0) {
+          this.array[ip] = this.array[ic1];
+          this.elementIndexMap.set(this.array[ip], ip);
+          ip = ic1;
+        } else {
+          break;
+        }
+      }
+      this.array[ip] = el;
+      this.elementIndexMap.set(el, ip);
+      return ip;
+    }
+  };
+
   // src/CDS/CDS.ts
   var CDS = class {
     constructor() {
@@ -382,7 +518,7 @@ var OBSVR_EXPERIMENTAL = (() => {
       this.target = 0;
     }
     update(deltaTime) {
-      this.velocity += (-this.factor * (this.value - this.target) - 2 * this.velocity * Math.sqrt(this.factor) * this.ratio) * deltaTime;
+      this.velocity += (this.factor * (this.target - this.value) - 2 * this.velocity * Math.sqrt(this.factor) * this.ratio) * deltaTime;
       this.value += this.velocity * deltaTime;
       return this.value;
     }
@@ -581,12 +717,12 @@ var OBSVR_EXPERIMENTAL = (() => {
 
   // src/color/eotfRec709.ts
   function eotfRec709(value) {
-    return value.map((v) => v < 0.081 ? v / 4.5 : Math.pow((v + 0.099) / 1.099, 1 / 0.45));
+    return value.map((v) => v < 0.081 ? v / 4.5 : __pow((v + 0.099) / 1.099, 1 / 0.45));
   }
 
   // src/color/oetfRec709.ts
   function oetfRec709(luminance) {
-    return luminance.map((l) => l < 0.018 ? 4.5 * l : 1.099 * Math.pow(l, 0.45) - 0.099);
+    return luminance.map((l) => l < 0.018 ? 4.5 * l : 1.099 * __pow(l, 0.45) - 0.099);
   }
 
   // src/dag/dagEdgesParents.ts
@@ -645,6 +781,159 @@ var OBSVR_EXPERIMENTAL = (() => {
     return order.concat(Array.from(nodeSet));
   }
 
+  // src/debounce.ts
+  function debounce(func, timeoutMs) {
+    let queueId;
+    return () => {
+      if (queueId) {
+        clearTimeout(queueId);
+      }
+      queueId = setTimeout(() => {
+        func();
+        queueId = null;
+      }, timeoutMs);
+    };
+  }
+
+  // src/dsp/BiquadFilter/BiquadFilter.ts
+  var BiquadFilter = class {
+    constructor() {
+      this.b0a0 = 0;
+      this.b1a0 = 0;
+      this.b2a0 = 0;
+      this.a1a0 = 0;
+      this.a2a0 = 0;
+      this.x1 = 0;
+      this.x2 = 0;
+      this.y1 = 0;
+      this.y2 = 0;
+    }
+    process(x0) {
+      const y0 = this.b0a0 * x0 + this.b1a0 * this.x1 + this.b2a0 * this.x2 - this.a1a0 * this.y1 - this.a2a0 * this.y2;
+      this.x2 = this.x1;
+      this.x1 = x0;
+      this.y2 = this.y1;
+      this.y1 = y0;
+      return y0;
+    }
+  };
+
+  // src/dsp/BiquadFilter/BPF.ts
+  var BPF = class extends BiquadFilter {
+    constructor(f0Norm, Q) {
+      super();
+      this.setCoefficientsFromParams(f0Norm, Q);
+    }
+    setCoefficientsFromParams(f0Norm, Q) {
+      const omega0 = 2 * Math.PI * f0Norm;
+      const cosOmega0 = Math.cos(omega0);
+      const sinOmega0 = Math.sin(omega0);
+      const alpha = 0.5 * sinOmega0 / Q;
+      const a0 = 1 + alpha;
+      this.a1a0 = -2 * cosOmega0 / a0;
+      this.a2a0 = (1 - alpha) / a0;
+      this.b0a0 = alpha / a0;
+      this.b1a0 = 0;
+      this.b2a0 = -this.b0a0;
+    }
+  };
+
+  // src/dsp/BiquadFilter/HPF.ts
+  var HPF = class extends BiquadFilter {
+    constructor(f0Norm, Q) {
+      super();
+      this.setCoefficientsFromParams(f0Norm, Q);
+    }
+    setCoefficientsFromParams(f0Norm, Q) {
+      const omega0 = 2 * Math.PI * f0Norm;
+      const cosOmega0 = Math.cos(omega0);
+      const sinOmega0 = Math.sin(omega0);
+      const alpha = 0.5 * sinOmega0 / Q;
+      const a0 = 1 + alpha;
+      this.a1a0 = -2 * cosOmega0 / a0;
+      this.a2a0 = (1 - alpha) / a0;
+      this.b1a0 = (cosOmega0 - 1) / a0;
+      this.b0a0 = this.b2a0 = -this.b1a0 / 2;
+    }
+  };
+
+  // src/dsp/BiquadFilter/LPF.ts
+  var LPF = class extends BiquadFilter {
+    constructor(f0Norm, Q) {
+      super();
+      this.setCoefficientsFromParams(f0Norm, Q);
+    }
+    setCoefficientsFromParams(f0Norm, Q) {
+      const omega0 = 2 * Math.PI * f0Norm;
+      const cosOmega0 = Math.cos(omega0);
+      const sinOmega0 = Math.sin(omega0);
+      const alpha = 0.5 * sinOmega0 / Q;
+      const a0 = 1 + alpha;
+      this.a1a0 = -2 * cosOmega0 / a0;
+      this.a2a0 = (1 - alpha) / a0;
+      this.b1a0 = (1 - cosOmega0) / a0;
+      this.b0a0 = this.b2a0 = this.b1a0 / 2;
+    }
+  };
+
+  // src/dsp/Phasor.ts
+  var Phasor = class {
+    constructor(freqNorm) {
+      this.freqNorm = freqNorm;
+      this.phase = 0;
+    }
+    process() {
+      const out = this.phase;
+      this.phase = (this.phase + this.freqNorm) % 1;
+      return out;
+    }
+  };
+
+  // src/dsp/SawtoothOscillator.ts
+  var SawtoothOscillator = class extends Phasor {
+    process() {
+      const phase = super.process();
+      return phase * 2 - 1;
+    }
+  };
+
+  // src/dsp/SineOscillator.ts
+  var SineOscillator = class extends Phasor {
+    process() {
+      const phase = super.process();
+      return Math.sin(phase * 2 * Math.PI);
+    }
+  };
+
+  // src/dsp/SquareOscillator.ts
+  var SquareOscillator = class extends Phasor {
+    process() {
+      const phase = super.process();
+      return phase < 0.5 ? 1 : -1;
+    }
+  };
+
+  // src/dsp/TriangleOscillator.ts
+  var TriangleOscillator = class extends Phasor {
+    process() {
+      const phase = super.process();
+      return 1 - 4 * Math.abs(phase - 0.5);
+    }
+  };
+
+  // src/ExpSmooth/ExpSmooth.ts
+  var ExpSmooth = class {
+    constructor() {
+      this.factor = 10;
+      this.target = 0;
+      this.value = 0;
+    }
+    update(deltaTime) {
+      this.value = lerp(this.target, this.value, Math.exp(-this.factor * deltaTime));
+      return this.value;
+    }
+  };
+
   // src/edt/edt.ts
   function edt1d(data, offset, stride, length) {
     let k = 0;
@@ -690,506 +979,74 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
   }
 
-  // src/ExpSmooth/ExpSmooth.ts
-  var ExpSmooth = class {
-    constructor() {
-      this.factor = 10;
-      this.target = 0;
-      this.value = 0;
-    }
-    update(deltaTime) {
-      this.value = lerp(this.target, this.value, Math.exp(-this.factor * deltaTime));
-      return this.value;
-    }
-  };
-
-  // src/Pool/Pool.ts
-  var Pool = class {
-    constructor(array) {
-      this.index = 0;
-      this.array = array;
-    }
-    get current() {
-      return this.array[this.index];
-    }
-    next() {
-      this.index = (this.index + 1) % this.array.length;
-      return this.current;
-    }
-  };
-
-  // src/GPUTimer/GPUTimer.ts
-  var GPUTimer = class {
-    static isSupported(gl) {
-      return new Set(gl.getSupportedExtensions()).has("EXT_disjoint_timer_query_webgl2");
-    }
-    constructor(gl) {
-      this.gl = gl;
-      const queries = new Array(1024).fill(1).map(() => gl.createQuery());
-      this.queries = new Pool(queries);
-      this.stack = [];
-      this.ext = gl.getExtension("EXT_disjoint_timer_query_webgl2");
-      this.__loopTasks = /* @__PURE__ */ new Set();
-      const update = () => {
-        this.update();
-        requestAnimationFrame(update);
-      };
-      update();
-    }
-    update() {
-      Array.from(this.__loopTasks).forEach((task) => task());
-    }
-    measure(func) {
-      return __async(this, null, function* () {
-        const { gl } = this;
-        if (this.stack.length !== 0) {
-          gl.endQuery(this.ext.TIME_ELAPSED_EXT);
-          const promiseFinishingPrev = this.check(this.queries.current);
-          this.stack = this.stack.map((promiseAccum2) => __async(this, null, function* () {
-            return (yield promiseAccum2) + (yield promiseFinishingPrev);
-          }));
-        }
-        this.stack.push(Promise.resolve(0));
-        gl.beginQuery(this.ext.TIME_ELAPSED_EXT, this.queries.next());
-        func();
-        gl.endQuery(this.ext.TIME_ELAPSED_EXT);
-        const promiseAccum = this.stack.pop();
-        const promiseThis = this.check(this.queries.current);
-        if (this.stack.length !== 0) {
-          this.stack = this.stack.map((promiseAccum2) => __async(this, null, function* () {
-            return (yield promiseAccum2) + (yield promiseThis);
-          }));
-          gl.beginQuery(this.ext.TIME_ELAPSED_EXT, this.queries.next());
-        }
-        return (yield promiseAccum) + (yield promiseThis);
-      });
-    }
-    check(query) {
-      const { gl } = this;
-      return new Promise((resolve) => {
-        const task = () => {
-          const isAvailable = gl.getQueryParameter(query, gl.QUERY_RESULT_AVAILABLE);
-          if (isAvailable) {
-            this.__loopTasks.delete(task);
-            resolve(gl.getQueryParameter(query, gl.QUERY_RESULT) * 1e-3 * 1e-3);
-          }
-        };
-        this.__loopTasks.add(task);
-      });
-    }
-  };
-
-  // src/HistoryMeanCalculator/HistoryMeanCalculator.ts
-  var HistoryMeanCalculator = class {
-    constructor(length) {
-      this.__recalcForEach = 0;
-      this.__countUntilRecalc = 0;
-      this.__history = [];
-      this.__index = 0;
-      this.__count = 0;
-      this.__cache = 0;
-      this.__length = length;
-      this.__recalcForEach = length;
-      for (let i = 0; i < length; i++) {
-        this.__history[i] = 0;
+  // src/int16ArrayToWav.ts
+  function int16ArrayToWav(src, sampleRate) {
+    const channels = src.length;
+    const samples = src[0].length;
+    const byteLength = channels * samples * 2 + 44;
+    const array = new Uint8Array(byteLength);
+    let head = 0;
+    array[head++] = 82;
+    array[head++] = 73;
+    array[head++] = 70;
+    array[head++] = 70;
+    const riffChunkSize = byteLength - 8;
+    array[head++] = riffChunkSize & 255;
+    array[head++] = riffChunkSize >> 8 & 255;
+    array[head++] = riffChunkSize >> 16 & 255;
+    array[head++] = riffChunkSize >> 24 & 255;
+    array[head++] = 87;
+    array[head++] = 65;
+    array[head++] = 86;
+    array[head++] = 69;
+    array[head++] = 102;
+    array[head++] = 109;
+    array[head++] = 116;
+    array[head++] = 32;
+    array[head++] = 16;
+    array[head++] = 0;
+    array[head++] = 0;
+    array[head++] = 0;
+    array[head++] = 1;
+    array[head++] = 0;
+    array[head++] = channels;
+    array[head++] = 0;
+    array[head++] = sampleRate & 255;
+    array[head++] = sampleRate >> 8 & 255;
+    array[head++] = sampleRate >> 16 & 255;
+    array[head++] = sampleRate >> 24 & 255;
+    const avgBytesPerSec = 2 * channels * sampleRate;
+    array[head++] = avgBytesPerSec & 255;
+    array[head++] = avgBytesPerSec >> 8 & 255;
+    array[head++] = avgBytesPerSec >> 16 & 255;
+    array[head++] = avgBytesPerSec >> 24 & 255;
+    array[head++] = 2 * channels;
+    array[head++] = 0;
+    array[head++] = 16;
+    array[head++] = 0;
+    array[head++] = 100;
+    array[head++] = 97;
+    array[head++] = 116;
+    array[head++] = 97;
+    const dataChunkSize = 2 * channels * samples;
+    array[head++] = dataChunkSize & 255;
+    array[head++] = dataChunkSize >> 8 & 255;
+    array[head++] = dataChunkSize >> 16 & 255;
+    array[head++] = dataChunkSize >> 24 & 255;
+    for (let iSample = 0; iSample < samples; iSample++) {
+      for (let iCh = 0; iCh < channels; iCh++) {
+        const data = src[iCh][iSample];
+        array[head++] = data & 255;
+        array[head++] = data >> 8 & 255;
       }
     }
-    get mean() {
-      const count = Math.min(this.__count, this.__length);
-      return count === 0 ? 0 : this.__cache / count;
-    }
-    get recalcForEach() {
-      return this.__recalcForEach;
-    }
-    set recalcForEach(value) {
-      const delta = value - this.__recalcForEach;
-      this.__recalcForEach = value;
-      this.__countUntilRecalc = Math.max(0, this.__countUntilRecalc + delta);
-    }
-    reset() {
-      this.__index = 0;
-      this.__count = 0;
-      this.__cache = 0;
-      this.__countUntilRecalc = 0;
-      for (let i = 0; i < this.__length; i++) {
-        this.__history[i] = 0;
-      }
-    }
-    push(value) {
-      const prev = this.__history[this.__index];
-      this.__history[this.__index] = value;
-      this.__count++;
-      this.__index = (this.__index + 1) % this.__length;
-      if (this.__countUntilRecalc === 0) {
-        this.recalc();
-      } else {
-        this.__countUntilRecalc--;
-        this.__cache -= prev;
-        this.__cache += value;
-      }
-    }
-    recalc() {
-      this.__countUntilRecalc = this.__recalcForEach;
-      const sum = this.__history.slice(0, Math.min(this.__count, this.__length)).reduce((sum2, v) => sum2 + v, 0);
-      this.__cache = sum;
-    }
-  };
-
-  // src/HistoryMeanCalculator/HistoryPercentileCalculator.ts
-  var HistoryPercentileCalculator = class {
-    constructor(length) {
-      this.__history = [];
-      this.__sorted = [];
-      this.__index = 0;
-      this.__length = length;
-    }
-    get median() {
-      return this.percentile(50);
-    }
-    percentile(percentile) {
-      if (this.__history.length === 0) {
-        return 0;
-      }
-      return this.__sorted[Math.round(percentile * 0.01 * (this.__history.length - 1))];
-    }
-    reset() {
-      this.__index = 0;
-      this.__history = [];
-      this.__sorted = [];
-    }
-    push(value) {
-      const prev = this.__history[this.__index];
-      this.__history[this.__index] = value;
-      this.__index = (this.__index + 1) % this.__length;
-      if (this.__sorted.length === this.__length) {
-        const prevIndex = binarySearch(this.__sorted, prev);
-        this.__sorted.splice(prevIndex, 1);
-      }
-      const index = binarySearch(this.__sorted, value);
-      this.__sorted.splice(index, 0, value);
-    }
-  };
-
-  // src/HistoryMeanCalculator/HistoryMedianCalculator.ts
-  var HistoryMedianCalculator = class extends HistoryPercentileCalculator {
-    constructor(length) {
-      super(length);
-      console.warn("HistoryMedianCalculator: Deprecated. Use HistoryPercentileCalculator instead");
-    }
-  };
-
-  // src/MapOfSet/MapOfSet.ts
-  var MapOfSet = class {
-    constructor() {
-      this.map = /* @__PURE__ */ new Map();
-    }
-    get(key) {
-      var _a;
-      return (_a = this.map.get(key)) != null ? _a : /* @__PURE__ */ new Set();
-    }
-    add(key, value) {
-      let set = this.map.get(key);
-      if (set == null) {
-        set = /* @__PURE__ */ new Set();
-        this.map.set(key, set);
-      }
-      set.add(value);
-    }
-  };
-
-  // src/math/vec/vecAbs.ts
-  function vecAbs(vec) {
-    return vec.map((v) => Math.abs(v));
-  }
-
-  // src/math/vec/vecAdd.ts
-  function vecAdd(...vecs) {
-    if (vecs.length < 2) {
-      return vecs[0];
-    }
-    const a = vecs.shift();
-    const b = vecAdd(...vecs);
-    return a.map((v, i) => v + b[i]);
-  }
-
-  // src/math/vec/vecDivide.ts
-  function vecDivide(vecA, vecB) {
-    return vecA.map((v, i) => v / vecB[i]);
-  }
-
-  // src/math/vec/vecLength.ts
-  function vecLength(vec) {
-    return Math.sqrt(vec.reduce((sum, v) => sum + v * v, 0));
-  }
-
-  // src/math/vec/vecLengthSq.ts
-  function vecLengthSq(vec) {
-    return vec.reduce((sum, v) => sum + v * v, 0);
-  }
-
-  // src/math/vec/vecLerp.ts
-  function vecLerp(vecA, vecB, t) {
-    return vecA.map((v, i) => v + (vecB[i] - v) * t);
-  }
-
-  // src/math/vec/vecManhattanLength.ts
-  function vecManhattanLength(vec) {
-    return vec.reduce((sum, v) => sum + Math.abs(v), 0);
-  }
-
-  // src/math/vec/vecMultiply.ts
-  function vecMultiply(...vecs) {
-    if (vecs.length < 2) {
-      return vecs[0];
-    }
-    const a = vecs.shift();
-    const b = vecMultiply(...vecs);
-    return a.map((v, i) => v * b[i]);
-  }
-
-  // src/math/vec/vecNeg.ts
-  function vecNeg(vec) {
-    return vec.map((v) => -v);
+    return array.buffer;
   }
 
   // src/math/vec/vecScale.ts
   function vecScale(vec, scalar) {
     return vec.map((v) => v * scalar);
   }
-
-  // src/math/vec/vecNormalize.ts
-  function vecNormalize(vec) {
-    const len = vecLength(vec);
-    const invLen = len === 0 ? 0 : 1 / len;
-    return vecScale(vec, invLen);
-  }
-
-  // src/math/vec/vecSub.ts
-  function vecSub(vecA, vecB) {
-    return vecA.map((v, i) => v - vecB[i]);
-  }
-
-  // src/math/vec/Vector.ts
-  var Vector = class {
-    get length() {
-      return vecLength(this.elements);
-    }
-    get lengthSq() {
-      return vecLengthSq(this.elements);
-    }
-    get manhattanLength() {
-      return vecManhattanLength(this.elements);
-    }
-    get normalized() {
-      return this.__new(vecNormalize(this.elements));
-    }
-    get negated() {
-      return this.__new(vecNeg(this.elements));
-    }
-    get abs() {
-      return this.__new(vecAbs(this.elements));
-    }
-    clone() {
-      return this.__new(this.elements.concat());
-    }
-    add(...vectors) {
-      return this.__new(vecAdd(this.elements, ...vectors.map((v) => v.elements)));
-    }
-    sub(vector) {
-      return this.__new(vecSub(this.elements, vector.elements));
-    }
-    multiply(...vectors) {
-      return this.__new(vecMultiply(this.elements, ...vectors.map((v) => v.elements)));
-    }
-    divide(vector) {
-      return this.__new(vecDivide(this.elements, vector.elements));
-    }
-    scale(scalar) {
-      return this.__new(vecScale(this.elements, scalar));
-    }
-    lerp(vector, t) {
-      return this.__new(vecLerp(this.elements, vector.elements, t));
-    }
-    dot(vector) {
-      return vecDot(this.elements, vector.elements);
-    }
-  };
-
-  // src/math/vec4/vec4ApplyMatrix4.ts
-  function vec4ApplyMatrix4(v, m) {
-    return [
-      m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12] * v[3],
-      m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13] * v[3],
-      m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14] * v[3],
-      m[3] * v[0] + m[7] * v[1] + m[11] * v[2] + m[15] * v[3]
-    ];
-  }
-
-  // src/math/vec3/vec3ApplyMatrix4.ts
-  function vec3ApplyMatrix4(v, m) {
-    const vec4 = vec4ApplyMatrix4([...v, 1], m);
-    const xyz = [vec4[0], vec4[1], vec4[2]];
-    const w = vec4[3];
-    return vecScale(xyz, 1 / w);
-  }
-
-  // src/math/quat/quatInverse.ts
-  function quatInverse(quat) {
-    return [-quat[0], -quat[1], -quat[2], quat[3]];
-  }
-
-  // src/math/quat/quatMultiply.ts
-  function quatMultiply(...quats) {
-    if (quats.length < 2) {
-      return quats[0];
-    }
-    const a = quats.shift();
-    const b = quatMultiply(...quats);
-    return [
-      a[3] * b[0] + a[0] * b[3] + a[1] * b[2] - a[2] * b[1],
-      a[3] * b[1] - a[0] * b[2] + a[1] * b[3] + a[2] * b[0],
-      a[3] * b[2] + a[0] * b[1] - a[1] * b[0] + a[2] * b[3],
-      a[3] * b[3] - a[0] * b[0] - a[1] * b[1] - a[2] * b[2]
-    ];
-  }
-
-  // src/math/vec3/vec3ApplyQuaternion.ts
-  function vec3ApplyQuaternion(vec, quat) {
-    const p = [...vec, 0];
-    const r = quatInverse(quat);
-    const res = quatMultiply(quat, p, r);
-    res.pop();
-    return res;
-  }
-
-  // src/math/vec3/vec3Cross.ts
-  function vec3Cross(vecA, vecB) {
-    return [
-      vecA[1] * vecB[2] - vecA[2] * vecB[1],
-      vecA[2] * vecB[0] - vecA[0] * vecB[2],
-      vecA[0] * vecB[1] - vecA[1] * vecB[0]
-    ];
-  }
-
-  // src/math/vec3/vec3OrthoNormalize.ts
-  function vec3OrthoNormalize(normal, tangent = [0, 1, 0], binormal) {
-    const n = vecNormalize(normal);
-    let t = vecNormalize(tangent);
-    let dotNT = vecDot(n, t);
-    if (dotNT === 1) {
-      if (Math.abs(n[1]) > Math.abs(n[2])) {
-        t = [0, 0, 1];
-      } else {
-        t = [0, 1, 0];
-      }
-      dotNT = vecDot(n, t);
-    }
-    t = vecNormalize(vecSub(t, vecScale(n, dotNT)));
-    let b = vec3Cross(t, n);
-    if (binormal && vecDot(b, binormal) < 0) {
-      b = vecNeg(b);
-    }
-    return {
-      normal: n,
-      tangent: t,
-      binormal: b
-    };
-  }
-
-  // src/math/vec3/Vector3.ts
-  var Vector3 = class extends Vector {
-    constructor(v = [0, 0, 0]) {
-      super();
-      this.elements = v;
-    }
-    get x() {
-      return this.elements[0];
-    }
-    set x(x) {
-      this.elements[0] = x;
-    }
-    get y() {
-      return this.elements[1];
-    }
-    set y(y) {
-      this.elements[1] = y;
-    }
-    get z() {
-      return this.elements[2];
-    }
-    set z(z) {
-      this.elements[2] = z;
-    }
-    toString() {
-      return `Vector3( ${this.x.toFixed(3)}, ${this.y.toFixed(3)}, ${this.z.toFixed(3)} )`;
-    }
-    cross(vector) {
-      return new Vector3(vec3Cross(this.elements, vector.elements));
-    }
-    applyQuaternion(quaternion) {
-      return new Vector3(vec3ApplyQuaternion(this.elements, quaternion.elements));
-    }
-    applyMatrix4(matrix) {
-      return new Vector3(vec3ApplyMatrix4(this.elements, matrix.elements));
-    }
-    __new(v) {
-      return new Vector3(v);
-    }
-    static get zero() {
-      return new Vector3([0, 0, 0]);
-    }
-    static get px() {
-      return new Vector3([1, 0, 0]);
-    }
-    static get nx() {
-      return new Vector3([-1, 0, 0]);
-    }
-    static get py() {
-      return new Vector3([0, 1, 0]);
-    }
-    static get ny() {
-      return new Vector3([0, -1, 0]);
-    }
-    static get pz() {
-      return new Vector3([0, 0, 1]);
-    }
-    static get nz() {
-      return new Vector3([0, 0, -1]);
-    }
-    static get one() {
-      return new Vector3([1, 1, 1]);
-    }
-    static orthoNormalize(normal, tangent, binormal) {
-      const result = vec3OrthoNormalize(normal.elements, tangent.elements, binormal.elements);
-      return {
-        normal: new Vector3(result.normal),
-        tangent: new Vector3(result.tangent),
-        binormal: new Vector3(result.binormal)
-      };
-    }
-  };
-
-  // src/math/box3/box3ContainsPoint.ts
-  function box3ContainsPoint(box, point) {
-    return box[0][0] <= point[0] && box[1][0] >= point[0] && box[0][1] <= point[1] && box[1][1] >= point[1] && box[0][2] <= point[2] && box[1][2] >= point[2];
-  }
-
-  // src/math/box3/Box3.ts
-  var Box3 = class {
-    constructor(min = Vector3.zero, max = Vector3.zero) {
-      this.min = min;
-      this.max = max;
-    }
-    get raw() {
-      return [this.min.elements, this.max.elements];
-    }
-    containsPoint(point) {
-      return box3ContainsPoint(this.raw, point.elements);
-    }
-    static fromRaw(box) {
-      return new Box3(new Vector3(box[0]), new Vector3(box[1]));
-    }
-  };
 
   // src/math/mat3/mat3FromMat4Transpose.ts
   function mat3FromMat4Transpose(source) {
@@ -1418,53 +1275,38 @@ var OBSVR_EXPERIMENTAL = (() => {
     ];
   }
 
-  // src/math/mat4/mat4Determinant.ts
-  function mat4Determinant(m) {
-    const a00 = m[0], a01 = m[1], a02 = m[2], a03 = m[3], a10 = m[4], a11 = m[5], a12 = m[6], a13 = m[7], a20 = m[8], a21 = m[9], a22 = m[10], a23 = m[11], a30 = m[12], a31 = m[13], a32 = m[14], a33 = m[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
-    return b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
-  }
-
   // src/math/quat/quatFromMatrix3.ts
   function quatFromMatrix3(m) {
     const m11 = m[0], m12 = m[3], m13 = m[6], m21 = m[1], m22 = m[4], m23 = m[7], m31 = m[2], m32 = m[5], m33 = m[8], trace = m11 + m22 + m33;
     if (trace > 0) {
       const s = 0.5 / Math.sqrt(trace + 1);
-      return [
-        (m32 - m23) * s,
-        (m13 - m31) * s,
-        (m21 - m12) * s,
-        0.25 / s
-      ];
+      return [(m32 - m23) * s, (m13 - m31) * s, (m21 - m12) * s, 0.25 / s];
     } else if (m11 > m22 && m11 > m33) {
       const s = 2 * Math.sqrt(1 + m11 - m22 - m33);
-      return [
-        0.25 * s,
-        (m12 + m21) / s,
-        (m13 + m31) / s,
-        (m32 - m23) / s
-      ];
+      return [0.25 * s, (m12 + m21) / s, (m13 + m31) / s, (m32 - m23) / s];
     } else if (m22 > m33) {
       const s = 2 * Math.sqrt(1 + m22 - m11 - m33);
-      return [
-        (m12 + m21) / s,
-        0.25 * s,
-        (m23 + m32) / s,
-        (m13 - m31) / s
-      ];
+      return [(m12 + m21) / s, 0.25 * s, (m23 + m32) / s, (m13 - m31) / s];
     } else {
       const s = 2 * Math.sqrt(1 + m33 - m11 - m22);
-      return [
-        (m13 + m31) / s,
-        (m23 + m32) / s,
-        0.25 * s,
-        (m21 - m12) / s
-      ];
+      return [(m13 + m31) / s, (m23 + m32) / s, 0.25 * s, (m21 - m12) / s];
     }
   }
 
   // src/math/quat/quatFromMatrix4.ts
   function quatFromMatrix4(m) {
     return quatFromMatrix3(mat3FromMat4(m));
+  }
+
+  // src/math/vec/vecLength.ts
+  function vecLength(vec) {
+    return Math.sqrt(vec.reduce((sum, v) => sum + v * v, 0));
+  }
+
+  // src/math/mat4/mat4Determinant.ts
+  function mat4Determinant(m) {
+    const a00 = m[0], a01 = m[1], a02 = m[2], a03 = m[3], a10 = m[4], a11 = m[5], a12 = m[6], a13 = m[7], a20 = m[8], a21 = m[9], a22 = m[10], a23 = m[11], a30 = m[12], a31 = m[13], a32 = m[14], a33 = m[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
+    return b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
   }
 
   // src/math/mat4/mat4Decompose.ts
@@ -1543,6 +1385,37 @@ var OBSVR_EXPERIMENTAL = (() => {
       a31 * b01 - a30 * b03 - a32 * b00,
       a20 * b03 - a21 * b01 + a22 * b00
     ], 1 / det);
+  }
+
+  // src/math/vec/vecAdd.ts
+  function vecAdd(...vecs) {
+    if (vecs.length < 2) {
+      return vecs[0];
+    }
+    const a = vecs.shift();
+    const b = vecAdd(...vecs);
+    return a.map((v, i) => v + b[i]);
+  }
+
+  // src/math/vec/vecNormalize.ts
+  function vecNormalize(vec) {
+    const len = vecLength(vec);
+    const invLen = len === 0 ? 0 : 1 / len;
+    return vecScale(vec, invLen);
+  }
+
+  // src/math/vec/vecSub.ts
+  function vecSub(vecA, vecB) {
+    return vecA.map((v, i) => v - vecB[i]);
+  }
+
+  // src/math/vec3/vec3Cross.ts
+  function vec3Cross(vecA, vecB) {
+    return [
+      vecA[1] * vecB[2] - vecA[2] * vecB[1],
+      vecA[2] * vecB[0] - vecA[0] * vecB[2],
+      vecA[0] * vecB[1] - vecA[1] * vecB[0]
+    ];
   }
 
   // src/math/mat4/mat4LookAt.ts
@@ -1657,138 +1530,36 @@ var OBSVR_EXPERIMENTAL = (() => {
   function mat4RotationX(theta) {
     const c = Math.cos(theta);
     const s = Math.sin(theta);
-    return [
-      1,
-      0,
-      0,
-      0,
-      0,
-      c,
-      -s,
-      0,
-      0,
-      s,
-      c,
-      0,
-      0,
-      0,
-      0,
-      1
-    ];
+    return [1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1];
   }
 
   // src/math/mat4/mat4RotationY.ts
   function mat4RotationY(theta) {
     const c = Math.cos(theta);
     const s = Math.sin(theta);
-    return [
-      c,
-      0,
-      s,
-      0,
-      0,
-      1,
-      0,
-      0,
-      -s,
-      0,
-      c,
-      0,
-      0,
-      0,
-      0,
-      1
-    ];
+    return [c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1];
   }
 
   // src/math/mat4/mat4RotationZ.ts
   function mat4RotationZ(theta) {
     const c = Math.cos(theta);
     const s = Math.sin(theta);
-    return [
-      c,
-      -s,
-      0,
-      0,
-      s,
-      c,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1
-    ];
+    return [c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
   }
 
   // src/math/mat4/mat4Scale.ts
   function mat4Scale(vec) {
-    return [
-      vec[0],
-      0,
-      0,
-      0,
-      0,
-      vec[1],
-      0,
-      0,
-      0,
-      0,
-      vec[2],
-      0,
-      0,
-      0,
-      0,
-      1
-    ];
+    return [vec[0], 0, 0, 0, 0, vec[1], 0, 0, 0, 0, vec[2], 0, 0, 0, 0, 1];
   }
 
   // src/math/mat4/mat4ScaleScalar.ts
   function mat4ScaleScalar(scalar) {
-    return [
-      scalar,
-      0,
-      0,
-      0,
-      0,
-      scalar,
-      0,
-      0,
-      0,
-      0,
-      scalar,
-      0,
-      0,
-      0,
-      0,
-      1
-    ];
+    return [scalar, 0, 0, 0, 0, scalar, 0, 0, 0, 0, scalar, 0, 0, 0, 0, 1];
   }
 
   // src/math/mat4/mat4Translate.ts
   function mat4Translate(vec) {
-    return [
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      vec[0],
-      vec[1],
-      vec[2],
-      1
-    ];
+    return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec[0], vec[1], vec[2], 1];
   }
 
   // src/math/mat4/mat4Transpose.ts
@@ -1920,6 +1691,104 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
   };
 
+  // src/math/vec/vecLengthSq.ts
+  function vecLengthSq(vec) {
+    return vec.reduce((sum, v) => sum + v * v, 0);
+  }
+
+  // src/math/vec/vecAbs.ts
+  function vecAbs(vec) {
+    return vec.map((v) => Math.abs(v));
+  }
+
+  // src/math/vec/vecDivide.ts
+  function vecDivide(vecA, vecB) {
+    return vecA.map((v, i) => v / vecB[i]);
+  }
+
+  // src/math/vec/vecLerp.ts
+  function vecLerp(vecA, vecB, t) {
+    return vecA.map((v, i) => v + (vecB[i] - v) * t);
+  }
+
+  // src/math/vec/vecManhattanLength.ts
+  function vecManhattanLength(vec) {
+    return vec.reduce((sum, v) => sum + Math.abs(v), 0);
+  }
+
+  // src/math/vec/vecMultiply.ts
+  function vecMultiply(...vecs) {
+    if (vecs.length < 2) {
+      return vecs[0];
+    }
+    const a = vecs.shift();
+    const b = vecMultiply(...vecs);
+    return a.map((v, i) => v * b[i]);
+  }
+
+  // src/math/vec/vecNeg.ts
+  function vecNeg(vec) {
+    return vec.map((v) => -v);
+  }
+
+  // src/math/vec/Vector.ts
+  var Vector = class {
+    get length() {
+      return vecLength(this.elements);
+    }
+    get lengthSq() {
+      return vecLengthSq(this.elements);
+    }
+    get manhattanLength() {
+      return vecManhattanLength(this.elements);
+    }
+    get normalized() {
+      return this.__new(vecNormalize(this.elements));
+    }
+    get negated() {
+      return this.__new(vecNeg(this.elements));
+    }
+    get abs() {
+      return this.__new(vecAbs(this.elements));
+    }
+    clone() {
+      return this.__new(this.elements.concat());
+    }
+    add(...vectors) {
+      return this.__new(vecAdd(this.elements, ...vectors.map((v) => v.elements)));
+    }
+    sub(vector) {
+      return this.__new(vecSub(this.elements, vector.elements));
+    }
+    multiply(...vectors) {
+      return this.__new(vecMultiply(this.elements, ...vectors.map((v) => v.elements)));
+    }
+    divide(vector) {
+      return this.__new(vecDivide(this.elements, vector.elements));
+    }
+    scale(scalar) {
+      return this.__new(vecScale(this.elements, scalar));
+    }
+    lerp(vector, t) {
+      return this.__new(vecLerp(this.elements, vector.elements, t));
+    }
+    dot(vector) {
+      return vecDot(this.elements, vector.elements);
+    }
+  };
+
+  // src/math/quat/quatExp.ts
+  var EPSILON = 1e-6;
+  function quatExp(quat) {
+    const [x, y, z, w] = quat;
+    const v = [x, y, z];
+    const vl = vecLength(v);
+    if (vl < EPSILON) {
+      return [0, 0, 0, Math.exp(w)];
+    }
+    return vecScale([...vecScale(v, Math.sin(vl) / vl), Math.cos(vl)], Math.exp(w));
+  }
+
   // src/math/quat/quatFromAxisAngle.ts
   function quatFromAxisAngle(axis, angle) {
     const halfAngle = angle / 2;
@@ -1932,6 +1801,61 @@ var OBSVR_EXPERIMENTAL = (() => {
     ];
   }
 
+  // src/math/quat/quatInverse.ts
+  function quatInverse(quat) {
+    return [-quat[0], -quat[1], -quat[2], quat[3]];
+  }
+
+  // src/math/quat/quatLog.ts
+  var EPSILON2 = 1e-6;
+  function quatLog(quat) {
+    const [x, y, z, w] = quat;
+    const v = [x, y, z];
+    const ql = vecLength(quat);
+    const vl = vecLength(v);
+    if (vl < EPSILON2) {
+      return [0, 0, 0, Math.log(ql)];
+    }
+    return [...vecScale(v, Math.acos(w / ql) / vl), Math.log(ql)];
+  }
+
+  // src/math/quat/quatLogVec3.ts
+  var EPSILON3 = 1e-6;
+  function quatLogVec3(quat) {
+    const [x, y, z, w] = quat;
+    const v = [x, y, z];
+    const vl = vecLength(v);
+    if (vl < EPSILON3) {
+      return [0, 0, 0];
+    }
+    return vecScale(v, Math.acos(w) / vl);
+  }
+
+  // src/math/vec3/vec3OrthoNormalize.ts
+  function vec3OrthoNormalize(normal, tangent = [0, 1, 0], binormal) {
+    const n = vecNormalize(normal);
+    let t = vecNormalize(tangent);
+    let dotNT = vecDot(n, t);
+    if (dotNT === 1) {
+      if (Math.abs(n[1]) > Math.abs(n[2])) {
+        t = [0, 0, 1];
+      } else {
+        t = [0, 1, 0];
+      }
+      dotNT = vecDot(n, t);
+    }
+    t = vecNormalize(vecSub(t, vecScale(n, dotNT)));
+    let b = vec3Cross(t, n);
+    if (binormal && vecDot(b, binormal) < 0) {
+      b = vecNeg(b);
+    }
+    return {
+      normal: n,
+      tangent: t,
+      binormal: b
+    };
+  }
+
   // src/math/quat/quatLookRotation.ts
   function quatLookRotation(look, up) {
     const { normal, tangent, binormal } = vec3OrthoNormalize(look, up != null ? up : [0, 1, 0]);
@@ -1942,6 +1866,21 @@ var OBSVR_EXPERIMENTAL = (() => {
       (normal[0] - binormal[2]) * invW4,
       (binormal[1] - tangent[0]) * invW4,
       w
+    ];
+  }
+
+  // src/math/quat/quatMultiply.ts
+  function quatMultiply(...quats) {
+    if (quats.length < 2) {
+      return quats[0];
+    }
+    const a = quats.shift();
+    const b = quatMultiply(...quats);
+    return [
+      a[3] * b[0] + a[0] * b[3] + a[1] * b[2] - a[2] * b[1],
+      a[3] * b[1] - a[0] * b[2] + a[1] * b[3] + a[2] * b[0],
+      a[3] * b[2] + a[0] * b[1] - a[1] * b[0] + a[2] * b[3],
+      a[3] * b[3] - a[0] * b[0] - a[1] * b[1] - a[2] * b[2]
     ];
   }
 
@@ -2046,6 +1985,15 @@ var OBSVR_EXPERIMENTAL = (() => {
     get normalized() {
       return new Quaternion(quatNormalize(this.elements));
     }
+    get exp() {
+      return new Quaternion(quatExp(this.elements));
+    }
+    get log() {
+      return new Quaternion(quatLog(this.elements));
+    }
+    get logVec3() {
+      return new Vector3(quatLogVec3(this.elements));
+    }
     multiply(...quaternions) {
       return Quaternion.multiply(this, ...quaternions);
     }
@@ -2085,6 +2033,160 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
   };
 
+  // src/math/vec4/vec4ApplyMatrix4.ts
+  function vec4ApplyMatrix4(v, m) {
+    return [
+      m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12] * v[3],
+      m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13] * v[3],
+      m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14] * v[3],
+      m[3] * v[0] + m[7] * v[1] + m[11] * v[2] + m[15] * v[3]
+    ];
+  }
+
+  // src/math/vec3/vec3ApplyMatrix4.ts
+  function vec3ApplyMatrix4(v, m) {
+    const vec4 = vec4ApplyMatrix4([...v, 1], m);
+    const xyz = [vec4[0], vec4[1], vec4[2]];
+    const w = vec4[3];
+    return vecScale(xyz, 1 / w);
+  }
+
+  // src/math/vec3/vec3ApplyQuaternion.ts
+  function vec3ApplyQuaternion(vec, quat) {
+    const p = [...vec, 0];
+    const r = quatInverse(quat);
+    const res = quatMultiply(quat, p, r);
+    res.pop();
+    return res;
+  }
+
+  // src/math/vec3/vec3QuatExp.ts
+  var EPSILON4 = 1e-6;
+  function vec3QuatExp(v) {
+    const vl = vecLength(v);
+    if (vl < EPSILON4) {
+      return [0, 0, 0, 1];
+    }
+    return [...vecScale(v, Math.sin(vl) / vl), Math.cos(vl)];
+  }
+
+  // src/math/vec3/Vector3.ts
+  var Vector3 = class extends Vector {
+    constructor(v = [0, 0, 0]) {
+      super();
+      this.elements = v;
+    }
+    get x() {
+      return this.elements[0];
+    }
+    set x(x) {
+      this.elements[0] = x;
+    }
+    get y() {
+      return this.elements[1];
+    }
+    set y(y) {
+      this.elements[1] = y;
+    }
+    get z() {
+      return this.elements[2];
+    }
+    set z(z) {
+      this.elements[2] = z;
+    }
+    toString() {
+      return `Vector3( ${this.x.toFixed(3)}, ${this.y.toFixed(3)}, ${this.z.toFixed(3)} )`;
+    }
+    cross(vector) {
+      return new Vector3(vec3Cross(this.elements, vector.elements));
+    }
+    applyQuaternion(quaternion) {
+      return new Vector3(vec3ApplyQuaternion(this.elements, quaternion.elements));
+    }
+    applyMatrix4(matrix) {
+      return new Vector3(vec3ApplyMatrix4(this.elements, matrix.elements));
+    }
+    get quatExp() {
+      return new Quaternion(vec3QuatExp(this.elements));
+    }
+    __new(v) {
+      return new Vector3(v);
+    }
+    static get zero() {
+      return new Vector3([0, 0, 0]);
+    }
+    static get px() {
+      return new Vector3([1, 0, 0]);
+    }
+    static get nx() {
+      return new Vector3([-1, 0, 0]);
+    }
+    static get py() {
+      return new Vector3([0, 1, 0]);
+    }
+    static get ny() {
+      return new Vector3([0, -1, 0]);
+    }
+    static get pz() {
+      return new Vector3([0, 0, 1]);
+    }
+    static get nz() {
+      return new Vector3([0, 0, -1]);
+    }
+    static get one() {
+      return new Vector3([1, 1, 1]);
+    }
+    static orthoNormalize(normal, tangent, binormal) {
+      const result = vec3OrthoNormalize(normal.elements, tangent.elements, binormal.elements);
+      return {
+        normal: new Vector3(result.normal),
+        tangent: new Vector3(result.tangent),
+        binormal: new Vector3(result.binormal)
+      };
+    }
+  };
+
+  // src/math/box3/box3ContainsPoint.ts
+  function box3ContainsPoint(box, point) {
+    return box[0][0] <= point[0] && box[1][0] >= point[0] && box[0][1] <= point[1] && box[1][1] >= point[1] && box[0][2] <= point[2] && box[1][2] >= point[2];
+  }
+
+  // src/math/box3/Box3.ts
+  var Box3 = class {
+    constructor(min = Vector3.zero, max = Vector3.zero) {
+      this.min = min;
+      this.max = max;
+    }
+    get raw() {
+      return [this.min.elements, this.max.elements];
+    }
+    containsPoint(point) {
+      return box3ContainsPoint(this.raw, point.elements);
+    }
+    static fromRaw(box) {
+      return new Box3(new Vector3(box[0]), new Vector3(box[1]));
+    }
+  };
+
+  // src/math/quat/quatFromEuler.ts
+  function quatFromEuler(euler, order) {
+    const [i, j, k, sign] = !order || order === "XYZ" ? [0, 1, 2, 1] : order === "XZY" ? [0, 2, 1, -1] : order === "YXZ" ? [1, 0, 2, -1] : order === "YZX" ? [1, 2, 0, 1] : order === "ZXY" ? [2, 0, 1, 1] : [2, 1, 0, -1];
+    const ti = 0.5 * euler[i];
+    const tj = 0.5 * sign * euler[j];
+    const tk = 0.5 * euler[k];
+    const ci = Math.cos(ti);
+    const cj = Math.cos(tj);
+    const ck = Math.cos(tk);
+    const si = Math.sin(ti);
+    const sj = Math.sin(tj);
+    const sk = Math.sin(tk);
+    const result = [0, 0, 0, ck * cj * ci + sk * sj * si];
+    result[i] = ck * cj * si - sk * sj * ci;
+    result[j] = sign * (ck * sj * ci + sk * cj * si);
+    result[k] = sk * cj * ci - ck * sj * si;
+    return result;
+  }
+
   // src/math/mod.ts
   function mod(value, divisor) {
     return value - Math.floor(value / divisor) * divisor;
@@ -2123,30 +2225,6 @@ var OBSVR_EXPERIMENTAL = (() => {
   // src/math/euler/eulerFromQuaternion.ts
   function eulerFromQuaternion(m, order) {
     return eulerFromMat3(mat3FromQuaternion(m), order);
-  }
-
-  // src/math/quat/quatFromEuler.ts
-  function quatFromEuler(euler, order) {
-    const [i, j, k, sign] = !order || order === "XYZ" ? [0, 1, 2, 1] : order === "XZY" ? [0, 2, 1, -1] : order === "YXZ" ? [1, 0, 2, -1] : order === "YZX" ? [1, 2, 0, 1] : order === "ZXY" ? [2, 0, 1, 1] : [2, 1, 0, -1];
-    const ti = 0.5 * euler[i];
-    const tj = 0.5 * sign * euler[j];
-    const tk = 0.5 * euler[k];
-    const ci = Math.cos(ti);
-    const cj = Math.cos(tj);
-    const ck = Math.cos(tk);
-    const si = Math.sin(ti);
-    const sj = Math.sin(tj);
-    const sk = Math.sin(tk);
-    const result = [
-      0,
-      0,
-      0,
-      ck * cj * ci + sk * sj * si
-    ];
-    result[i] = ck * cj * si - sk * sj * ci;
-    result[j] = sign * (ck * sj * ci + sk * cj * si);
-    result[k] = sk * cj * ci - ck * sj * si;
-    return result;
   }
 
   // src/math/euler/Euler.ts
@@ -2207,10 +2285,7 @@ var OBSVR_EXPERIMENTAL = (() => {
 
   // src/math/ray3/ray3FromLine3.ts
   function ray3FromLine3(line) {
-    return [
-      line[0],
-      vecNormalize(line3Delta(line))
-    ];
+    return [line[0], vecNormalize(line3Delta(line))];
   }
 
   // src/math/ray3/Ray3.ts
@@ -2235,10 +2310,7 @@ var OBSVR_EXPERIMENTAL = (() => {
 
   // src/math/line3/line3ApplyMatrix4.ts
   function line3ApplyMatrix4([start, end], matrix) {
-    return [
-      vec3ApplyMatrix4(start, matrix),
-      vec3ApplyMatrix4(end, matrix)
-    ];
+    return [vec3ApplyMatrix4(start, matrix), vec3ApplyMatrix4(end, matrix)];
   }
 
   // src/math/line3/line3At.ts
@@ -2306,12 +2378,7 @@ var OBSVR_EXPERIMENTAL = (() => {
     if (det === 0) {
       return vecScale(m, 0);
     }
-    return vecScale([
-      n22,
-      -n21,
-      -n12,
-      n11
-    ], 1 / det);
+    return vecScale([n22, -n21, -n12, n11], 1 / det);
   }
 
   // src/math/mat2/mat2Multiply.ts
@@ -2332,21 +2399,11 @@ var OBSVR_EXPERIMENTAL = (() => {
 
   // src/math/mat2/mat2Transpose.ts
   function mat2Transpose(source) {
-    return [
-      source[0],
-      source[2],
-      source[1],
-      source[3]
-    ];
+    return [source[0], source[2], source[1], source[3]];
   }
 
   // src/math/mat2/Matrix2.ts
-  var rawIdentityMatrix2 = [
-    1,
-    0,
-    0,
-    1
-  ];
+  var rawIdentityMatrix2 = [1, 0, 0, 1];
   var Matrix2 = class {
     constructor(v = rawIdentityMatrix2) {
       this.elements = v;
@@ -2589,6 +2646,219 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
   };
 
+  // src/float32ArrayToWav.ts
+  function float32ArrayToWav(src, sampleRate) {
+    const int16Src = new Array(src.length);
+    for (let iCh = 0; iCh < src.length; iCh++) {
+      const channel = src[iCh];
+      const out = new Int16Array(channel.length);
+      for (let i = 0; i < channel.length; i++) {
+        const x = channel[i];
+        out[i] = clamp(x * 32767, -32767, 32767);
+      }
+      int16Src[iCh] = out;
+    }
+    return int16ArrayToWav(int16Src, sampleRate);
+  }
+
+  // src/Pool/Pool.ts
+  var Pool = class {
+    constructor(array) {
+      this.index = 0;
+      this.array = array;
+    }
+    get current() {
+      return this.array[this.index];
+    }
+    next() {
+      this.index = (this.index + 1) % this.array.length;
+      return this.current;
+    }
+  };
+
+  // src/GPUTimer/GPUTimer.ts
+  var GPUTimer = class {
+    static isSupported(gl) {
+      return new Set(gl.getSupportedExtensions()).has("EXT_disjoint_timer_query_webgl2");
+    }
+    constructor(gl) {
+      this.gl = gl;
+      const queries = new Array(1024).fill(1).map(() => gl.createQuery());
+      this.queries = new Pool(queries);
+      this.stack = [];
+      const ext = gl.getExtension("EXT_disjoint_timer_query_webgl2");
+      if (!ext) {
+        throw new Error("EXT_disjoint_timer_query_webgl2 is not supported");
+      }
+      this.ext = ext;
+      this.__loopTasks = /* @__PURE__ */ new Set();
+      const update = () => {
+        this.update();
+        requestAnimationFrame(update);
+      };
+      update();
+    }
+    update() {
+      Array.from(this.__loopTasks).forEach((task) => task());
+    }
+    measure(func) {
+      return __async(this, null, function* () {
+        const { gl } = this;
+        if (this.stack.length !== 0) {
+          gl.endQuery(this.ext.TIME_ELAPSED_EXT);
+          const promiseFinishingPrev = this.check(this.queries.current);
+          this.stack = this.stack.map((promiseAccum2) => __async(this, null, function* () {
+            return (yield promiseAccum2) + (yield promiseFinishingPrev);
+          }));
+        }
+        this.stack.push(Promise.resolve(0));
+        gl.beginQuery(this.ext.TIME_ELAPSED_EXT, this.queries.next());
+        func();
+        gl.endQuery(this.ext.TIME_ELAPSED_EXT);
+        const promiseAccum = this.stack.pop();
+        const promiseThis = this.check(this.queries.current);
+        if (this.stack.length !== 0) {
+          this.stack = this.stack.map((promiseAccum2) => __async(this, null, function* () {
+            return (yield promiseAccum2) + (yield promiseThis);
+          }));
+          gl.beginQuery(this.ext.TIME_ELAPSED_EXT, this.queries.next());
+        }
+        return (yield promiseAccum) + (yield promiseThis);
+      });
+    }
+    check(query) {
+      const { gl } = this;
+      return new Promise((resolve) => {
+        const task = () => {
+          const isAvailable = gl.getQueryParameter(query, gl.QUERY_RESULT_AVAILABLE);
+          if (isAvailable) {
+            this.__loopTasks.delete(task);
+            resolve(gl.getQueryParameter(query, gl.QUERY_RESULT) * 1e-3 * 1e-3);
+          }
+        };
+        this.__loopTasks.add(task);
+      });
+    }
+  };
+
+  // src/HistoryMeanCalculator/HistoryMeanCalculator.ts
+  var HistoryMeanCalculator = class {
+    constructor(length) {
+      this.__recalcForEach = 0;
+      this.__countUntilRecalc = 0;
+      this.__history = [];
+      this.__index = 0;
+      this.__count = 0;
+      this.__cache = 0;
+      this.__length = length;
+      this.__recalcForEach = length;
+      for (let i = 0; i < length; i++) {
+        this.__history[i] = 0;
+      }
+    }
+    get mean() {
+      const count = Math.min(this.__count, this.__length);
+      return count === 0 ? 0 : this.__cache / count;
+    }
+    get recalcForEach() {
+      return this.__recalcForEach;
+    }
+    set recalcForEach(value) {
+      const delta = value - this.__recalcForEach;
+      this.__recalcForEach = value;
+      this.__countUntilRecalc = Math.max(0, this.__countUntilRecalc + delta);
+    }
+    reset() {
+      this.__index = 0;
+      this.__count = 0;
+      this.__cache = 0;
+      this.__countUntilRecalc = 0;
+      for (let i = 0; i < this.__length; i++) {
+        this.__history[i] = 0;
+      }
+    }
+    push(value) {
+      const prev = this.__history[this.__index];
+      this.__history[this.__index] = value;
+      this.__count++;
+      this.__index = (this.__index + 1) % this.__length;
+      if (this.__countUntilRecalc === 0) {
+        this.recalc();
+      } else {
+        this.__countUntilRecalc--;
+        this.__cache -= prev;
+        this.__cache += value;
+      }
+    }
+    recalc() {
+      this.__countUntilRecalc = this.__recalcForEach;
+      const sum = this.__history.slice(0, Math.min(this.__count, this.__length)).reduce((sum2, v) => sum2 + v, 0);
+      this.__cache = sum;
+    }
+  };
+
+  // src/HistoryMeanCalculator/HistoryPercentileCalculator.ts
+  var HistoryPercentileCalculator = class {
+    constructor(length) {
+      this.__history = [];
+      this.__sorted = [];
+      this.__index = 0;
+      this.__length = length;
+    }
+    get median() {
+      return this.percentile(50);
+    }
+    percentile(percentile) {
+      if (this.__history.length === 0) {
+        return 0;
+      }
+      return this.__sorted[Math.round(percentile * 0.01 * (this.__history.length - 1))];
+    }
+    reset() {
+      this.__index = 0;
+      this.__history = [];
+      this.__sorted = [];
+    }
+    push(value) {
+      const prev = this.__history[this.__index];
+      this.__history[this.__index] = value;
+      this.__index = (this.__index + 1) % this.__length;
+      if (this.__sorted.length === this.__length) {
+        const prevIndex = binarySearch(this.__sorted, prev);
+        this.__sorted.splice(prevIndex, 1);
+      }
+      const index = binarySearch(this.__sorted, value);
+      this.__sorted.splice(index, 0, value);
+    }
+  };
+
+  // src/HistoryMeanCalculator/HistoryMedianCalculator.ts
+  var HistoryMedianCalculator = class extends HistoryPercentileCalculator {
+    constructor(length) {
+      super(length);
+      console.warn("HistoryMedianCalculator: Deprecated. Use HistoryPercentileCalculator instead");
+    }
+  };
+
+  // src/MapOfSet/MapOfSet.ts
+  var MapOfSet = class {
+    constructor() {
+      this.map = /* @__PURE__ */ new Map();
+    }
+    get(key) {
+      var _a;
+      return (_a = this.map.get(key)) != null ? _a : /* @__PURE__ */ new Set();
+    }
+    add(key, value) {
+      let set = this.map.get(key);
+      if (set == null) {
+        set = /* @__PURE__ */ new Set();
+        this.map.set(key, set);
+      }
+      set.add(value);
+    }
+  };
+
   // src/midi/midiParse.ts
   function readU8(array, headBox) {
     return array[headBox[0]++];
@@ -2662,6 +2932,13 @@ var OBSVR_EXPERIMENTAL = (() => {
     return [header, tracks];
   }
 
+  // src/notifyObservers.ts
+  function notifyObservers(observers, param) {
+    for (const observer of observers) {
+      observer(param);
+    }
+  }
+
   // src/poker/pokerRanksByStrength.ts
   var pokerRanksByStrength = [
     "2",
@@ -2680,12 +2957,7 @@ var OBSVR_EXPERIMENTAL = (() => {
   ];
 
   // src/poker/pokerSuitsByIndex.ts
-  var pokerSuitsByIndex = [
-    "c",
-    "d",
-    "h",
-    "s"
-  ];
+  var pokerSuitsByIndex = ["c", "d", "h", "s"];
 
   // src/poker/createPokerDeck.ts
   function createPokerDeck() {
@@ -2696,15 +2968,15 @@ var OBSVR_EXPERIMENTAL = (() => {
 
   // src/poker/pokerHandStrengthMap.ts
   var pokerHandStrengthMap = {
-    "HighCard": 0,
-    "OnePair": 1,
-    "TwoPair": 2,
-    "ThreeOfAKind": 3,
-    "Straight": 4,
-    "Flush": 5,
-    "FullHouse": 6,
-    "FourOfAKind": 7,
-    "StraightFlush": 8
+    HighCard: 0,
+    OnePair: 1,
+    TwoPair: 2,
+    ThreeOfAKind: 3,
+    Straight: 4,
+    Flush: 5,
+    FullHouse: 6,
+    FourOfAKind: 7,
+    StraightFlush: 8
   };
 
   // src/poker/pokerRankStrengthMap.ts
@@ -2717,19 +2989,19 @@ var OBSVR_EXPERIMENTAL = (() => {
     "7": 5,
     "8": 6,
     "9": 7,
-    "T": 8,
-    "J": 9,
-    "Q": 10,
-    "K": 11,
-    "A": 12
+    T: 8,
+    J: 9,
+    Q: 10,
+    K: 11,
+    A: 12
   };
 
   // src/poker/pokerSuitIndexMap.ts
   var pokerSuitIndexMap = {
-    "c": 0,
-    "d": 1,
-    "h": 2,
-    "s": 3
+    c: 0,
+    d: 1,
+    h: 2,
+    s: 3
   };
 
   // src/poker/sortPokerCardsByRank.ts
@@ -2971,7 +3243,7 @@ var OBSVR_EXPERIMENTAL = (() => {
 
   // src/poker/pokerCardToUnicode.ts
   var rankMap = {
-    "A": 1,
+    A: 1,
     "2": 2,
     "3": 3,
     "4": 4,
@@ -2980,16 +3252,16 @@ var OBSVR_EXPERIMENTAL = (() => {
     "7": 7,
     "8": 8,
     "9": 9,
-    "T": 10,
-    "J": 11,
-    "Q": 13,
-    "K": 14
+    T: 10,
+    J: 11,
+    Q: 13,
+    K: 14
   };
   var suitMap = {
-    "s": 0,
-    "h": 16,
-    "d": 32,
-    "c": 48
+    s: 0,
+    h: 16,
+    d: 32,
+    c: 48
   };
   function pokerCardToUnicode(card) {
     const rank = card[0];
@@ -3033,6 +3305,39 @@ var OBSVR_EXPERIMENTAL = (() => {
       return retry(func, n - 1);
     }
   }
+
+  // src/SmoothDamp/SmoothDamp.ts
+  var SmoothDamp = class {
+    constructor() {
+      this.smoothTime = 1;
+      this.velocity = 0;
+      this.value = 0;
+      this.target = 0;
+    }
+    update(deltaTime) {
+      const omega = 2 / this.smoothTime;
+      const x = omega * deltaTime;
+      const exp = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
+      const delta = this.value - this.target;
+      const temp = (this.velocity + omega * delta) * deltaTime;
+      this.velocity = (this.velocity - omega * temp) * exp;
+      this.value = this.target + (delta + temp) * exp;
+      return this.value;
+    }
+  };
+
+  // src/Swap/Swap.ts
+  var Swap = class {
+    constructor(a, b) {
+      this.i = a;
+      this.o = b;
+    }
+    swap() {
+      const i = this.i;
+      this.i = this.o;
+      this.o = i;
+    }
+  };
 
   // src/stniccc/parseSTNICCC.ts
   function parseSTNICCC(buffer) {
@@ -3186,39 +3491,6 @@ var OBSVR_EXPERIMENTAL = (() => {
     return svg;
   }
 
-  // src/SmoothDamp/SmoothDamp.ts
-  var SmoothDamp = class {
-    constructor() {
-      this.smoothTime = 1;
-      this.velocity = 0;
-      this.value = 0;
-      this.target = 0;
-    }
-    update(deltaTime) {
-      const omega = 2 / this.smoothTime;
-      const x = omega * deltaTime;
-      const exp = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
-      const delta = this.value - this.target;
-      const temp = (this.velocity + omega * delta) * deltaTime;
-      this.velocity = (this.velocity - omega * temp) * exp;
-      this.value = this.target + (delta + temp) * exp;
-      return this.value;
-    }
-  };
-
-  // src/Swap/Swap.ts
-  var Swap = class {
-    constructor(a, b) {
-      this.i = a;
-      this.o = b;
-    }
-    swap() {
-      const i = this.i;
-      this.i = this.o;
-      this.o = i;
-    }
-  };
-
   // src/TapTempo/TapTempo.ts
   var TapTempo = class {
     constructor() {
@@ -3263,6 +3535,28 @@ var OBSVR_EXPERIMENTAL = (() => {
       this.__lastBeat = 0;
     }
   };
+
+  // src/throttle.ts
+  function throttle(func, rateMs) {
+    let queueId;
+    let lastTime = -Infinity;
+    return () => {
+      const now = Date.now();
+      const untilNextExec = lastTime + rateMs - now;
+      if (queueId) {
+        clearTimeout(queueId);
+      }
+      if (untilNextExec <= 0) {
+        lastTime = now;
+        func();
+      } else {
+        queueId = setTimeout(() => {
+          lastTime = Date.now();
+          func();
+        }, untilNextExec);
+      }
+    };
+  }
 
   // src/tinyseq/createTinyseqPolyReader.ts
   function createTinyseqPolyReader(buffer, options = {}) {
@@ -3348,7 +3642,7 @@ var OBSVR_EXPERIMENTAL = (() => {
     let noteOffTime = -Infinity;
     let nextStep = 0;
     return () => {
-      return new Float32Array(arraySerial(blockSize).map(() => {
+      return new Float32Array(arraySerial(blockSize).flatMap(() => {
         const t = samples / sampleRate;
         const s = t * stepsPerSecond;
         if (s >= nextStep) {
@@ -3374,12 +3668,15 @@ var OBSVR_EXPERIMENTAL = (() => {
           note,
           0
         ];
-      }).flat());
+      }));
     };
   }
 
   // src/tinyseq/tinyseqFromMidiParseResult.ts
-  function tinyseqFromMidiParseResult(midi, { track, tickMultiplier } = {}) {
+  function tinyseqFromMidiParseResult(midi, {
+    track,
+    tickMultiplier
+  } = {}) {
     const data = [];
     let lastNote = 60;
     let delta = 0;
@@ -3422,7 +3719,7 @@ var OBSVR_EXPERIMENTAL = (() => {
       this.seed = this.seed ^ this.seed << 13;
       this.seed = this.seed ^ this.seed >>> 17;
       this.seed = this.seed ^ this.seed << 5;
-      return this.seed / Math.pow(2, 32) + 0.5;
+      return this.seed / __pow(2, 32) + 0.5;
     }
     set(seed) {
       this.seed = seed || this.seed || 1;
@@ -3444,165 +3741,6 @@ var OBSVR_EXPERIMENTAL = (() => {
     const randomLength = displayLength - fixLength;
     const randomStr = [...Array(randomLength)].map(() => String.fromCharCode(33 + Math.floor(93 * Math.random()))).join("");
     return text.substring(0, fixLength) + randomStr;
-  }
-
-  // src/BinaryHeap.ts
-  var BinaryHeap = class {
-    static defaultComparator(a, b) {
-      const aStr = `${a}`;
-      const bStr = `${b}`;
-      if (aStr > bStr) {
-        return 1;
-      } else if (aStr < bStr) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    get length() {
-      return this.array.length;
-    }
-    get isEmpty() {
-      return this.array.length === 0;
-    }
-    get root() {
-      return this.array[0];
-    }
-    constructor(init, comparator) {
-      this.array = [];
-      this.elementIndexMap = /* @__PURE__ */ new Map();
-      this.comparator = comparator != null ? comparator : BinaryHeap.defaultComparator;
-      if (init != null) {
-        for (const el of init) {
-          this.push(el);
-        }
-      }
-    }
-    push(...elements) {
-      elements.map((el) => {
-        const i = this.length;
-        this.array.push(el);
-        this.elementIndexMap.set(el, i);
-        this.__up(i, el);
-      });
-    }
-    pop() {
-      if (this.isEmpty) {
-        return null;
-      }
-      const el = this.array[0];
-      this.elementIndexMap.delete(el);
-      if (this.length === 1) {
-        this.array.splice(0);
-      } else {
-        const rep = this.array.pop();
-        this.__down(0, rep);
-      }
-      return el;
-    }
-    delete(i) {
-      this.elementIndexMap.delete(this.array[i]);
-      const rep = this.array.pop();
-      if (rep != null) {
-        i = this.__up(i, rep);
-        i = this.__down(i, rep);
-      }
-      return true;
-    }
-    replace(i, rep) {
-      if (i != null) {
-        this.elementIndexMap.delete(this.array[i]);
-        i = this.__up(i, rep);
-        i = this.__down(i, rep);
-      }
-      return i != null ? i : null;
-    }
-    __up(i, el) {
-      let ic = i;
-      while (ic !== 0) {
-        const ip = ic - 1 >> 1;
-        const p = this.array[ip];
-        if (this.comparator(el, p) < 0) {
-          this.array[ic] = p;
-          this.elementIndexMap.set(p, ic);
-          ic = ip;
-        } else {
-          break;
-        }
-      }
-      this.array[ic] = el;
-      this.elementIndexMap.set(el, ic);
-      return ic;
-    }
-    __down(i, el) {
-      let ip = i;
-      while ((ip << 1) + 1 < this.length) {
-        const ic1 = (ip << 1) + 1;
-        const ic2 = (ip << 1) + 2;
-        if (ic2 < this.length) {
-          const c1 = this.array[ic1];
-          const c2 = this.array[ic2];
-          const pickLeft = this.comparator(c1, c2) < 0;
-          const c = pickLeft ? c1 : c2;
-          const ic = pickLeft ? ic1 : ic2;
-          if (this.comparator(c, el) < 0) {
-            this.array[ip] = c;
-            this.elementIndexMap.set(c, ip);
-            ip = ic;
-          } else {
-            break;
-          }
-        } else if (this.comparator(this.array[ic1], el) < 0) {
-          this.array[ip] = this.array[ic1];
-          this.elementIndexMap.set(this.array[ip], ip);
-          ip = ic1;
-        } else {
-          break;
-        }
-      }
-      this.array[ip] = el;
-      this.elementIndexMap.set(el, ip);
-      return ip;
-    }
-  };
-
-  // src/debounce.ts
-  function debounce(func, timeoutMs) {
-    let id;
-    return () => {
-      if (id) {
-        clearTimeout(id);
-      }
-      id = setTimeout(() => {
-        func();
-        id = null;
-      }, timeoutMs);
-    };
-  }
-
-  // src/notifyObservers.ts
-  function notifyObservers(observers, param) {
-    for (const observer of observers) {
-      observer(param);
-    }
-  }
-
-  // src/throttle.ts
-  function throttle(func, rateMs) {
-    let waiting = false;
-    let lastTime = -Infinity;
-    return () => {
-      const now = Date.now();
-      const untilNext = Math.max(0, lastTime + rateMs - now);
-      if (!waiting) {
-        setTimeout(() => {
-          lastTime = Date.now();
-          func();
-          waiting = false;
-        }, untilNext);
-        waiting = true;
-      }
-    };
   }
   return __toCommonJS(src_exports);
 })();

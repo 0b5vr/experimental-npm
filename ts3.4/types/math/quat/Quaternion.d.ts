@@ -21,6 +21,9 @@ export declare class Quaternion {
     readonly length: number;
     readonly lengthSq: number;
     readonly normalized: Quaternion;
+    readonly exp: Quaternion;
+    readonly log: Quaternion;
+    readonly logVec3: Vector3;
     /**
      * Multiply one or more Quaternions with this.
      * @param quaternions Other Quaternions

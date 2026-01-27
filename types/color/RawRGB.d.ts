@@ -1,1 +1,1 @@
-export declare type RawRGB = [number, number, number];
+export type RawRGB = [number, number, number];

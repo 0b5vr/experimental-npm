@@ -1,5 +1,5 @@
-import { RawLine3 } from './RawLine3';
 import { RawVector3 } from '../vec3/RawVector3';
+import { RawLine3 } from './RawLine3';
 /**
  * Return a vector that represents a certain point of given line.
  * Same as start at t = 0, same as end at t = 1.

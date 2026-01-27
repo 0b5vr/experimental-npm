@@ -49,6 +49,18 @@ export declare class Quaternion {
      */
     get normalized(): Quaternion;
     /**
+     * An exponential map of this.
+     */
+    get exp(): Quaternion;
+    /**
+     * A logarithm map of this.
+     */
+    get log(): Quaternion;
+    /**
+     * A logarithm map of this as a Vector3.
+     */
+    get logVec3(): Vector3;
+    /**
      * Multiply one or more Quaternions with this.
      * @param quaternions Other Quaternions
      */

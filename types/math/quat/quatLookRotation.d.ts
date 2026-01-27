@@ -1,5 +1,5 @@
-import type { RawQuaternion } from './RawQuaternion';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawQuaternion } from './RawQuaternion';
 /**
  * Return a quaternion which looks at the direction of `look`.
  */

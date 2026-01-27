@@ -5,7 +5,7 @@
  *
  * https://gist.github.com/mikhailov-work/0d177465a8151eb6ede1768d51d476c7
  */
-import { RawRGB } from './RawRGB';
+import type { RawRGB } from './RawRGB';
 /**
  * Generate a turbo gradient.
  *

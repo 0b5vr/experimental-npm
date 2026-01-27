@@ -1,6 +1,6 @@
-import type { EulerOrder } from './EulerOrder';
 import type { RawMatrix3 } from '../mat3/RawMatrix3';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { EulerOrder } from './EulerOrder';
 /**
  * Return a euler angles out of a matrix3.
  * Make sure the input matrix is normalized.

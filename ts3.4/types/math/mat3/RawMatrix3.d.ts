@@ -1,1 +1,1 @@
-export declare type RawMatrix3 = [number, number, number, number, number, number, number, number, number];
+export type RawMatrix3 = [number, number, number, number, number, number, number, number, number];

@@ -1,6 +1,6 @@
-import { EulerOrder } from './EulerOrder';
 import { RawQuaternion } from '../quat/RawQuaternion';
 import { RawVector3 } from '../vec3/RawVector3';
+import { EulerOrder } from './EulerOrder';
 /**
  * Return a euler angles out of a quaternion.
  *

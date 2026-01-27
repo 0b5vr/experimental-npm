@@ -1,23 +1,23 @@
-export declare type MidiParseResultHeader = [
+export type MidiParseResultHeader = [
     format: number,
     tracks: number,
     division: number
 ];
-export declare type MidiParseResultTrackNoteEvent = [
+export type MidiParseResultTrackNoteEvent = [
     tick: number,
     type: number,
     note: number,
     velocity: number
 ];
-export declare type MidiParseResultTrackMetaEvent = [
+export type MidiParseResultTrackMetaEvent = [
     tick: number,
     type: number,
     subtype: number,
     data: number[]
 ];
-export declare type MidiParseResultTrackEvent = MidiParseResultTrackNoteEvent | MidiParseResultTrackMetaEvent;
-export declare type MidiParseResultTrack = MidiParseResultTrackEvent[];
-export declare type MidiParseResult = [
+export type MidiParseResultTrackEvent = MidiParseResultTrackNoteEvent | MidiParseResultTrackMetaEvent;
+export type MidiParseResultTrack = MidiParseResultTrackEvent[];
+export type MidiParseResult = [
     header: MidiParseResultHeader,
     tracks: MidiParseResultTrack[]
 ];

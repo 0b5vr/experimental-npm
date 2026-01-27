@@ -1,6 +1,6 @@
-import { Matrix4 } from '../mat4/Matrix4';
-import { Vector } from '../vec/Vector';
 import type { Matrix3 } from '../mat3/Matrix3';
+import type { Matrix4 } from '../mat4/Matrix4';
+import { Vector } from '../vec/Vector';
 import type { RawVector4 } from './RawVector4';
 /**
  * A Vector3.

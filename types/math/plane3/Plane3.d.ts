@@ -1,5 +1,5 @@
-import { Matrix3 } from '../mat3/Matrix3';
-import { Matrix4 } from '../mat4/Matrix4';
+import type { Matrix3 } from '../mat3/Matrix3';
+import type { Matrix4 } from '../mat4/Matrix4';
 import { Vector3 } from '../vec3/Vector3';
 import type { RawPlane3 } from './RawPlane3';
 /**

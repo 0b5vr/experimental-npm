@@ -1,1 +1,1 @@
-export declare type RawVector3 = [number, number, number];
+export type RawVector3 = [number, number, number];

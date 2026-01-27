@@ -1,8 +1,8 @@
 import { Box3 } from '../box3/Box3';
 import { Matrix4 } from '../mat4/Matrix4';
-import { Plane3 } from './Plane3';
 import { Sphere3 } from '../sphere3/Sphere3';
 import { Vector3 } from '../vec3/Vector3';
+import { Plane3 } from './Plane3';
 import { RawPlane3 } from './RawPlane3';
 /**
  * A set of {@link Plane3}.

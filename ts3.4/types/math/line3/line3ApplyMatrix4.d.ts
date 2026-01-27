@@ -1,5 +1,5 @@
-import { RawLine3 } from './RawLine3';
 import { RawMatrix4 } from '../mat4/RawMatrix4';
+import { RawLine3 } from './RawLine3';
 /**
  * Apply given matrix4 to given line.
  *

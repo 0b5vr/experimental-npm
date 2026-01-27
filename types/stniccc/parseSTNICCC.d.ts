@@ -1,4 +1,4 @@
-import { STNICCCFrame } from './STNICCCFrame';
+import type { STNICCCFrame } from './STNICCCFrame';
 /**
  * Ref: http://arsantica-online.com/st-niccc-competition/
  *

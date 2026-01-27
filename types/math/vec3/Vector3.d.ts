@@ -1,4 +1,4 @@
-import { Matrix4 } from '../mat4/Matrix4';
+import type { Matrix4 } from '../mat4/Matrix4';
 import { Quaternion } from '../quat/Quaternion';
 import { Vector } from '../vec/Vector';
 import type { RawVector3 } from './RawVector3';
@@ -38,6 +38,10 @@ export declare class Vector3 extends Vector<Vector3> {
      * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
      */
     applyMatrix4(matrix: Matrix4): Vector3;
+    /**
+     * Treating this as a quaternion with w = 0, an exponential map of the quaternion.
+     */
+    get quatExp(): Quaternion;
     protected __new(v: RawVector3): Vector3;
     /**
      * Vector3( 0.0, 0.0, 0.0 )

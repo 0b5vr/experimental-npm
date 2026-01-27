@@ -1,6 +1,6 @@
-import type { RawMatrix4 } from './RawMatrix4';
 import type { RawQuaternion } from '../quat/RawQuaternion';
 import type { RawVector3 } from '../vec3/RawVector3';
+import type { RawMatrix4 } from './RawMatrix4';
 /**
  * Decompose a matrix into a position, a scale, and a rotation.
  * Yoinked from Three.js.
