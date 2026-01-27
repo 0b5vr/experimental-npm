@@ -3,8 +3,7 @@ module.exports = {
 
   "plugins": [
     "sort-imports-es6-autofix",
-    "@typescript-eslint",
-    "jest"
+    "@typescript-eslint"
   ],
 
   "env": {
@@ -20,7 +19,6 @@ module.exports = {
 
   "extends": [
     "eslint:recommended",
-    "plugin:jest/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
   ],

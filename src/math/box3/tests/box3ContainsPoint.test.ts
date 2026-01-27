@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { box3ContainsPoint } from '../box3ContainsPoint';
 import type { RawBox3 } from '../RawBox3';
 

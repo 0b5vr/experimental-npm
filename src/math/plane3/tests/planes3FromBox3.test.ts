@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { RawBox3 } from '../../box3/RawBox3';
 import { planes3FromBox3 } from '../planes3FromBox3';

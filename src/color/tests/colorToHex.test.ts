@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../tests/matchers/toBeCloseToArray';
 import { colorToHex } from '../colorToHex';
 import type { RawRGB } from '../RawRGB';

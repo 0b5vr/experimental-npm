@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { RawSphere3 } from '../RawSphere3';
 import { sphere3ContainsPoint } from '../sphere3ContainsPoint';
 

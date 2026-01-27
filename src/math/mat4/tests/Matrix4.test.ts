@@ -1,6 +1,7 @@
+import { describe, expect, it } from 'vitest';
 import { Matrix4 } from '../Matrix4';
 import { Vector3 } from '../../vec3/Vector3';
-import { toBeCloseToArray } from '../../../tests/matchers/toBeCloseToArray';
+import '../../../tests/matchers/toBeCloseToArray';
 import type { RawMatrix4 } from '../RawMatrix4';
 
 const rawMatrixLookAtFrom345: RawMatrix4 = [
@@ -65,10 +66,6 @@ const rawMatrixPerspectiveFov40Near1Far500: RawMatrix4 = [
   0, 0, -1.0040080160320641, -1,
   0, 0, -2.004008016032064, 0
 ];
-
-beforeEach( () => {
-  expect.extend( { toBeCloseToArray } );
-} );
 
 describe( 'Matrix4', () => {
   it( 'should be instantiated properly', () => {

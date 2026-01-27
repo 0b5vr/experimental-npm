@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { line3At } from '../line3At';
 import type { RawLine3 } from '../RawLine3';

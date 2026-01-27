@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { dagEdgesChildren } from '../dagEdgesChildren';
 import type { RawDagEdge } from '../RawDagEdge';
 

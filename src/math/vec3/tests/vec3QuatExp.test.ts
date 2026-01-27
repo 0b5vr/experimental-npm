@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { vec3QuatExp } from '../vec3QuatExp';
 import { quatFromAxisAngle } from '../../quat/quatFromAxisAngle';

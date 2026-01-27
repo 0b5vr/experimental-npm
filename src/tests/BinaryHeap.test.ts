@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { BinaryHeap } from '../BinaryHeap';
 
 function validateIndexMap<T>( heap: BinaryHeap<T> ): boolean {

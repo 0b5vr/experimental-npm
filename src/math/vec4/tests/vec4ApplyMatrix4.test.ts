@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { vec4ApplyMatrix4 } from '../vec4ApplyMatrix4';
 import type { RawMatrix4 } from '../../mat4';

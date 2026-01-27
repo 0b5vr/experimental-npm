@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { vec3ApplyQuaternion } from '../vec3ApplyQuaternion';
 import type { RawQuaternion } from '../../quat/RawQuaternion';

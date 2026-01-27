@@ -1,4 +1,5 @@
 
+import { describe, expect, it } from 'vitest';
 describe( 'vecLerp', () => {
   it( 'returns a linear interpolation of two vectors', () => {
     const result = vecLerp(

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../tests/matchers/toBeCloseToArray';
 import { colorHSV2RGB } from '../colorHSV2RGB';
 

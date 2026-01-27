@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../tests/matchers/toBeCloseToArray';
 import { eotfRec709 } from '../eotfRec709';
 import type { RawRGB } from '../RawRGB';

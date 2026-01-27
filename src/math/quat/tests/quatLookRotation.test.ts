@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { RawVector3 } from '../..';
 import { quatLookRotation } from '../quatLookRotation';

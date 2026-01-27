@@ -1,8 +1,15 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { debounce } from '../debounce';
 
-jest.useFakeTimers();
-
 describe( 'debounce', () => {
+  beforeEach( () => {
+    vi.useFakeTimers();
+  } );
+
+  afterEach( () => {
+    vi.restoreAllMocks();
+  } );
+
   it( 'debounces the given function', () => {
     let value = 0;
     let debouncedValue = 0;
@@ -38,7 +45,7 @@ describe( 'debounce', () => {
       }
 
       const ret = debouncedValue;
-      jest.advanceTimersByTime( 100 );
+      vi.advanceTimersByTime( 100 );
       return ret;
     } );
 

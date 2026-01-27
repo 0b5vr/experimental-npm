@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { dagEdgesResolve } from '../dagEdgesResolve';
 import { shuffleArray } from '../../array/utils';
 import type { RawDagEdge } from '../RawDagEdge';

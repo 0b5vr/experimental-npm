@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { vec3OrthoNormalize } from '../vec3OrthoNormalize';
 import { vecLengthSq } from '../../vec/vecLengthSq';

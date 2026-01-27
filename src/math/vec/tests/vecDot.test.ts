@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { vecDot } from '../vecDot';
 
 describe( 'vecDot', () => {

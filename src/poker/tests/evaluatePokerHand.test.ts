@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { evaluatePokerHand } from '../evaluatePokerHand';
 import type { PokerCard } from '../PokerCard';
 

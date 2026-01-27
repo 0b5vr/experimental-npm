@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { planes3IntersectBox3 } from '../planes3IntersectBox3';
 import type { RawBox3 } from '../../box3/RawBox3';
 import type { RawPlane3 } from '../RawPlane3';

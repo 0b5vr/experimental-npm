@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { Observer, notifyObservers } from '../notifyObservers';
 
 describe( 'notifyObservers', () => {

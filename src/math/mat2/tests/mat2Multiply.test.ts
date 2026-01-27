@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { mat2Multiply } from '../mat2Multiply';
 import type { RawMatrix2 } from '../RawMatrix2';

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { line3DistanceToPoint } from '../line3DistanceToPoint';
 import type { RawLine3 } from '../RawLine3';

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { mat3FromQuaternion } from '../mat3FromQuaternion';
 import type { RawQuaternion } from '../../quat/RawQuaternion';

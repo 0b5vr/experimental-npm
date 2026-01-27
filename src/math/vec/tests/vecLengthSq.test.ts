@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { vecLengthSq } from '../vecLengthSq';
 
 describe( 'vecLengthSq', () => {

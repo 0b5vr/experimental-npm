@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { plane3DistanceToPoint } from '../plane3DistanceToPoint';
 import { vecNormalize } from '../../vec/vecNormalize';
 import type { RawVector3 } from '../../vec3/RawVector3';

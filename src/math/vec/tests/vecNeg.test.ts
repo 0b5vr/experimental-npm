@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { vecNeg } from '../vecNeg';
 
 describe( 'vecNeg', () => {

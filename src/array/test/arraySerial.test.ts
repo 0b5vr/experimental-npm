@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { arraySerial } from '../arraySerial';
 
 describe( 'arraySerial', () => {

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { quatMultiply } from '../quatMultiply';
 import type { RawQuaternion } from '../RawQuaternion';

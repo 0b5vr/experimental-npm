@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import '../../../tests/matchers/toBeCloseToArray';
 import { RawMatrix3 } from '../../mat3/RawMatrix3';
 import { eulerFromMat3 } from '../eulerFromMat3';

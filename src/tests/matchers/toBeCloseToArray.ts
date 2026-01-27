@@ -1,8 +1,18 @@
+import { expect } from 'vitest';
+
+interface CustomMatchers<R = unknown> {
+  toBeCloseToArray( expected: number[], precision?: number ): R;
+}
+
+declare module 'vitest' {
+  interface Matchers<T = any> extends CustomMatchers<T> {}
+}
+
 export function toBeCloseToArray(
   received: number[],
   expected: number[],
   precision = 2
-): jest.CustomMatcherResult {
+) {
   const expectedDiff = Math.pow( 10.0, -precision ) / 2;
 
   if ( received.length !== expected.length ) {
@@ -46,14 +56,4 @@ ${ diffs.map( ( diff ) => `  [${ diff.index }]: expected ${ diff.expected }, rec
   }
 }
 
-beforeEach( () => {
-  expect.extend( { toBeCloseToArray } );
-} );
-
-declare global {
-  namespace jest { // eslint-disable-line
-    interface Matchers<R> {
-      toBeCloseToArray( expected: number[], precision?: number ): R;
-    }
-  }
-}
+expect.extend( { toBeCloseToArray } );

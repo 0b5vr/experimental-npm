@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { planes3ContainPoint } from '../planes3ContainPoint';
 import type { RawPlane3 } from '../RawPlane3';
 

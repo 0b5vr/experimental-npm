@@ -1,8 +1,15 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { throttle } from '../throttle';
 
-jest.useFakeTimers();
-
 describe( 'throttle', () => {
+  beforeEach( () => {
+    vi.useFakeTimers();
+  } );
+
+  afterEach( () => {
+    vi.restoreAllMocks();
+  } );
+
   it( 'throttles the given function', () => {
     let value = 0;
     let throttledValue = 0;
@@ -34,7 +41,7 @@ describe( 'throttle', () => {
       }
 
       const ret = throttledValue;
-      jest.advanceTimersByTime( 100 );
+      vi.advanceTimersByTime( 100 );
       return ret;
     } );
 
