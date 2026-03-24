@@ -1,4 +1,9 @@
-import { HPF, SquareOscillator, float32ArrayToWav, lerp } from '@0b5vr/experimental';
+import {
+  float32ArrayToWav,
+  HPF,
+  lerp,
+  SquareOscillator,
+} from '@0b5vr/experimental';
 
 export default ({ divContainer }) => {
   const sampleRate = 44100;
