@@ -1826,6 +1826,10 @@ declare module '@0b5vr/experimental/math/mat2/mat2Transpose' {
 }
 
 declare module '@0b5vr/experimental/math/mat2/RawMatrix2' {
+    /**
+      * A 2x2 matrix.
+      * The elements are stored in column-major order.
+      */
     export type RawMatrix2 = [number, number, number, number];
 }
 
@@ -1971,6 +1975,10 @@ declare module '@0b5vr/experimental/math/mat3/mat3Transpose' {
 }
 
 declare module '@0b5vr/experimental/math/mat3/RawMatrix3' {
+    /**
+      * A 3x3 matrix.
+      * The elements are stored in column-major order.
+      */
     export type RawMatrix3 = [
         number,
         number,
@@ -2276,6 +2284,10 @@ declare module '@0b5vr/experimental/math/mat4/mat4Transpose' {
 }
 
 declare module '@0b5vr/experimental/math/mat4/RawMatrix4' {
+    /**
+      * A 4x4 matrix.
+      * The elements are stored in column-major order.
+      */
     export type RawMatrix4 = [
         number,
         number,
@@ -3070,6 +3082,7 @@ declare module '@0b5vr/experimental/math/vec3/RawVector3' {
 }
 
 declare module '@0b5vr/experimental/math/vec3/Vector3' {
+    import type { Matrix3 } from '@0b5vr/experimental/math/mat3/Matrix3';
     import type { Matrix4 } from '@0b5vr/experimental/math/mat4/Matrix4';
     import { Quaternion } from '@0b5vr/experimental/math/quat/Quaternion';
     import { Vector } from '@0b5vr/experimental/math/vec/Vector';
@@ -3107,7 +3120,11 @@ declare module '@0b5vr/experimental/math/vec3/Vector3' {
                 */
             applyQuaternion(quaternion: Quaternion): Vector3;
             /**
-                * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
+                * Apply a 3x3 matrix to this vector.
+                */
+            applyMatrix3(matrix: Matrix3): Vector3;
+            /**
+                * Apply a 4x4 matrix to this vector (with an implicit 1 in the 4th dimension).
                 */
             applyMatrix4(matrix: Matrix4): Vector3;
             /**
@@ -3163,7 +3180,7 @@ declare module '@0b5vr/experimental/math/vec3/vec3ApplyMatrix3' {
     import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
     import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
     /**
-      * Apply a vec3 a mat3.
+      * Apply a 3x3 matrix to a vec3.
       */
     export function vec3ApplyMatrix3(v: RawVector3, m: RawMatrix3): RawVector3;
 }
@@ -3172,7 +3189,7 @@ declare module '@0b5vr/experimental/math/vec3/vec3ApplyMatrix4' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
     /**
-      * Apply a vec3 (with an implicit 1 in the 4th dimension) a mat4.
+      * Apply a 4x4 matrix to a vec3 (with an implicit 1 in the 4th dimension).
       */
     export function vec3ApplyMatrix4(v: RawVector3, m: RawMatrix4): RawVector3;
 }

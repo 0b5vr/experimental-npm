@@ -2033,6 +2033,15 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
   };
 
+  // src/math/vec3/vec3ApplyMatrix3.ts
+  function vec3ApplyMatrix3(v, m) {
+    return [
+      m[0] * v[0] + m[3] * v[1] + m[6] * v[2],
+      m[1] * v[0] + m[4] * v[1] + m[7] * v[2],
+      m[2] * v[0] + m[5] * v[1] + m[8] * v[2]
+    ];
+  }
+
   // src/math/vec4/vec4ApplyMatrix4.ts
   function vec4ApplyMatrix4(v, m) {
     return [
@@ -2102,6 +2111,9 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
     applyQuaternion(quaternion) {
       return new Vector3(vec3ApplyQuaternion(this.elements, quaternion.elements));
+    }
+    applyMatrix3(matrix) {
+      return new Vector3(vec3ApplyMatrix3(this.elements, matrix.elements));
     }
     applyMatrix4(matrix) {
       return new Vector3(vec3ApplyMatrix4(this.elements, matrix.elements));
@@ -2441,15 +2453,6 @@ var OBSVR_EXPERIMENTAL = (() => {
       }
     }
   };
-
-  // src/math/vec3/vec3ApplyMatrix3.ts
-  function vec3ApplyMatrix3(v, m) {
-    return [
-      m[0] * v[0] + m[3] * v[1] + m[6] * v[2],
-      m[1] * v[0] + m[4] * v[1] + m[7] * v[2],
-      m[2] * v[0] + m[5] * v[1] + m[8] * v[2]
-    ];
-  }
 
   // src/math/plane3/plane3ApplyMatrix4.ts
   function plane3ApplyMatrix4([normal, distance], matrix, normalMatrix) {

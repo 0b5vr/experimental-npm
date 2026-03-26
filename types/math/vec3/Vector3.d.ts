@@ -1,3 +1,4 @@
+import type { Matrix3 } from '../mat3/Matrix3';
 import type { Matrix4 } from '../mat4/Matrix4';
 import { Quaternion } from '../quat/Quaternion';
 import { Vector } from '../vec/Vector';
@@ -35,7 +36,11 @@ export declare class Vector3 extends Vector<Vector3> {
      */
     applyQuaternion(quaternion: Quaternion): Vector3;
     /**
-     * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
+     * Apply a 3x3 matrix to this vector.
+     */
+    applyMatrix3(matrix: Matrix3): Vector3;
+    /**
+     * Apply a 4x4 matrix to this vector (with an implicit 1 in the 4th dimension).
      */
     applyMatrix4(matrix: Matrix4): Vector3;
     /**
