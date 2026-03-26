@@ -4,7 +4,7 @@ import { vec4ApplyMatrix4 } from '../vec4/vec4ApplyMatrix4';
 import type { RawVector3 } from './RawVector3';
 
 /**
- * Apply a vec3 (with an implicit 1 in the 4th dimension) a mat4.
+ * Apply a 4x4 matrix to a vec3 (with an implicit 1 in the 4th dimension).
  */
 export function vec3ApplyMatrix4(v: RawVector3, m: RawMatrix4): RawVector3 {
   const vec4 = vec4ApplyMatrix4([...v, 1], m);

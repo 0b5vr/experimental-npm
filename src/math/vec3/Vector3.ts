@@ -1,7 +1,9 @@
+import type { Matrix3 } from '../mat3/Matrix3';
 import type { Matrix4 } from '../mat4/Matrix4';
 import { Quaternion } from '../quat/Quaternion';
 import { Vector } from '../vec/Vector';
 import type { RawVector3 } from './RawVector3';
+import { vec3ApplyMatrix3 } from './vec3ApplyMatrix3';
 import { vec3ApplyMatrix4 } from './vec3ApplyMatrix4';
 import { vec3ApplyQuaternion } from './vec3ApplyQuaternion';
 import { vec3Cross } from './vec3Cross';
@@ -73,7 +75,14 @@ export class Vector3 extends Vector<Vector3> {
   }
 
   /**
-   * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
+   * Apply a 3x3 matrix to this vector.
+   */
+  public applyMatrix3(matrix: Matrix3): Vector3 {
+    return new Vector3(vec3ApplyMatrix3(this.elements, matrix.elements));
+  }
+
+  /**
+   * Apply a 4x4 matrix to this vector (with an implicit 1 in the 4th dimension).
    */
   public applyMatrix4(matrix: Matrix4): Vector3 {
     return new Vector3(vec3ApplyMatrix4(this.elements, matrix.elements));
