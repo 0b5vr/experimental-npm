@@ -2,16 +2,12 @@ import { saturate } from '../math/saturate';
 import type { RawRGB } from './RawRGB';
 
 /**
- * Converts the input color to hex representation (e.g. #7f7f7f)
- * @param color color in {@link RawRGB}
+ * Converts the input {@link RawRGB} to hex representation (e.g. #7f7f7f)
+ *
+ * @param color - color in {@link RawRGB}
+ * @returns Hex representation of the color
  */
 export function colorToHex(color: RawRGB): string {
-  return (
-    '#' +
-    color
-      .map((v) =>
-        ('0' + Math.round(saturate(v) * 255.0).toString(16)).slice(-2),
-      )
-      .join('')
-  );
+  const hexArray = color.map((v) => Math.round(saturate(v) * 255.0).toString(16).padStart(2, '0'));
+  return `#${hexArray.join('')}`;
 }
