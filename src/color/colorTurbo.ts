@@ -6,7 +6,7 @@
  * https://gist.github.com/mikhailov-work/0d177465a8151eb6ede1768d51d476c7
  */
 
-import { saturate } from '../math/utils';
+import { saturate } from '../math/saturate';
 import { vecDot } from '../math/vec/vecDot';
 import type { RawRGB } from './RawRGB';
 

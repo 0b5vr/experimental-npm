@@ -1,4 +1,4 @@
-import { linearstep } from '../math/utils';
+import { linearstep } from '../math/linearstep';
 
 /**
  * https://twitter.com/yugop

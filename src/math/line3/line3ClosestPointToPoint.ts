@@ -1,4 +1,4 @@
-import { saturate } from '../utils';
+import { saturate } from '../saturate';
 import { vecDot } from '../vec/vecDot';
 import { vecSub } from '../vec/vecSub';
 import type { RawVector3 } from '../vec3/RawVector3';

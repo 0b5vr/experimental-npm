@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { range } from '../utils';
+import { range } from '../range';
 
 describe('range', () => {
   it('should be instantiated properly', () => {

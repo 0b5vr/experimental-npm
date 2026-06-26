@@ -1,6 +1,6 @@
 import type { RawMatrix3 } from '../mat3/RawMatrix3';
 import { sanitizeAngle } from '../sanitizeAngle';
-import { clamp } from '../utils';
+import { clamp } from '../clamp';
 import { vecManhattanLength } from '../vec/vecManhattanLength';
 import type { RawVector3 } from '../vec3/RawVector3';
 import type { EulerOrder } from './EulerOrder';

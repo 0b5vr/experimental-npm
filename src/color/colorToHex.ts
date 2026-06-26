@@ -1,4 +1,4 @@
-import { saturate } from '../math/utils';
+import { saturate } from '../math/saturate';
 import type { RawRGB } from './RawRGB';
 
 /**

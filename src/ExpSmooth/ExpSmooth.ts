@@ -1,4 +1,4 @@
-import { lerp } from '../math/utils';
+import { lerp } from '../math/lerp';
 
 /**
  * Do exp smoothing
