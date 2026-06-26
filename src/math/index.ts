@@ -18,6 +18,7 @@ export * from './smootherstep';
 export * from './smootheststep';
 export * from './smoothstep';
 export * from './sphere3';
+export * from './step';
 export * from './vec';
 export * from './vec3';
 export * from './vec4';
