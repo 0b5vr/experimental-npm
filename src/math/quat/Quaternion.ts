@@ -11,6 +11,7 @@ import { quatLog } from './quatLog';
 import { quatLogVec3 } from './quatLogVec3';
 import { quatLookRotation } from './quatLookRotation';
 import { quatMultiply } from './quatMultiply';
+import { quatNlerp } from './quatNlerp';
 import { quatNormalize } from './quatNormalize';
 import { quatRotationX } from './quatRotationX';
 import { quatRotationY } from './quatRotationY';
@@ -134,9 +135,25 @@ export class Quaternion {
   }
 
   /**
-   * Interpolate between this and given quaternion.
-   * @param b Another Quaternion
-   * @param t How much do we want to rotate this to b
+   * Interpolate between this and given quaternion using normalized lerp.
+   * When the dot product of the two quaternions is negative, the given quaternion is negated to ensure the shortest path is taken.
+   *
+   * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+   *
+   * @param b - "to" quaternion
+   * @param t - How much do we want to rotate this to b
+   * @returns The interpolated quaternion
+   */
+  public nlerp(b: Quaternion, t: number): Quaternion {
+    return Quaternion.nlerp(this, b, t);
+  }
+
+  /**
+   * Interpolate between this and given quaternion using spherical lerp.
+   *
+   * @param b - Another Quaternion
+   * @param t - How much do we want to rotate this to b
+   * @returns The interpolated quaternion
    */
   public slerp(b: Quaternion, t: number): Quaternion {
     return Quaternion.slerp(this, b, t);
@@ -150,7 +167,7 @@ export class Quaternion {
   }
 
   /**
-   * Multiply two or more matrices.
+   * Multiply two or more quaternions.
    * @param quaternion Quaternions
    */
   public static multiply(...quaternions: Quaternion[]): Quaternion {
@@ -164,10 +181,27 @@ export class Quaternion {
   }
 
   /**
-   * Interpolate between two quaternions.
-   * @param a "from" quaternion
-   * @param b "to" quaternion
-   * @param t How much do we want to rotate the a to b
+   * Interpolate between two quaternions using normalized lerp.
+   * When the dot product of the two quaternions is negative, the second quaternion is negated to ensure the shortest path is taken.
+   *
+   * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+   *
+   * @param a - "from" quaternion
+   * @param b - "to" quaternion
+   * @param t - How much do we want to rotate the a to b
+   * @returns The interpolated quaternion
+   */
+  public static nlerp(a: Quaternion, b: Quaternion, t: number): Quaternion {
+    return new Quaternion(quatNlerp(a.elements, b.elements, t));
+  }
+
+  /**
+   * Interpolate between two quaternions using spherical lerp.
+   *
+   * @param a - "from" quaternion
+   * @param b - "to" quaternion
+   * @param t - How much do we want to rotate the a to b
+   * @returns The interpolated quaternion
    */
   public static slerp(a: Quaternion, b: Quaternion, t: number): Quaternion {
     return new Quaternion(quatSlerp(a.elements, b.elements, t));
