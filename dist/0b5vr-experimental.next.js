@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.9
+* @0b5vr/experimental v0.9.11
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2024 0b5vr
@@ -44,20 +44,20 @@ function traverse(root, traverser) {
 }
 
 // src/array/arrayRange.ts
-function arrayRange(start, end, step) {
+function arrayRange(start, end, step2) {
   let current = start;
   const ret = [];
   if (start < end) {
-    step = step ?? 1;
+    step2 = step2 ?? 1;
     while (current < end) {
       ret.push(current);
-      current += step;
+      current += step2;
     }
   } else {
-    step = step ?? -1;
+    step2 = step2 ?? -1;
     while (current > end) {
       ret.push(current);
-      current += step;
+      current += step2;
     }
   }
   return ret;
@@ -381,33 +381,32 @@ function colorFromAtariST(stColor) {
   ];
 }
 
-// src/math/utils.ts
+// src/color/colorFromHex.ts
+function colorFromHex(hex) {
+  if (typeof hex === "number") {
+    hex = hex.toString(16).padStart(6, "0");
+  }
+  if (hex.startsWith("#")) {
+    hex = hex.slice(1);
+  }
+  if (hex.length === 6) {
+    const r = parseInt(hex.slice(0, 2), 16) / 255;
+    const g = parseInt(hex.slice(2, 4), 16) / 255;
+    const b = parseInt(hex.slice(4, 6), 16) / 255;
+    return [r, g, b];
+  } else if (hex.length === 3) {
+    const r = parseInt(hex[0] + hex[0], 16) / 255;
+    const g = parseInt(hex[1] + hex[1], 16) / 255;
+    const b = parseInt(hex[2] + hex[2], 16) / 255;
+    return [r, g, b];
+  } else {
+    throw new Error(`Invalid hex color: ${hex}`);
+  }
+}
+
+// src/math/lerp.ts
 function lerp(a, b, t) {
   return a + (b - a) * t;
-}
-function clamp(x, l, h) {
-  return Math.min(Math.max(x, l), h);
-}
-function saturate(x) {
-  return clamp(x, 0, 1);
-}
-function range(x, x0, x1, y0, y1) {
-  return (x - x0) * (y1 - y0) / (x1 - x0) + y0;
-}
-function linearstep(a, b, x) {
-  return saturate((x - a) / (b - a));
-}
-function smoothstep(a, b, x) {
-  const t = linearstep(a, b, x);
-  return t * t * (3 - 2 * t);
-}
-function smootherstep(a, b, x) {
-  const t = linearstep(a, b, x);
-  return t * t * t * (t * (t * 6 - 15) + 10);
-}
-function smootheststep(a, b, x) {
-  const t = linearstep(a, b, x);
-  return t * t * t * t * (t * (t * (-20 * t + 70) - 84) + 35);
 }
 
 // src/color/colorHSV2RGB.ts
@@ -420,9 +419,20 @@ function colorHSV2RGB([h, s, v]) {
   });
 }
 
+// src/math/clamp.ts
+function clamp(x, minVal, maxVal) {
+  return Math.min(Math.max(x, minVal), maxVal);
+}
+
+// src/math/saturate.ts
+function saturate(x) {
+  return clamp(x, 0, 1);
+}
+
 // src/color/colorToHex.ts
 function colorToHex(color) {
-  return "#" + color.map((v) => ("0" + Math.round(saturate(v) * 255).toString(16)).slice(-2)).join("");
+  const hexArray = color.map((v) => Math.round(saturate(v) * 255).toString(16).padStart(2, "0"));
+  return `#${hexArray.join("")}`;
 }
 
 // src/math/vec/vecDot.ts
@@ -1641,6 +1651,12 @@ function quatMultiply(...quats) {
   ];
 }
 
+// src/math/quat/quatNlerp.ts
+function quatNlerp(a, b, t) {
+  const bt = vecDot(a, b) < 0 ? vecNeg(b) : b;
+  return vecNormalize(vecLerp(a, bt, t));
+}
+
 // src/math/quat/quatNormalize.ts
 function quatNormalize(vec) {
   const len = vecLength(vec);
@@ -1755,6 +1771,9 @@ var Quaternion = class {
   multiply(...quaternions) {
     return Quaternion.multiply(this, ...quaternions);
   }
+  nlerp(b, t) {
+    return Quaternion.nlerp(this, b, t);
+  }
   slerp(b, t) {
     return Quaternion.slerp(this, b, t);
   }
@@ -1767,6 +1786,9 @@ var Quaternion = class {
     } else {
       return new Quaternion(quatMultiply(...quaternions.map((q) => q.elements)));
     }
+  }
+  static nlerp(a, b, t) {
+    return new Quaternion(quatNlerp(a.elements, b.elements, t));
   }
   static slerp(a, b, t) {
     return new Quaternion(quatSlerp(a.elements, b.elements, t));
@@ -2146,6 +2168,11 @@ var Line3 = class {
   }
 };
 
+// src/math/linearstep.ts
+function linearstep(edge0, edge1, x) {
+  return saturate((x - edge0) / (edge1 - edge0));
+}
+
 // src/math/mat2/mat2Determinant.ts
 function mat2Determinant(m) {
   return m[0] * m[3] - m[2] * m[1];
@@ -2339,6 +2366,29 @@ var Planes3 = class {
   }
 };
 
+// src/math/range.ts
+function range(x, x0, x1, y0, y1) {
+  return (x - x0) * (y1 - y0) / (x1 - x0) + y0;
+}
+
+// src/math/smootherstep.ts
+function smootherstep(edge0, edge1, x) {
+  const t = linearstep(edge0, edge1, x);
+  return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+// src/math/smootheststep.ts
+function smootheststep(edge0, edge1, x) {
+  const t = linearstep(edge0, edge1, x);
+  return t * t * t * t * (t * (t * (-20 * t + 70) - 84) + 35);
+}
+
+// src/math/smoothstep.ts
+function smoothstep(edge0, edge1, x) {
+  const t = linearstep(edge0, edge1, x);
+  return t * t * (3 - 2 * t);
+}
+
 // src/math/sphere3/sphere3ContainsPoint.ts
 function sphere3ContainsPoint(sphere, point) {
   return vecLengthSq(vecSub(sphere[0], point)) <= sphere[1] * sphere[1];
@@ -2362,6 +2412,11 @@ var Sphere3 = class {
     return new Sphere3(new Vector3(sphere[0]), sphere[1]);
   }
 };
+
+// src/math/step.ts
+function step(edge, x) {
+  return edge <= x ? 1 : 0;
+}
 
 // src/math/vec4/vec4ApplyMatrix3.ts
 function vec4ApplyMatrix3(v, m) {
@@ -2435,6 +2490,16 @@ function float32ArrayToWav(src, sampleRate) {
     int16Src[iCh] = out;
   }
   return int16ArrayToWav(int16Src, sampleRate);
+}
+
+// src/fmix32.ts
+function fmix32(h) {
+  h ^= h >>> 16;
+  h = Math.imul(h, 2246822507);
+  h ^= h >>> 13;
+  h = Math.imul(h, 3266489909);
+  h ^= h >>> 16;
+  return h >>> 0;
 }
 
 // src/Pool/Pool.ts
@@ -3573,6 +3638,7 @@ export {
   box3ContainsPoint,
   clamp,
   colorFromAtariST,
+  colorFromHex,
   colorHSV2RGB,
   colorToHex,
   colorTurbo,
@@ -3594,6 +3660,7 @@ export {
   eulerFromQuaternion,
   evaluatePokerHand,
   float32ArrayToWav,
+  fmix32,
   getYugopText,
   int16ArrayToWav,
   lerp,
@@ -3664,6 +3731,7 @@ export {
   quatLogVec3,
   quatLookRotation,
   quatMultiply,
+  quatNlerp,
   quatNormalize,
   quatRotationX,
   quatRotationY,
@@ -3681,6 +3749,7 @@ export {
   smoothstep,
   sortPokerCardsByRank,
   sphere3ContainsPoint,
+  step,
   stnicccToSVG,
   throttle,
   tinyseqFromMidiParseResult,

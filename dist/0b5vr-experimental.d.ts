@@ -13,6 +13,7 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/ExpSmooth';
     export * from '@0b5vr/experimental/edt';
     export { float32ArrayToWav } from '@0b5vr/experimental/float32ArrayToWav';
+    export { fmix32 } from '@0b5vr/experimental/fmix32';
     export * from '@0b5vr/experimental/GPUTimer';
     export * from '@0b5vr/experimental/HistoryMeanCalculator';
     export { int16ArrayToWav } from '@0b5vr/experimental/int16ArrayToWav';
@@ -75,6 +76,7 @@ declare module '@0b5vr/experimental/Clock' {
 
 declare module '@0b5vr/experimental/color' {
     export * from '@0b5vr/experimental/color/colorFromAtariST';
+    export * from '@0b5vr/experimental/color/colorFromHex';
     export * from '@0b5vr/experimental/color/colorHSV2RGB';
     export * from '@0b5vr/experimental/color/colorToHex';
     export * from '@0b5vr/experimental/color/colorTurbo';
@@ -139,6 +141,17 @@ declare module '@0b5vr/experimental/float32ArrayToWav' {
     export function float32ArrayToWav(src: Float32Array[], sampleRate: number): ArrayBuffer;
 }
 
+declare module '@0b5vr/experimental/fmix32' {
+    /**
+      * The finalization mix function used in MurmurHash3 to avalanche the bits of a hash to finalize it.
+      * Useful for generating a nice-looking hash from a simple integer sequence.
+      *
+      * @param h - the hash to finalize
+      * @returns the finalized hash
+      */
+    export function fmix32(h: number): number;
+}
+
 declare module '@0b5vr/experimental/GPUTimer' {
     export { GPUTimer } from '@0b5vr/experimental/GPUTimer/GPUTimer';
 }
@@ -166,18 +179,26 @@ declare module '@0b5vr/experimental/MapOfSet' {
 
 declare module '@0b5vr/experimental/math' {
     export * from '@0b5vr/experimental/math/box3';
+    export * from '@0b5vr/experimental/math/clamp';
     export * from '@0b5vr/experimental/math/euler';
+    export * from '@0b5vr/experimental/math/lerp';
     export * from '@0b5vr/experimental/math/line3';
+    export * from '@0b5vr/experimental/math/linearstep';
     export * from '@0b5vr/experimental/math/mat2';
     export * from '@0b5vr/experimental/math/mat3';
     export * from '@0b5vr/experimental/math/mat4';
     export * from '@0b5vr/experimental/math/mod';
     export * from '@0b5vr/experimental/math/plane3';
     export * from '@0b5vr/experimental/math/quat';
+    export * from '@0b5vr/experimental/math/range';
     export * from '@0b5vr/experimental/math/ray3';
     export * from '@0b5vr/experimental/math/sanitizeAngle';
+    export * from '@0b5vr/experimental/math/saturate';
+    export * from '@0b5vr/experimental/math/smootherstep';
+    export * from '@0b5vr/experimental/math/smootheststep';
+    export * from '@0b5vr/experimental/math/smoothstep';
     export * from '@0b5vr/experimental/math/sphere3';
-    export * from '@0b5vr/experimental/math/utils';
+    export * from '@0b5vr/experimental/math/step';
     export * from '@0b5vr/experimental/math/vec';
     export * from '@0b5vr/experimental/math/vec3';
     export * from '@0b5vr/experimental/math/vec4';
@@ -543,6 +564,22 @@ declare module '@0b5vr/experimental/color/colorFromAtariST' {
     export function colorFromAtariST(stColor: number): RawRGB;
 }
 
+declare module '@0b5vr/experimental/color/colorFromHex' {
+    import type { RawRGB } from '@0b5vr/experimental/color/RawRGB';
+    /**
+      * Converts the input hex color to {@link RawRGB}.
+      *
+      * Supported formats:
+      * - `#RRGGBB`
+      * - `#RGB`
+      * - `0xRRGGBB`
+      *
+      * @param hex - Hex representation of the color
+      * @returns Color in {@link RawRGB}
+      */
+    export function colorFromHex(hex: number | string): RawRGB;
+}
+
 declare module '@0b5vr/experimental/color/colorHSV2RGB' {
     import type { RawRGB } from '@0b5vr/experimental/color/RawRGB';
     /**
@@ -557,8 +594,10 @@ declare module '@0b5vr/experimental/color/colorHSV2RGB' {
 declare module '@0b5vr/experimental/color/colorToHex' {
     import type { RawRGB } from '@0b5vr/experimental/color/RawRGB';
     /**
-      * Converts the input color to hex representation (e.g. #7f7f7f)
-      * @param color color in {@link RawRGB}
+      * Converts the input {@link RawRGB} to hex representation (e.g. #7f7f7f)
+      *
+      * @param color - color in {@link RawRGB}
+      * @returns Hex representation of the color
       */
     export function colorToHex(color: RawRGB): string;
 }
@@ -866,12 +905,36 @@ declare module '@0b5vr/experimental/math/box3' {
     export * from '@0b5vr/experimental/math/box3/RawBox3';
 }
 
+declare module '@0b5vr/experimental/math/clamp' {
+    /**
+      * `clamp`
+      *
+      * @param x - value to clamp
+      * @param minVal - lower bound
+      * @param maxVal - upper bound
+      */
+    export function clamp(x: number, minVal: number, maxVal: number): number;
+}
+
 declare module '@0b5vr/experimental/math/euler' {
     export * from '@0b5vr/experimental/math/euler/Euler';
     export * from '@0b5vr/experimental/math/euler/EulerOrder';
     export * from '@0b5vr/experimental/math/euler/eulerFromMat3';
     export * from '@0b5vr/experimental/math/euler/eulerFromMat4';
     export * from '@0b5vr/experimental/math/euler/eulerFromQuaternion';
+}
+
+declare module '@0b5vr/experimental/math/lerp' {
+    /**
+      * `lerp`, or `mix`.
+      * Return a linear interpolation of two numbers.
+      * The {@link t} won't be clamped.
+      *
+      * @param a - A number
+      * @param b - Another number
+      * @param t - A number interpolating two numbers. Usually in range [0, 1] but not clamped
+      */
+    export function lerp(a: number, b: number, t: number): number;
 }
 
 declare module '@0b5vr/experimental/math/line3' {
@@ -882,6 +945,17 @@ declare module '@0b5vr/experimental/math/line3' {
     export * from '@0b5vr/experimental/math/line3/line3Delta';
     export * from '@0b5vr/experimental/math/line3/line3DistanceToPoint';
     export * from '@0b5vr/experimental/math/line3/RawLine3';
+}
+
+declare module '@0b5vr/experimental/math/linearstep' {
+    /**
+      * `smoothstep` but not smooth
+      *
+      * @param edge0 - lower edge of the transition
+      * @param edge1 - upper edge of the transition
+      * @param x - value to interpolate
+      */
+    export function linearstep(edge0: number, edge1: number, x: number): number;
 }
 
 declare module '@0b5vr/experimental/math/mat2' {
@@ -932,6 +1006,9 @@ declare module '@0b5vr/experimental/math/mod' {
     /**
       * GLSL Style `mod` function.
       * "compute value of one parameter modulo another"
+      *
+      * @param value - value to mod
+      * @param divisor - divisor to mod by
       */
     export function mod(value: number, divisor: number): number;
 }
@@ -962,12 +1039,30 @@ declare module '@0b5vr/experimental/math/quat' {
     export { quatLogVec3 } from '@0b5vr/experimental/math/quat/quatLogVec3';
     export { quatLookRotation } from '@0b5vr/experimental/math/quat/quatLookRotation';
     export { quatMultiply } from '@0b5vr/experimental/math/quat/quatMultiply';
+    export { quatNlerp } from '@0b5vr/experimental/math/quat/quatNlerp';
     export { quatNormalize } from '@0b5vr/experimental/math/quat/quatNormalize';
     export { quatRotationX } from '@0b5vr/experimental/math/quat/quatRotationX';
     export { quatRotationY } from '@0b5vr/experimental/math/quat/quatRotationY';
     export { quatRotationZ } from '@0b5vr/experimental/math/quat/quatRotationZ';
     export { quatSlerp } from '@0b5vr/experimental/math/quat/quatSlerp';
     export type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+}
+
+declare module '@0b5vr/experimental/math/range' {
+    /**
+      * Transform a value from input range to output range.
+      *
+      * This function does NOT clamp the output value.
+      *
+      * This function is inspired by the Processing's `map()` function.
+      *
+      * @param x - value to transform
+      * @param x0 - lower edge of the input range
+      * @param x1 - upper edge of the input range
+      * @param y0 - lower edge of the output range
+      * @param y1 - upper edge of the output range
+      */
+    export function range(x: number, x0: number, x1: number, y0: number, y1: number): number;
 }
 
 declare module '@0b5vr/experimental/math/ray3' {
@@ -984,51 +1079,64 @@ declare module '@0b5vr/experimental/math/sanitizeAngle' {
     export function sanitizeAngle(angle: number): number;
 }
 
+declare module '@0b5vr/experimental/math/saturate' {
+    /**
+      * `clamp(x, 0.0, 1.0)`
+      *
+      * @param x - value to clamp
+      */
+    export function saturate(x: number): number;
+}
+
+declare module '@0b5vr/experimental/math/smootherstep' {
+    /**
+      * `smoothstep` but more smooth
+      *
+      * @param edge0 - lower edge of the transition
+      * @param edge1 - upper edge of the transition
+      * @param x - value to interpolate
+      */
+    export function smootherstep(edge0: number, edge1: number, x: number): number;
+}
+
+declare module '@0b5vr/experimental/math/smootheststep' {
+    /**
+      * `smoothstep` but WAY more smooth
+      *
+      * @param edge0 - lower edge of the transition
+      * @param edge1 - upper edge of the transition
+      * @param x - value to interpolate
+      */
+    export function smootheststep(edge0: number, edge1: number, x: number): number;
+}
+
+declare module '@0b5vr/experimental/math/smoothstep' {
+    /**
+      * world famous `smoothstep` function
+      *
+      * @param edge0 - lower edge of the transition
+      * @param edge1 - upper edge of the transition
+      * @param x - value to interpolate
+      */
+    export function smoothstep(edge0: number, edge1: number, x: number): number;
+}
+
 declare module '@0b5vr/experimental/math/sphere3' {
     export * from '@0b5vr/experimental/math/sphere3/RawSphere3';
     export * from '@0b5vr/experimental/math/sphere3/Sphere3';
     export * from '@0b5vr/experimental/math/sphere3/sphere3ContainsPoint';
 }
 
-declare module '@0b5vr/experimental/math/utils' {
+declare module '@0b5vr/experimental/math/step' {
     /**
-        * `lerp`, or `mix`.
-        * Return a linear interpolation of two numbers.
-        * The {@link t} won't be clamped.
-        *
-        * @param a - A number
-        * @param b - Another number
-        * @param t - A number interpolating two numbers. Usually in range [0, 1] but not clamped
-        */
-    export function lerp(a: number, b: number, t: number): number;
-    /**
-        * `clamp`
-        */
-    export function clamp(x: number, l: number, h: number): number;
-    /**
-        * `clamp( x, 0.0, 1.0 )`
-        */
-    export function saturate(x: number): number;
-    /**
-        * Transform a value from input range to output range.
-        */
-    export function range(x: number, x0: number, x1: number, y0: number, y1: number): number;
-    /**
-        * `smoothstep` but not smooth
-        */
-    export function linearstep(a: number, b: number, x: number): number;
-    /**
-        * world famous `smoothstep` function
-        */
-    export function smoothstep(a: number, b: number, x: number): number;
-    /**
-        * `smoothstep` but more smooth
-        */
-    export function smootherstep(a: number, b: number, x: number): number;
-    /**
-        * `smoothstep` but WAY more smooth
-        */
-    export function smootheststep(a: number, b: number, x: number): number;
+      * GLSL style heaviside step function.
+      *
+      * `edge <= x ? 1.0 : 0.0`
+      *
+      * @param edge - threshold value
+      * @param x - value to test
+      */
+    export function step(edge: number, x: number): number;
 }
 
 declare module '@0b5vr/experimental/math/vec' {
@@ -2581,9 +2689,22 @@ declare module '@0b5vr/experimental/math/quat/Quaternion' {
                 */
             multiply(...quaternions: Quaternion[]): Quaternion;
             /**
-                * Interpolate between this and given quaternion.
-                * @param b Another Quaternion
-                * @param t How much do we want to rotate this to b
+                * Interpolate between this and given quaternion using normalized lerp.
+                * When the dot product of the two quaternions is negative, the given quaternion is negated to ensure the shortest path is taken.
+                *
+                * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+                *
+                * @param b - "to" quaternion
+                * @param t - How much do we want to rotate this to b
+                * @returns The interpolated quaternion
+                */
+            nlerp(b: Quaternion, t: number): Quaternion;
+            /**
+                * Interpolate between this and given quaternion using spherical lerp.
+                *
+                * @param b - Another Quaternion
+                * @param t - How much do we want to rotate this to b
+                * @returns The interpolated quaternion
                 */
             slerp(b: Quaternion, t: number): Quaternion;
             /**
@@ -2591,15 +2712,29 @@ declare module '@0b5vr/experimental/math/quat/Quaternion' {
                 */
             static get identity(): Quaternion;
             /**
-                * Multiply two or more matrices.
+                * Multiply two or more quaternions.
                 * @param quaternion Quaternions
                 */
             static multiply(...quaternions: Quaternion[]): Quaternion;
             /**
-                * Interpolate between two quaternions.
-                * @param a "from" quaternion
-                * @param b "to" quaternion
-                * @param t How much do we want to rotate the a to b
+                * Interpolate between two quaternions using normalized lerp.
+                * When the dot product of the two quaternions is negative, the second quaternion is negated to ensure the shortest path is taken.
+                *
+                * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+                *
+                * @param a - "from" quaternion
+                * @param b - "to" quaternion
+                * @param t - How much do we want to rotate the a to b
+                * @returns The interpolated quaternion
+                */
+            static nlerp(a: Quaternion, b: Quaternion, t: number): Quaternion;
+            /**
+                * Interpolate between two quaternions using spherical lerp.
+                *
+                * @param a - "from" quaternion
+                * @param b - "to" quaternion
+                * @param t - How much do we want to rotate the a to b
+                * @returns The interpolated quaternion
                 */
             static slerp(a: Quaternion, b: Quaternion, t: number): Quaternion;
             /**
@@ -2723,6 +2858,22 @@ declare module '@0b5vr/experimental/math/quat/quatMultiply' {
     export function quatMultiply(...quats: RawQuaternion[]): RawQuaternion;
 }
 
+declare module '@0b5vr/experimental/math/quat/quatNlerp' {
+    import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+    /**
+      * Interpolate between two quaternions using normalized lerp.
+      * When the dot product of the two quaternions is negative, the second quaternion is negated to ensure the shortest path is taken.
+      *
+      * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+      *
+      * @param a - "from" quaternion
+      * @param b - "to" quaternion
+      * @param t - How much do we want to rotate the a to b
+      * @returns The interpolated quaternion
+      */
+    export function quatNlerp(a: RawQuaternion, b: RawQuaternion, t: number): RawQuaternion;
+}
+
 declare module '@0b5vr/experimental/math/quat/quatNormalize' {
     import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
     /**
@@ -2765,10 +2916,12 @@ declare module '@0b5vr/experimental/math/quat/quatRotationZ' {
 declare module '@0b5vr/experimental/math/quat/quatSlerp' {
     import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
     /**
-      * Interpolate between two quaternions.
-      * @param a "from" quaternion
-      * @param b "to" quaternion
-      * @param t How much do we want to rotate the a to b
+      * Interpolate between two quaternions using spherical lerp.
+      *
+      * @param a - "from" quaternion
+      * @param b - "to" quaternion
+      * @param t - How much do we want to rotate the a to b
+      * @returns The interpolated quaternion
       */
     export function quatSlerp(a: RawQuaternion, b: RawQuaternion, t: number): RawQuaternion;
 }

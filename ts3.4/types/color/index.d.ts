@@ -1,4 +1,5 @@
 export * from './colorFromAtariST';
+export * from './colorFromHex';
 export * from './colorHSV2RGB';
 export * from './colorToHex';
 export * from './colorTurbo';

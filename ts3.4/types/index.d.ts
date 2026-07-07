@@ -10,6 +10,7 @@ export * from './dsp';
 export * from './ExpSmooth';
 export * from './edt';
 export { float32ArrayToWav } from './float32ArrayToWav';
+export { fmix32 } from './fmix32';
 export * from './GPUTimer';
 export * from './HistoryMeanCalculator';
 export { int16ArrayToWav } from './int16ArrayToWav';

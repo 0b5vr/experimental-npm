@@ -9,6 +9,7 @@ export { quatLog } from './quatLog';
 export { quatLogVec3 } from './quatLogVec3';
 export { quatLookRotation } from './quatLookRotation';
 export { quatMultiply } from './quatMultiply';
+export { quatNlerp } from './quatNlerp';
 export { quatNormalize } from './quatNormalize';
 export { quatRotationX } from './quatRotationX';
 export { quatRotationY } from './quatRotationY';

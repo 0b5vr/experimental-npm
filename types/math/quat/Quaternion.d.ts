@@ -66,9 +66,22 @@ export declare class Quaternion {
      */
     multiply(...quaternions: Quaternion[]): Quaternion;
     /**
-     * Interpolate between this and given quaternion.
-     * @param b Another Quaternion
-     * @param t How much do we want to rotate this to b
+     * Interpolate between this and given quaternion using normalized lerp.
+     * When the dot product of the two quaternions is negative, the given quaternion is negated to ensure the shortest path is taken.
+     *
+     * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+     *
+     * @param b - "to" quaternion
+     * @param t - How much do we want to rotate this to b
+     * @returns The interpolated quaternion
+     */
+    nlerp(b: Quaternion, t: number): Quaternion;
+    /**
+     * Interpolate between this and given quaternion using spherical lerp.
+     *
+     * @param b - Another Quaternion
+     * @param t - How much do we want to rotate this to b
+     * @returns The interpolated quaternion
      */
     slerp(b: Quaternion, t: number): Quaternion;
     /**
@@ -76,15 +89,29 @@ export declare class Quaternion {
      */
     static get identity(): Quaternion;
     /**
-     * Multiply two or more matrices.
+     * Multiply two or more quaternions.
      * @param quaternion Quaternions
      */
     static multiply(...quaternions: Quaternion[]): Quaternion;
     /**
-     * Interpolate between two quaternions.
-     * @param a "from" quaternion
-     * @param b "to" quaternion
-     * @param t How much do we want to rotate the a to b
+     * Interpolate between two quaternions using normalized lerp.
+     * When the dot product of the two quaternions is negative, the second quaternion is negated to ensure the shortest path is taken.
+     *
+     * This should behave the same as Unity's `Quaternion.LerpUnclamped`.
+     *
+     * @param a - "from" quaternion
+     * @param b - "to" quaternion
+     * @param t - How much do we want to rotate the a to b
+     * @returns The interpolated quaternion
+     */
+    static nlerp(a: Quaternion, b: Quaternion, t: number): Quaternion;
+    /**
+     * Interpolate between two quaternions using spherical lerp.
+     *
+     * @param a - "from" quaternion
+     * @param b - "to" quaternion
+     * @param t - How much do we want to rotate the a to b
+     * @returns The interpolated quaternion
      */
     static slerp(a: Quaternion, b: Quaternion, t: number): Quaternion;
     /**
