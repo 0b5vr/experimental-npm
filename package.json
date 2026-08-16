@@ -26,17 +26,17 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "version": "yarn clean && yarn build",
+    "version": "npm run clean && npm run build",
     "dev": "cross-env SERVE=1 node bin/build.js",
-    "all": "yarn lint && yarn test && yarn clean && yarn build && yarn docs",
+    "all": "npm run lint && npm test && npm run clean && npm run build && npm run docs",
     "clean": "rimraf dist/ docs/ ts*/ types/",
     "test": "vitest run",
     "lint": "biome check ./src",
     "lint-fix": "biome check --write ./src",
     "lint-ci": "biome ci ./src",
-    "build": "yarn build-js && yarn build-types",
+    "build": "npm run build-js && npm run build-types",
     "build-js": "node bin/build.js",
-    "build-types": "yarn build-types-tsc && yarn build-types-downlevel && yarn build-types-bundle",
+    "build-types": "npm run build-types-tsc && npm run build-types-downlevel && npm run build-types-bundle",
     "build-types-tsc": "tsc --declaration --declarationDir ./types --emitDeclarationOnly",
     "build-types-downlevel": "downlevel-dts types ts3.4/types",
     "build-types-bundle": "node bin/dts-bundle.js",
@@ -60,7 +60,6 @@
     "vitest": "^4.0.18"
   },
   "volta": {
-    "node": "24.13.0",
-    "yarn": "1.22.15"
+    "node": "24.13.0"
   }
 }

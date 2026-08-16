@@ -7,8 +7,8 @@ Actually a memo for myself
 Author code on `dev` branch
 
 ```
-yarn
-yarn dev
+npm i
+npm run dev
 ```
 
 Test is your friend

@@ -15,7 +15,7 @@ jobs:
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Fetch Deps
-      run: yarn install --frozen-lockfile
+      run: npm ci
 
   lint:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Lint
-      run: yarn lint-ci
+      run: npm run lint-ci
 
   test:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Test
-      run: yarn test --coverage
+      run: npm run test -- --coverage
     - name: Upload Coverage
       uses: actions/upload-artifact@v4
       with:
@@ -54,7 +54,7 @@ jobs:
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Build
-      run: yarn build
+      run: npm run build
     - name: Upload Coverage
       uses: actions/upload-artifact@v4
       with:
@@ -77,7 +77,7 @@ jobs:
       with:
         name: build
     - name: Build Docs
-      run: yarn docs
+      run: npm run docs
     - name: Upload Coverage
       uses: actions/upload-artifact@v4
       with:

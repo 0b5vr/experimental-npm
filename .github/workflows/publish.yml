@@ -25,7 +25,7 @@ jobs:
     - name: Init Stuff
       uses: ./.github/actions/init
     - name: Fetch Deps
-      run: yarn install --frozen-lockfile
+      run: npm ci
     - name: Bump version
       run: npm version ${{ inputs.version }}
     - name: Publish
