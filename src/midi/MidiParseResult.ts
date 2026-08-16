@@ -1,3 +1,4 @@
+// biome-ignore format: readability
 export type MidiParseResultHeader = [
   format: number,
   tracks: number,
@@ -24,6 +25,7 @@ export type MidiParseResultTrackEvent =
 
 export type MidiParseResultTrack = MidiParseResultTrackEvent[];
 
+// biome-ignore format: readability
 export type MidiParseResult = [
   header: MidiParseResultHeader,
   tracks: MidiParseResultTrack[],

@@ -5,10 +5,7 @@
  * @param sampleRate The output sample rate.
  * @returns An ArrayBuffer containing the wav data.
  */
-export function int16ArrayToWav(
-  src: Int16Array[],
-  sampleRate: number,
-): ArrayBuffer {
+export function int16ArrayToWav(src: Int16Array[], sampleRate: number): ArrayBuffer {
   const channels = src.length;
   const samples = src[0].length;
   const byteLength = channels * samples * 2 + 44;

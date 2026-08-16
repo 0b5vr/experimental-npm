@@ -22,10 +22,7 @@
  * @param root The "root" node
  * @param traverser The traverse function. If the node has "children" return them in an array.
  */
-export function traverse<TNode>(
-  root: TNode,
-  traverser: (node: TNode) => TNode[] | false,
-): void {
+export function traverse<TNode>(root: TNode, traverser: (node: TNode) => TNode[] | false): void {
   const nodesNeedProcess: TNode[] = [root];
   const nodesSeen = new Set<TNode>(nodesNeedProcess);
 

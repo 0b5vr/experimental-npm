@@ -10,9 +10,6 @@ import { eulerFromMat3 } from './eulerFromMat3';
  * @param m An input quaternion
  * @param order An order of output euler angles. Assume as `XYZ` if not specified
  */
-export function eulerFromQuaternion(
-  m: RawQuaternion,
-  order?: EulerOrder,
-): RawVector3 {
+export function eulerFromQuaternion(m: RawQuaternion, order?: EulerOrder): RawVector3 {
   return eulerFromMat3(mat3FromQuaternion(m), order);
 }

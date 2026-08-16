@@ -9,9 +9,6 @@ import type { RawDagEdge } from './RawDagEdge';
  *
  * See also: {@link dagEdgesParents}
  */
-export function dagEdgesParent<T>(
-  edges: RawDagEdge<T>[],
-  destination: T,
-): T | null {
+export function dagEdgesParent<T>(edges: RawDagEdge<T>[], destination: T): T | null {
   return edges.find((edge) => edge[1] === destination)?.[0] ?? null;
 }

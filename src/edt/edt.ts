@@ -11,12 +11,7 @@
  * @param stride Stride of the source
  * @param length Length of the source
  */
-export function edt1d(
-  data: Float32Array,
-  offset: number,
-  stride: number,
-  length: number,
-): void {
+export function edt1d(data: Float32Array, offset: number, stride: number, length: number): void {
   // index of rightmost parabola in lower envelope
   let k = 0;
 

@@ -35,14 +35,12 @@ function readUVar(array: Uint8Array, headBox: [number]): number {
   }
 }
 
-function parseHeader(
-  array: Uint8Array,
-  headBox: [number],
-): MidiParseResultHeader {
+function parseHeader(array: Uint8Array, headBox: [number]): MidiParseResultHeader {
   // skip type and length (4+4)
   // length has to be 6, there's no need to parse
   headBox[0] += 8;
 
+  // biome-ignore format: readability
   return [
     readU16(array, headBox),
     readU16(array, headBox),
@@ -50,10 +48,7 @@ function parseHeader(
   ];
 }
 
-function parseTrack(
-  array: Uint8Array,
-  headBox: [number],
-): MidiParseResultTrack {
+function parseTrack(array: Uint8Array, headBox: [number]): MidiParseResultTrack {
   // skip type (4)
   headBox[0] += 4;
 
@@ -82,6 +77,7 @@ function parseTrack(
 
       const eventLength = readU8(array, headBox);
 
+      // biome-ignore format: readability
       track.push([
         delta,
         type,

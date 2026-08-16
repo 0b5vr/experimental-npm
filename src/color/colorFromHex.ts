@@ -2,7 +2,7 @@ import type { RawRGB } from './RawRGB';
 
 /**
  * Converts the input hex color to {@link RawRGB}.
- * 
+ *
  * Supported formats:
  * - `#RRGGBB`
  * - `#RGB`

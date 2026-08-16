@@ -9,11 +9,7 @@ import type { RawQuaternion } from './RawQuaternion';
  * @param t - How much do we want to rotate the a to b
  * @returns The interpolated quaternion
  */
-export function quatSlerp(
-  a: RawQuaternion,
-  b: RawQuaternion,
-  t: number,
-): RawQuaternion {
+export function quatSlerp(a: RawQuaternion, b: RawQuaternion, t: number): RawQuaternion {
   if (t === 0.0) {
     return a.concat() as RawQuaternion;
   }

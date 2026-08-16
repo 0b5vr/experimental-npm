@@ -5,10 +5,7 @@ import { plane3DistanceToPoint } from '../plane3DistanceToPoint';
 
 describe('plane3DistanceToPoint', () => {
   it('returns a distance from given plane to given point (a intuitive sample)', () => {
-    const subject = plane3DistanceToPoint(
-      [[0.0, 1.0, 0.0], 1.0],
-      [0.0, 0.0, 0.0],
-    );
+    const subject = plane3DistanceToPoint([[0.0, 1.0, 0.0], 1.0], [0.0, 0.0, 0.0]);
     expect(subject).toBeCloseTo(1.0);
   });
 

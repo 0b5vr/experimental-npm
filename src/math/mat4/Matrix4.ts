@@ -21,9 +21,12 @@ import { mat4Translate } from './mat4Translate';
 import { mat4Transpose } from './mat4Transpose';
 import type { RawMatrix4 } from './RawMatrix4';
 
+// biome-ignore format: matrix
 const rawIdentityMatrix4: RawMatrix4 = [
-  1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
-  1.0,
+  1.0, 0.0, 0.0, 0.0,
+  0.0, 1.0, 0.0, 0.0,
+  0.0, 0.0, 1.0, 0.0,
+  0.0, 0.0, 0.0, 1.0,
 ];
 
 /**
@@ -208,9 +211,7 @@ export class Matrix4 {
     up = new Vector3([0.0, 1.0, 0.0]),
     roll = 0.0,
   ): Matrix4 {
-    return new Matrix4(
-      mat4LookAt(position.elements, target.elements, up.elements, roll),
-    );
+    return new Matrix4(mat4LookAt(position.elements, target.elements, up.elements, roll));
   }
 
   /**
@@ -224,9 +225,7 @@ export class Matrix4 {
     up = new Vector3([0.0, 1.0, 0.0]),
     roll = 0.0,
   ): Matrix4 {
-    return new Matrix4(
-      mat4LookAtInverse(position.elements, target.elements, up.elements, roll),
-    );
+    return new Matrix4(mat4LookAtInverse(position.elements, target.elements, up.elements, roll));
   }
 
   /**
@@ -241,13 +240,7 @@ export class Matrix4 {
    * Compose a matrix out of position, scale, and rotation.
    * Yoinked from Three.js.
    */
-  public static compose(
-    position: Vector3,
-    rotation: Quaternion,
-    scale: Vector3,
-  ): Matrix4 {
-    return new Matrix4(
-      mat4Compose(position.elements, rotation.elements, scale.elements),
-    );
+  public static compose(position: Vector3, rotation: Quaternion, scale: Vector3): Matrix4 {
+    return new Matrix4(mat4Compose(position.elements, rotation.elements, scale.elements));
   }
 }

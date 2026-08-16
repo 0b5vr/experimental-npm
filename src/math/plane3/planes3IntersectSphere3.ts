@@ -11,11 +11,6 @@ import type { RawPlane3 } from './RawPlane3';
  * @param planes A list of planes
  * @param sphere A sphere3
  */
-export function planes3IntersectSphere3(
-  planes: RawPlane3[],
-  sphere: RawSphere3,
-): boolean {
-  return planes.every(
-    (plane) => plane3DistanceToPoint(plane, sphere[0]) >= -sphere[1],
-  );
+export function planes3IntersectSphere3(planes: RawPlane3[], sphere: RawSphere3): boolean {
+  return planes.every((plane) => plane3DistanceToPoint(plane, sphere[0]) >= -sphere[1]);
 }

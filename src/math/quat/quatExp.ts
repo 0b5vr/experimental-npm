@@ -16,8 +16,5 @@ export function quatExp(quat: RawQuaternion): RawQuaternion {
     return [0.0, 0.0, 0.0, Math.exp(w)];
   }
 
-  return vecScale(
-    [...vecScale(v, Math.sin(vl) / vl), Math.cos(vl)],
-    Math.exp(w),
-  );
+  return vecScale([...vecScale(v, Math.sin(vl) / vl), Math.cos(vl)], Math.exp(w));
 }

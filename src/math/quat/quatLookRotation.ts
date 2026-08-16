@@ -5,14 +5,8 @@ import type { RawQuaternion } from './RawQuaternion';
 /**
  * Return a quaternion which looks at the direction of `look`.
  */
-export function quatLookRotation(
-  look: RawVector3,
-  up?: RawVector3,
-): RawQuaternion {
-  const { normal, tangent, binormal } = vec3OrthoNormalize(
-    look,
-    up ?? [0.0, 1.0, 0.0],
-  );
+export function quatLookRotation(look: RawVector3, up?: RawVector3): RawQuaternion {
+  const { normal, tangent, binormal } = vec3OrthoNormalize(look, up ?? [0.0, 1.0, 0.0]);
 
   const w = Math.sqrt(1.0 + binormal[0] + tangent[1] + normal[2]) * 0.5;
   const invW4 = 0.25 / w;

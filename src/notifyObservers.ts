@@ -23,14 +23,8 @@ export type Observer<TEvent = void> = (event: TEvent) => void;
  * @param param The param you want to give to observers
  */
 export function notifyObservers(observers: Iterable<Observer<void>>): void;
-export function notifyObservers<T>(
-  observers: Iterable<Observer<T>>,
-  param: T,
-): void;
-export function notifyObservers<T>(
-  observers: Iterable<Observer<T>>,
-  param?: T,
-): void {
+export function notifyObservers<T>(observers: Iterable<Observer<T>>, param: T): void;
+export function notifyObservers<T>(observers: Iterable<Observer<T>>, param?: T): void {
   for (const observer of observers) {
     observer(param as T);
   }

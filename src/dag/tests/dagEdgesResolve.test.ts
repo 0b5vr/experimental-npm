@@ -5,16 +5,7 @@ import type { RawDagEdge } from '../RawDagEdge';
 
 describe('dagEdgesResolve', () => {
   it('resolves the given dag', () => {
-    const nodes = shuffleArray([
-      'time',
-      'resolution',
-      'p',
-      'ro',
-      'rd',
-      'isect',
-      'alpha',
-      'color',
-    ]);
+    const nodes = shuffleArray(['time', 'resolution', 'p', 'ro', 'rd', 'isect', 'alpha', 'color']);
 
     const edges: RawDagEdge<string>[] = shuffleArray([
       ['time', 'ro'],
@@ -32,9 +23,7 @@ describe('dagEdgesResolve', () => {
 
     expect(subject.indexOf('ro')).toBeGreaterThan(subject.indexOf('time'));
     expect(subject.indexOf('p')).toBeGreaterThan(subject.indexOf('resolution'));
-    expect(subject.indexOf('color')).toBeGreaterThan(
-      subject.indexOf('resolution'),
-    );
+    expect(subject.indexOf('color')).toBeGreaterThan(subject.indexOf('resolution'));
     expect(subject.indexOf('color')).toBeGreaterThan(subject.indexOf('time'));
   });
 });

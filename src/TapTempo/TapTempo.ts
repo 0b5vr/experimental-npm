@@ -22,10 +22,7 @@ export class TapTempo {
   }
 
   public get beat(): number {
-    return (
-      this.__lastBeat +
-      ((performance.now() - this.__lastTime) * 0.001) / this.beatDuration
-    );
+    return this.__lastBeat + ((performance.now() - this.__lastTime) * 0.001) / this.beatDuration;
   }
 
   public reset(): void {

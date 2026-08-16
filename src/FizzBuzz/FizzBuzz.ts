@@ -11,11 +11,7 @@ export class FizzBuzz implements Iterable<number | string> {
   private __index: number;
   private __end: number;
 
-  public constructor(
-    words: Map<number, string> = FizzBuzz.WordsDefault,
-    index = 1,
-    end = 100,
-  ) {
+  public constructor(words: Map<number, string> = FizzBuzz.WordsDefault, index = 1, end = 100) {
     this.__words = words;
     this.__index = index;
     this.__end = end;

@@ -29,8 +29,7 @@ export function toBeCloseToQuaternion(
   if (!isPassed) {
     return {
       pass: false,
-      message:
-        () => `The received quaternion doesn't match to the expected quaternion:
+      message: () => `The received quaternion doesn't match to the expected quaternion:
 expected ${quatToString(expected)},
 received ${quatToString(received)}
 diff: ${diff}`,
@@ -38,8 +37,7 @@ diff: ${diff}`,
   } else {
     return {
       pass: true,
-      message: () =>
-        'The received array approximately matches to the expected array',
+      message: () => 'The received array approximately matches to the expected array',
     };
   }
 }

@@ -8,6 +8,10 @@ import type { RawRGB } from './RawRGB';
  * @returns Hex representation of the color
  */
 export function colorToHex(color: RawRGB): string {
-  const hexArray = color.map((v) => Math.round(saturate(v) * 255.0).toString(16).padStart(2, '0'));
+  const hexArray = color.map((v) =>
+    Math.round(saturate(v) * 255.0)
+      .toString(16)
+      .padStart(2, '0'),
+  );
   return `#${hexArray.join('')}`;
 }

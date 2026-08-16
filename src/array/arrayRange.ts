@@ -1,8 +1,4 @@
-export function arrayRange(
-  start: number,
-  end: number,
-  step?: number,
-): number[] {
+export function arrayRange(start: number, end: number, step?: number): number[] {
   let current = start;
   const ret: number[] = [];
 

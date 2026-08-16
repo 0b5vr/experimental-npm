@@ -168,11 +168,7 @@ export class Vector3 extends Vector<Vector3> {
     tangent: Vector3;
     binormal: Vector3;
   } {
-    const result = vec3OrthoNormalize(
-      normal.elements,
-      tangent.elements,
-      binormal.elements,
-    );
+    const result = vec3OrthoNormalize(normal.elements, tangent.elements, binormal.elements);
     return {
       normal: new Vector3(result.normal),
       tangent: new Vector3(result.tangent),

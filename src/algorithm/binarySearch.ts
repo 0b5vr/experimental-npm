@@ -11,10 +11,7 @@
  * @returns An index found
  */
 export function binarySearch<T>(array: ArrayLike<T>, element: T): number;
-export function binarySearch<T>(
-  array: ArrayLike<T>,
-  compare: (element: T) => boolean,
-): number;
+export function binarySearch<T>(array: ArrayLike<T>, compare: (element: T) => boolean): number;
 export function binarySearch<T>(
   array: ArrayLike<T>,
   elementOrCompare: T | ((element: T) => boolean),

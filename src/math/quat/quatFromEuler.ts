@@ -5,10 +5,7 @@ import type { RawQuaternion } from './RawQuaternion';
 /**
  * Generate a Quaternion out of euler angles.
  */
-export function quatFromEuler(
-  euler: RawVector3,
-  order?: EulerOrder,
-): RawQuaternion {
+export function quatFromEuler(euler: RawVector3, order?: EulerOrder): RawQuaternion {
   const [i, j, k, sign] =
     !order || order === 'XYZ'
       ? [0, 1, 2, 1]

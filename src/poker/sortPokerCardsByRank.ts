@@ -9,14 +9,8 @@ import { pokerSuitIndexMap } from './pokerSuitIndexMap';
  */
 export function sortPokerCardsByRank(cards: PokerCard[]): PokerCard[] {
   return cards
+    .sort((a, b) => pokerSuitIndexMap[a[1] as PokerSuit] - pokerSuitIndexMap[b[1] as PokerSuit])
     .sort(
-      (a, b) =>
-        pokerSuitIndexMap[a[1] as PokerSuit] -
-        pokerSuitIndexMap[b[1] as PokerSuit],
-    )
-    .sort(
-      (a, b) =>
-        pokerRankStrengthMap[a[0] as PokerRank] -
-        pokerRankStrengthMap[b[0] as PokerRank],
+      (a, b) => pokerRankStrengthMap[a[0] as PokerRank] - pokerRankStrengthMap[b[0] as PokerRank],
     );
 }

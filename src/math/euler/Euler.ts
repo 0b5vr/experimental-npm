@@ -23,10 +23,7 @@ export class Euler {
    */
   public order: EulerOrder;
 
-  public constructor(
-    elements: RawVector3 = [0.0, 0.0, 0.0],
-    order: EulerOrder = 'XYZ',
-  ) {
+  public constructor(elements: RawVector3 = [0.0, 0.0, 0.0], order: EulerOrder = 'XYZ') {
     this.elements = elements;
     this.order = order;
   }
@@ -94,10 +91,7 @@ export class Euler {
   /**
    * Generate an Euler out of a quaternion.
    */
-  public static fromQuaternion(
-    quaternion: Quaternion,
-    order: EulerOrder,
-  ): Euler {
+  public static fromQuaternion(quaternion: Quaternion, order: EulerOrder): Euler {
     return new Euler(eulerFromQuaternion(quaternion.elements, order), order);
   }
 }

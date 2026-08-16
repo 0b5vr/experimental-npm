@@ -27,9 +27,7 @@ describe('retry', () => {
     const subject = retry(() => {
       tries++;
 
-      if (
-        str === 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん'
-      ) {
+      if (str === 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん') {
         return str;
       } else {
         str += 'すとらちゃん';
@@ -37,9 +35,7 @@ describe('retry', () => {
       }
     }, 10);
 
-    expect(subject).toBe(
-      'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん',
-    );
+    expect(subject).toBe('すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん');
     expect(tries).toBe(6);
   });
 });

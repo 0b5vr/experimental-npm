@@ -89,9 +89,7 @@ export abstract class Vector<T extends Vector<T>> {
    * @param vectors Other Vectors
    */
   public multiply(...vectors: T[]): T {
-    return this.__new(
-      vecMultiply(this.elements, ...vectors.map((v) => v.elements)),
-    );
+    return this.__new(vecMultiply(this.elements, ...vectors.map((v) => v.elements)));
   }
 
   /**

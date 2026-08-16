@@ -92,8 +92,7 @@ export function createTinyseqPolyReader(
         const noteOffTime = notesOffTime[iPoly];
 
         ret[iPoly][4 * iSample + 0] = t - noteTime; // time
-        ret[iPoly][4 * iSample + 1] =
-          noteOffTime < noteTime ? 0.0 : t - noteOffTime; // offTime
+        ret[iPoly][4 * iSample + 1] = noteOffTime < noteTime ? 0.0 : t - noteOffTime; // offTime
         ret[iPoly][4 * iSample + 2] = notes[iPoly]; // note
         ret[iPoly][4 * iSample + 3] = 0.0; // reserved
       });

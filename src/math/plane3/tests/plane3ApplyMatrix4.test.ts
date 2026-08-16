@@ -10,10 +10,7 @@ import type { RawPlane3 } from '../RawPlane3';
 describe('plane3ApplyMatrix4', () => {
   it('transforms given plane using given matrix', () => {
     const plane: RawPlane3 = [[0.707, 0.707, 0.0], 0.0];
-    const matrix = mat4Multiply(
-      mat4RotationY(Math.PI / 2.0),
-      mat4Translate([0.0, 0.0, 5.0]),
-    );
+    const matrix = mat4Multiply(mat4RotationY(Math.PI / 2.0), mat4Translate([0.0, 0.0, 5.0]));
     const normalMatrix = mat3CreateNormalMatrix(matrix);
 
     const subject = plane3ApplyMatrix4(plane, matrix, normalMatrix);

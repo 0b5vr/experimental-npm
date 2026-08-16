@@ -18,12 +18,22 @@ describe('throttle', () => {
       throttledValue = value;
     }, 500);
 
+    // biome-ignore format: readability
     const expected = [
-      0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 6, 6, 6, 6, 6, 9, 9, 9, 9, 9, 9, 9, 1, 1, 1,
+      0, 0, 0, 0, 0,
+      2, 2, 2, 2, 2,
+      6, 6, 6, 6, 6,
+      9, 9, 9, 9, 9,
+      9, 9, 1, 1, 1,
     ];
 
+    // biome-ignore format: readability
     const rawValues = [
-      0, 0, 0, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+      0, 0, 0, 0, 0,
+      2, 3, 4, 5, 6,
+      7, 8, 9, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 1, 0, 0,
     ];
 
     const result = rawValues.map((v) => {

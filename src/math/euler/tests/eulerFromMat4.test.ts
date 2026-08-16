@@ -3,9 +3,12 @@ import '../../../tests/matchers/toBeCloseToArray';
 import type { RawMatrix4 } from '../../mat4/RawMatrix4';
 import { eulerFromMat4 } from '../eulerFromMat4';
 
+// biome-ignore format: matrix
 const mat4X45Y45Z45: RawMatrix4 = [
-  0.5, 0.5, -0.707, 0.0, -0.146, 0.854, 0.5, 0.0, 0.854, -0.146, 0.5, 0.0, 0.0,
-  0.0, 0.0, 1.0,
+  0.5, 0.5, -0.707, 0.0,
+  -0.146, 0.854, 0.5, 0.0,
+  0.854, -0.146, 0.5, 0.0,
+  0.0, 0.0, 0.0, 1.0,
 ];
 
 describe('eulerFromMat4', () => {

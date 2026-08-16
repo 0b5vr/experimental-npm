@@ -3,24 +3,39 @@ import '../../../tests/matchers/toBeCloseToArray';
 import type { RawMatrix3 } from '../../mat3/RawMatrix3';
 import { eulerFromMat3 } from '../eulerFromMat3';
 
+// biome-ignore format: matrix
 const mat3X45Y45Z45: RawMatrix3 = [
-  0.5, 0.5, -0.707, -0.146, 0.854, 0.5, 0.854, -0.146, 0.5,
+  0.5, 0.5, -0.707,
+  -0.146, 0.854, 0.5,
+  0.854, -0.146, 0.5,
 ];
 
+// biome-ignore format: matrix
 const mat3X30YN50Z40: RawMatrix3 = [
-  0.492, 0.413, 0.766, -0.85, 0.417, 0.321, -0.187, -0.809, 0.557,
+  0.492, 0.413, 0.766,
+  -0.85, 0.417, 0.321,
+  -0.187, -0.809, 0.557,
 ];
 
+// biome-ignore format: matrix
 const mat3XN150YN15Z170: RawMatrix3 = [
-  -0.951, 0.168, 0.259, 0.023, 0.875, -0.483, -0.308, -0.453, -0.837,
+  -0.951, 0.168, 0.259,
+  0.023, 0.875, -0.483,
+  -0.308, -0.453, -0.837,
 ];
 
+// biome-ignore format: matrix
 const mat3X30Y90Z70: RawMatrix3 = [
-  0.0, 0.0, -1.0, -0.643, 0.766, 0.0, 0.766, 0.643, 0.0,
+  0.0, 0.0, -1.0,
+  -0.643, 0.766, 0.0,
+  0.766, 0.643, 0.0,
 ];
 
+// biome-ignore format: matrix
 const mat3X120YN90Z20: RawMatrix3 = [
-  0.0, 0.0, 1.0, -0.643, -0.766, 0.0, 0.766, -0.643, 0.0,
+  0.0, 0.0, 1.0,
+  -0.643, -0.766, 0.0,
+  0.766, -0.643, 0.0,
 ];
 
 describe('eulerFromMat3', () => {

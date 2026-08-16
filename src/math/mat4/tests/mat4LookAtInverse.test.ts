@@ -10,9 +10,12 @@ describe('mat4LookAtInverse', () => {
     const up: RawVector3 = [0.0, 1.0, 0.0];
     const subject = mat4LookAtInverse(position, target, up);
 
+    // biome-ignore format: matrix
     const expected = [
-      0.857, -0.291, 0.424, 0.0, 0.0, 0.825, 0.566, 0.0, -0.514, -0.485, 0.707,
-      0.0, 0.0, 0.0, -7.071, 1.0,
+      0.857, -0.291, 0.424, 0.0,
+      0.0, 0.825, 0.566, 0.0,
+      -0.514, -0.485, 0.707, 0.0,
+      0.0, 0.0, -7.071, 1.0,
     ];
 
     expect(subject).toBeCloseToArray(expected);

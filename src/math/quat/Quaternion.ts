@@ -174,9 +174,7 @@ export class Quaternion {
     if (quaternions.length === 0) {
       return Quaternion.identity;
     } else {
-      return new Quaternion(
-        quatMultiply(...quaternions.map((q) => q.elements)),
-      );
+      return new Quaternion(quatMultiply(...quaternions.map((q) => q.elements)));
     }
   }
 

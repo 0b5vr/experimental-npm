@@ -7,9 +7,6 @@ import type { RawDagEdge } from './RawDagEdge';
  *
  * See also: {@link dagEdgesChildren}
  */
-export function dagEdgesParents<T>(
-  edges: RawDagEdge<T>[],
-  destination: T,
-): T[] {
+export function dagEdgesParents<T>(edges: RawDagEdge<T>[], destination: T): T[] {
   return edges.filter((edge) => edge[1] === destination).map((edge) => edge[0]);
 }

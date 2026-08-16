@@ -14,12 +14,6 @@ import type { RawLine3 } from './RawLine3';
  * @param point A point
  * @param segment Is the line a segment?
  */
-export function line3DistanceToPoint(
-  line: RawLine3,
-  point: RawVector3,
-  segment?: boolean,
-): number {
-  return vecLength(
-    vecSub(line3ClosestPointToPoint(line, point, segment), point),
-  );
+export function line3DistanceToPoint(line: RawLine3, point: RawVector3, segment?: boolean): number {
+  return vecLength(vecSub(line3ClosestPointToPoint(line, point, segment), point));
 }

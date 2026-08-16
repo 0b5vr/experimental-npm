@@ -6,8 +6,6 @@ import { HistoryPercentileCalculator } from './HistoryPercentileCalculator';
 export class HistoryMedianCalculator extends HistoryPercentileCalculator {
   public constructor(length: number) {
     super(length);
-    console.warn(
-      'HistoryMedianCalculator: Deprecated. Use HistoryPercentileCalculator instead',
-    );
+    console.warn('HistoryMedianCalculator: Deprecated. Use HistoryPercentileCalculator instead');
   }
 }

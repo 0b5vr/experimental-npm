@@ -22,9 +22,7 @@ export class HistoryPercentileCalculator {
     if (this.__history.length === 0) {
       return 0.0;
     }
-    return this.__sorted[
-      Math.round(percentile * 0.01 * (this.__history.length - 1))
-    ];
+    return this.__sorted[Math.round(percentile * 0.01 * (this.__history.length - 1))];
   }
 
   public reset(): void {

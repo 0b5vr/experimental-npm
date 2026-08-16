@@ -10,8 +10,11 @@ import { mat3Multiply } from './mat3Multiply';
 import { mat3Transpose } from './mat3Transpose';
 import type { RawMatrix3 } from './RawMatrix3';
 
+// biome-ignore format: matrix
 const rawIdentityMatrix3: RawMatrix3 = [
-  1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0,
+  1.0, 0.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 0.0, 1.0,
 ];
 
 /**

@@ -15,10 +15,7 @@ export class Line3 {
   public start: Vector3;
   public end: Vector3;
 
-  public constructor(
-    start: Vector3 = Vector3.zero,
-    end: Vector3 = Vector3.zero,
-  ) {
+  public constructor(start: Vector3 = Vector3.zero, end: Vector3 = Vector3.zero) {
     this.start = start;
     this.end = end;
   }
@@ -80,9 +77,7 @@ export class Line3 {
    * @param segment Is the line a segment?
    */
   public closestPointToPoint(point: Vector3, segment: boolean): Vector3 {
-    return new Vector3(
-      line3ClosestPointToPoint(this.raw, point.elements, segment),
-    );
+    return new Vector3(line3ClosestPointToPoint(this.raw, point.elements, segment));
   }
 
   /**

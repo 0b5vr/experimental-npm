@@ -22,30 +22,16 @@ export function mat4LookAt(
   let sid = vecNormalize(vec3Cross(up, dir));
 
   if (roll !== 0.0) {
-    sid = vecAdd(
-      vecScale(sid, Math.cos(roll)),
-      vecScale(vec3Cross(dir, sid), Math.sin(roll)),
-    );
+    sid = vecAdd(vecScale(sid, Math.cos(roll)), vecScale(vec3Cross(dir, sid), Math.sin(roll)));
   }
 
   const top = vec3Cross(dir, sid);
 
+  // biome-ignore format: matrix
   return [
-    sid[0],
-    sid[1],
-    sid[2],
-    0.0,
-    top[0],
-    top[1],
-    top[2],
-    0.0,
-    dir[0],
-    dir[1],
-    dir[2],
-    0.0,
-    position[0],
-    position[1],
-    position[2],
-    1.0,
+    sid[0], sid[1], sid[2], 0.0,
+    top[0], top[1], top[2], 0.0,
+    dir[0], dir[1], dir[2], 0.0,
+    position[0], position[1], position[2], 1.0,
   ];
 }

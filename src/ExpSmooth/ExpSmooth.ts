@@ -9,11 +9,7 @@ export class ExpSmooth {
   public value = 0.0;
 
   public update(deltaTime: number): number {
-    this.value = lerp(
-      this.target,
-      this.value,
-      Math.exp(-this.factor * deltaTime),
-    );
+    this.value = lerp(this.target, this.value, Math.exp(-this.factor * deltaTime));
     return this.value;
   }
 }

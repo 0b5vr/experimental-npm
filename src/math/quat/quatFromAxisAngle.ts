@@ -5,10 +5,7 @@ import type { RawQuaternion } from './RawQuaternion';
  * Generate a Quaternion out of axis and angle.
  * Assumes axis is normalized.
  */
-export function quatFromAxisAngle(
-  axis: RawVector3,
-  angle: number,
-): RawQuaternion {
+export function quatFromAxisAngle(axis: RawVector3, angle: number): RawQuaternion {
   const halfAngle = angle / 2.0;
   const sinHalfAngle = Math.sin(halfAngle);
   return [

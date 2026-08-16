@@ -5,10 +5,7 @@
  * @param sampleRate The output sample rate.
  * @returns An ArrayBuffer containing the wav data.
  */
-export function float32ArrayToWav(
-  src: Float32Array[],
-  sampleRate: number,
-): ArrayBuffer {
+export function float32ArrayToWav(src: Float32Array[], sampleRate: number): ArrayBuffer {
   const channels = src.length;
   const samples = src[0].length;
   const byteLength = channels * samples * 4 + 44;

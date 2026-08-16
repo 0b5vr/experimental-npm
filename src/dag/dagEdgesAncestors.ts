@@ -9,10 +9,7 @@ import type { RawDagEdge } from './RawDagEdge';
  *
  * See also: {@link dagEdgesChildren}
  */
-export function dagEdgesAncestors<T>(
-  edges: RawDagEdge<T>[],
-  destination: T,
-): T[] {
+export function dagEdgesAncestors<T>(edges: RawDagEdge<T>[], destination: T): T[] {
   const ancestors = new Set<T>();
 
   traverse(destination, (node) => {

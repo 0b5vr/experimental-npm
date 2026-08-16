@@ -107,13 +107,7 @@ export function evaluatePokerHand(cards: PokerCard[]): EvaluatePokerHandResult {
 
           return {
             hand,
-            cards: straightFlushCards as [
-              PokerCard,
-              PokerCard,
-              PokerCard,
-              PokerCard,
-              PokerCard,
-            ],
+            cards: straightFlushCards as [PokerCard, PokerCard, PokerCard, PokerCard, PokerCard],
             strength,
           };
         }
@@ -183,13 +177,7 @@ export function evaluatePokerHand(cards: PokerCard[]): EvaluatePokerHandResult {
 
     return {
       hand,
-      cards: sameCards as [
-        PokerCard,
-        PokerCard,
-        PokerCard,
-        PokerCard,
-        PokerCard,
-      ],
+      cards: sameCards as [PokerCard, PokerCard, PokerCard, PokerCard, PokerCard],
       strength,
     };
   }
@@ -229,13 +217,7 @@ export function evaluatePokerHand(cards: PokerCard[]): EvaluatePokerHandResult {
 
     return {
       hand,
-      cards: straightCards as [
-        PokerCard,
-        PokerCard,
-        PokerCard,
-        PokerCard,
-        PokerCard,
-      ],
+      cards: straightCards as [PokerCard, PokerCard, PokerCard, PokerCard, PokerCard],
       strength,
     };
   }

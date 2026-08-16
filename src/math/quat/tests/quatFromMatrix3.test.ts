@@ -5,8 +5,11 @@ import { quatFromMatrix3 } from '../quatFromMatrix3';
 
 describe('quatFromMatrix3', () => {
   it('returns a quaternion made out of a matrix', () => {
+    // biome-ignore format: matrix
     const quat: RawMatrix3 = [
-      0.071, 0.945, -0.32, -0.659, 0.286, 0.696, 0.749, 0.161, 0.643,
+      0.071, 0.945, -0.32,
+      -0.659, 0.286, 0.696,
+      0.749, 0.161, 0.643,
     ];
     const subject = quatFromMatrix3(quat);
 

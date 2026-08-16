@@ -12,26 +12,14 @@ describe('BinaryHeap', () => {
   });
 
   it('instantiates with elements', () => {
-    const heap = new BinaryHeap<string>([
-      'd',
-      'c',
-      'f',
-      'e',
-      'h',
-      'b',
-      'g',
-      'a',
-    ]);
+    const heap = new BinaryHeap<string>(['d', 'c', 'f', 'e', 'h', 'b', 'g', 'a']);
     expect(heap).toBeInstanceOf(BinaryHeap);
     expect(heap.array).toEqual(['a', 'b', 'c', 'd', 'h', 'f', 'g', 'e']);
     expect(validateIndexMap(heap)).toBe(true);
   });
 
   it('instantiates with elements and a custom comparator', () => {
-    const heap = new BinaryHeap<number>(
-      [4, 3, 6, 5, 8, 2, 7, 1],
-      (a, b) => a - b,
-    );
+    const heap = new BinaryHeap<number>([4, 3, 6, 5, 8, 2, 7, 1], (a, b) => a - b);
     expect(heap).toBeInstanceOf(BinaryHeap);
     expect(heap.array).toEqual([1, 2, 3, 4, 8, 6, 7, 5]);
     expect(validateIndexMap(heap)).toBe(true);
@@ -171,16 +159,7 @@ describe('BinaryHeap', () => {
 
   describe('delete', () => {
     it('deletes an element of a heap, retaining the heap structure (replacing value is big)', () => {
-      const heap = new BinaryHeap<string>([
-        'a',
-        'b',
-        'c',
-        'd',
-        'h',
-        'f',
-        'g',
-        'e',
-      ]);
+      const heap = new BinaryHeap<string>(['a', 'b', 'c', 'd', 'h', 'f', 'g', 'e']);
       const result = heap.delete(heap.elementIndexMap.get('b')!);
       expect(result).toBe(true);
       expect(heap.array).toEqual(['a', 'd', 'c', 'e', 'h', 'f', 'g']);
@@ -188,16 +167,7 @@ describe('BinaryHeap', () => {
     });
 
     it('replaces an element of a heap, retaining the heap structure (replacing value is small)', () => {
-      const heap = new BinaryHeap<string>([
-        'a',
-        'b',
-        'g',
-        'c',
-        'd',
-        'h',
-        'i',
-        'e',
-      ]);
+      const heap = new BinaryHeap<string>(['a', 'b', 'g', 'c', 'd', 'h', 'i', 'e']);
       const result = heap.delete(heap.elementIndexMap.get('i')!);
       expect(result).toBe(true);
       expect(heap.array).toEqual(['a', 'b', 'e', 'c', 'd', 'h', 'g']);
@@ -207,16 +177,7 @@ describe('BinaryHeap', () => {
 
   describe('replace', () => {
     it('replaces an element of a heap, retaining the heap structure (replacing value is small)', () => {
-      const heap = new BinaryHeap<string>([
-        'a',
-        'b',
-        'c',
-        'd',
-        'h',
-        'f',
-        'g',
-        'e',
-      ]);
+      const heap = new BinaryHeap<string>(['a', 'b', 'c', 'd', 'h', 'f', 'g', 'e']);
       const i = heap.replace(heap.elementIndexMap.get('g')!, '0');
       expect(i).toBe(0);
       expect(heap.array).toEqual(['0', 'b', 'a', 'd', 'h', 'f', 'c', 'e']);
@@ -224,16 +185,7 @@ describe('BinaryHeap', () => {
     });
 
     it('replaces an element of a heap, retaining the heap structure (replacing value is big)', () => {
-      const heap = new BinaryHeap<string>([
-        'a',
-        'b',
-        'c',
-        'd',
-        'h',
-        'f',
-        'g',
-        'e',
-      ]);
+      const heap = new BinaryHeap<string>(['a', 'b', 'c', 'd', 'h', 'f', 'g', 'e']);
       const i = heap.replace(heap.elementIndexMap.get('b')!, 'z');
       expect(i).toBe(7);
       expect(heap.array).toEqual(['a', 'd', 'c', 'e', 'h', 'f', 'g', 'z']);

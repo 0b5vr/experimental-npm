@@ -1,3 +1,4 @@
+// biome-ignore format: readability
 export type PokerRank =
   | '2'
   | '3'

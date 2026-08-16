@@ -12,12 +12,8 @@ export class GPUTimer {
 
   private __loopTasks: Set<() => void>;
 
-  public static isSupported(
-    gl: WebGLRenderingContext | WebGL2RenderingContext,
-  ): boolean {
-    return new Set(gl.getSupportedExtensions()).has(
-      'EXT_disjoint_timer_query_webgl2',
-    );
+  public static isSupported(gl: WebGLRenderingContext | WebGL2RenderingContext): boolean {
+    return new Set(gl.getSupportedExtensions()).has('EXT_disjoint_timer_query_webgl2');
   }
 
   public constructor(gl: WebGL2RenderingContext) {
@@ -87,10 +83,7 @@ export class GPUTimer {
 
     return new Promise((resolve) => {
       const task = (): void => {
-        const isAvailable = gl.getQueryParameter(
-          query,
-          gl.QUERY_RESULT_AVAILABLE,
-        );
+        const isAvailable = gl.getQueryParameter(query, gl.QUERY_RESULT_AVAILABLE);
 
         if (isAvailable) {
           this.__loopTasks.delete(task);

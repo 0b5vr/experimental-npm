@@ -34,8 +34,7 @@ export function mat4Inverse(m: RawMatrix4): RawMatrix4 {
     b10 = a21 * a33 - a23 * a31,
     b11 = a22 * a33 - a23 * a32;
 
-  const det =
-    b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+  const det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
 
   if (det === 0.0) {
     return vecScale(m, 0.0);

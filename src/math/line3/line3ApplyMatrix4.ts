@@ -8,9 +8,6 @@ import type { RawLine3 } from './RawLine3';
  * @param line A line
  * @param matrix A matrix4 which will be applied to the line
  */
-export function line3ApplyMatrix4(
-  [start, end]: RawLine3,
-  matrix: RawMatrix4,
-): RawLine3 {
+export function line3ApplyMatrix4([start, end]: RawLine3, matrix: RawMatrix4): RawLine3 {
   return [vec3ApplyMatrix4(start, matrix), vec3ApplyMatrix4(end, matrix)];
 }

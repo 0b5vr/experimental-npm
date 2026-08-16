@@ -8,9 +8,6 @@ import type { RawPlane3 } from './RawPlane3';
  * @param planes A list of planes
  * @param point A point
  */
-export function planes3ContainPoint(
-  planes: RawPlane3[],
-  point: RawVector3,
-): boolean {
+export function planes3ContainPoint(planes: RawPlane3[], point: RawVector3): boolean {
   return planes.every((plane) => plane3DistanceToPoint(plane, point) >= 0.0);
 }

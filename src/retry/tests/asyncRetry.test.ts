@@ -26,9 +26,7 @@ describe('asyncRetry', () => {
     const subject = asyncRetry(async () => {
       tries++;
 
-      if (
-        str === 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん'
-      ) {
+      if (str === 'すとらちゃんすとらちゃんすとらちゃんすとらちゃんすとらちゃん') {
         return str;
       } else {
         str += 'すとらちゃん';

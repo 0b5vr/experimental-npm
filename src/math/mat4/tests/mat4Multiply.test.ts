@@ -3,31 +3,40 @@ import '../../../tests/matchers/toBeCloseToArray';
 import { mat4Multiply } from '../mat4Multiply';
 import type { RawMatrix4 } from '../RawMatrix4';
 
+// biome-ignore format: matrix
 const rawMatrixRotateAroundX45: RawMatrix4 = [
-  1.0, 0.0, 0.0, 0.0, 0.0, 0.707, 0.707, 0.0, 0.0, -0.707, 0.707, 0.0, 0.0, 0.0,
-  0.0, 1.0,
+  1.0, 0.0, 0.0, 0.0,
+  0.0, 0.707, 0.707, 0.0,
+  0.0, -0.707, 0.707, 0.0,
+  0.0, 0.0, 0.0, 1.0,
 ];
 
+// biome-ignore format: matrix
 const rawMatrixInvLookAtFrom345: RawMatrix4 = [
-  0.857, -0.291, 0.424, 0.0, 0.0, 0.825, 0.566, 0.0, -0.514, -0.485, 0.707, 0.0,
+  0.857, -0.291, 0.424, 0.0,
+  0.0, 0.825, 0.566, 0.0,
+  -0.514, -0.485, 0.707, 0.0,
   0.0, 0.0, -7.071, 1.0,
 ];
 
+// biome-ignore format: matrix
 const rawMatrixPerspectiveFov40Near1Far500: RawMatrix4 = [
-  2.7474774194546225, 0, 0, 0, 0, 2.7474774194546225, 0, 0, 0, 0,
-  -1.0040080160320641, -1, 0, 0, -2.004008016032064, 0,
+  2.7474774194546225, 0, 0, 0,
+  0, 2.7474774194546225, 0, 0,
+  0, 0, -1.0040080160320641, -1,
+  0, 0, -2.004008016032064, 0,
 ];
 
 describe('mat4Multiply', () => {
   it('returns a multiplication result of two matrices', () => {
-    const subject = mat4Multiply(
-      rawMatrixInvLookAtFrom345,
-      rawMatrixRotateAroundX45,
-    );
+    const subject = mat4Multiply(rawMatrixInvLookAtFrom345, rawMatrixRotateAroundX45);
 
+    // biome-ignore format: matrix
     expect(subject).toBeCloseToArray([
-      0.857, -0.291, 0.424, 0.0, -0.364, 0.24, 0.9, 0.0, -0.364, -0.926, 0.1,
-      0.0, 0.0, 0.0, -7.071, 1.0,
+      0.857, -0.291, 0.424, 0.0,
+      -0.364, 0.24, 0.9, 0.0,
+      -0.364, -0.926, 0.1, 0.0,
+      0.0, 0.0, -7.071, 1.0,
     ]);
   });
 
@@ -38,9 +47,12 @@ describe('mat4Multiply', () => {
       rawMatrixRotateAroundX45,
     );
 
+    // biome-ignore format: matrix
     expect(subject).toBeCloseToArray([
-      2.356, -0.8, -0.426, -0.424, -1.0, 0.66, -0.904, -0.9, -1.0, -2.544, -0.1,
-      -0.1, 0.0, 0.0, 5.095, 7.071,
+      2.356, -0.8, -0.426, -0.424,
+      -1.0, 0.66, -0.904, -0.9,
+      -1.0, -2.544, -0.1, -0.1,
+      0.0, 0.0, 5.095, 7.071,
     ]);
   });
 });

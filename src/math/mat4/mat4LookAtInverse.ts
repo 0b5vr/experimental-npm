@@ -23,6 +23,7 @@ export function mat4LookAtInverse(
   let sid = vecNormalize(vec3Cross(up, dir));
 
   if (roll !== 0.0) {
+    // biome-ignore format: readability
     sid = vecAdd(
       vecScale(sid, Math.cos(roll)),
       vecScale(vec3Cross(dir, sid), Math.sin(roll)),
@@ -31,22 +32,11 @@ export function mat4LookAtInverse(
 
   const top = vec3Cross(dir, sid);
 
+  // biome-ignore format: matrix
   return [
-    sid[0],
-    top[0],
-    dir[0],
-    0.0,
-    sid[1],
-    top[1],
-    dir[1],
-    0.0,
-    sid[2],
-    top[2],
-    dir[2],
-    0.0,
-    -vecDot(sid, position),
-    -vecDot(top, position),
-    -vecDot(dir, position),
-    1.0,
+    sid[0], top[0], dir[0], 0.0,
+    sid[1], top[1], dir[1], 0.0,
+    sid[2], top[2], dir[2], 0.0,
+    -vecDot(sid, position), -vecDot(top, position), -vecDot(dir, position), 1.0,
   ];
 }

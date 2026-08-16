@@ -8,9 +8,12 @@ describe('mat4FromQuaternion', () => {
     const quat: RawQuaternion = [0.189, 0.378, 0.567, 0.707];
     const subject = mat4FromQuaternion(quat);
 
+    // biome-ignore format: matrix
     expect(subject).toBeCloseToArray([
-      0.071, 0.945, -0.32, 0.0, -0.659, 0.286, 0.696, 0.0, 0.749, 0.161, 0.643,
-      0.0, 0.0, 0.0, 0.0, 1.0,
+      0.071, 0.945, -0.32, 0.0,
+      -0.659, 0.286, 0.696, 0.0,
+      0.749, 0.161, 0.643, 0.0,
+      0.0, 0.0, 0.0, 1.0,
     ]);
   });
 });

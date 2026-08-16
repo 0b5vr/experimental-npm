@@ -8,11 +8,7 @@ declare module 'vitest' {
   interface Matchers<T> extends CustomMatchers<T> {}
 }
 
-export function toBeCloseToArray(
-  received: number[],
-  expected: number[],
-  precision = 2,
-) {
+export function toBeCloseToArray(received: number[], expected: number[], precision = 2) {
   const expectedDiff = 10.0 ** -precision / 2;
 
   if (received.length !== expected.length) {
@@ -52,8 +48,7 @@ ${diffs.map((diff) => `  [${diff.index}]: expected ${diff.expected}, received ${
   } else {
     return {
       pass: true,
-      message: () =>
-        'The received array approximately matches to the expected array',
+      message: () => 'The received array approximately matches to the expected array',
     };
   }
 }

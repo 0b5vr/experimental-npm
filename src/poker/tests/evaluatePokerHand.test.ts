@@ -94,17 +94,7 @@ describe('evaluatePokerHand', () => {
   });
 
   it('handles a full house when there are three three of a kind', () => {
-    const cards: PokerCard[] = [
-      '4c',
-      '4d',
-      '4h',
-      '6c',
-      '6d',
-      '6h',
-      '8c',
-      '8d',
-      '8h',
-    ];
+    const cards: PokerCard[] = ['4c', '4d', '4h', '6c', '6d', '6h', '8c', '8d', '8h'];
     const subject = evaluatePokerHand(cards);
 
     expect(subject.hand).toBe('FullHouse');
@@ -122,17 +112,7 @@ describe('evaluatePokerHand', () => {
   });
 
   it('handles a four of a kind when there are two four of a kind', () => {
-    const cards: PokerCard[] = [
-      '2s',
-      '2d',
-      '5h',
-      '5s',
-      '2c',
-      '5c',
-      '2h',
-      '5d',
-      '3h',
-    ];
+    const cards: PokerCard[] = ['2s', '2d', '5h', '5s', '2c', '5c', '2h', '5d', '3h'];
     const subject = evaluatePokerHand(cards);
 
     expect(subject.hand).toBe('FourOfAKind');

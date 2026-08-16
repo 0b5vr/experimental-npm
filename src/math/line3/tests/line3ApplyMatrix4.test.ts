@@ -12,10 +12,7 @@ describe('line3ApplyMatrix4', () => {
       [1.0, 1.0, 1.0],
       [2.0, 2.0, 2.0],
     ];
-    const matrix = mat4Multiply(
-      mat4RotationY(Math.PI / 4.0),
-      mat4Translate([0.0, 0.0, 5.0]),
-    );
+    const matrix = mat4Multiply(mat4RotationY(Math.PI / 4.0), mat4Translate([0.0, 0.0, 5.0]));
 
     const subject = line3ApplyMatrix4(line, matrix);
 
