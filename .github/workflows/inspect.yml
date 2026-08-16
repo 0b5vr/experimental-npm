@@ -7,19 +7,8 @@ defaults:
     shell: bash
 
 jobs:
-  fetch:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-    - name: Init Stuff
-      uses: ./.github/actions/init
-    - name: Fetch Deps
-      run: npm ci
-
   lint:
     runs-on: ubuntu-latest
-    needs: fetch
     steps:
     - name: Checkout
       uses: actions/checkout@v5
@@ -30,7 +19,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: fetch
     steps:
     - name: Checkout
       uses: actions/checkout@v5
@@ -47,7 +35,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: fetch
     steps:
     - name: Checkout
       uses: actions/checkout@v5

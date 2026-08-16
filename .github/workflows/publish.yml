@@ -24,8 +24,6 @@ jobs:
       uses: actions/checkout@v5
     - name: Init Stuff
       uses: ./.github/actions/init
-    - name: Fetch Deps
-      run: npm ci
     - name: Bump version
       run: npm version ${{ inputs.version }}
     - name: Publish
