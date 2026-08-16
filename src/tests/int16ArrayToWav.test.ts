@@ -1,11 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { int16ArrayToWav } from '../int16ArrayToWav';
 
-function readAsciiString(
-  view: DataView,
-  offset: number,
-  length: number,
-): string {
+function readAsciiString(view: DataView, offset: number, length: number): string {
   let s = '';
   for (let i = 0; i < length; i++) {
     s += String.fromCharCode(view.getUint8(offset + i));
