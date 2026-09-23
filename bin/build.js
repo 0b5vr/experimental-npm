@@ -52,8 +52,8 @@ esbuild.build( createBuildOptions( 'esm', false, true ) );
 
 // == serve ========================================================================================
 if ( SERVE ) {
-  esbuild.serve( {
+  esbuild.context( createBuildOptions( 'esm', true ) ).then( ( ctx ) => ctx.serve( {
     servedir: path.resolve( __dirname, '..' ),
     port: 3800,
-  }, createBuildOptions( 'esm', true ) );
+  } ) );
 }
