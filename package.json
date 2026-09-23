@@ -7,9 +7,17 @@
     "type": "git",
     "url": "https://github.com/0b5vr/experimental-npm.git"
   },
-  "main": "dist/0b5vr-experimental.cjs.js",
-  "module": "dist/0b5vr-experimental.esm.js",
-  "types": "types/index.d.ts",
+  "main": "./dist/0b5vr-experimental.cjs",
+  "module": "./dist/0b5vr-experimental.mjs",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/0b5vr-experimental.mjs",
+      "require": "./dist/0b5vr-experimental.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "license": "MIT",
   "files": [
     "/dist/",

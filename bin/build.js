@@ -23,7 +23,8 @@ const bannerTextProd = `// ${ copyright } - ${ licenseUri }`;
 
 // == build ========================================================================================
 function createBuildOptions( format, dev, next ) {
-  const filename = `0b5vr-experimental.${ next ? 'next' : format }${ dev ? '' : '.min' }.js`;
+  const ext = { esm: 'mjs', cjs: 'cjs' }[ format ];
+  const filename = `0b5vr-experimental${ next ? '.next' : '' }${ dev ? '' : '.min' }.${ ext }`;
 
   /** @type {esbuild.BuildOptions} */
   const buildOptions = {
@@ -32,7 +33,6 @@ function createBuildOptions( format, dev, next ) {
     outfile: path.resolve( __dirname, '../dist', filename ),
     format,
     target: next ? 'esnext' : 'es6',
-    globalName: 'OBSVR_EXPERIMENTAL',
     sourcemap: true,
     minify: !dev,
     banner: {
@@ -43,8 +43,6 @@ function createBuildOptions( format, dev, next ) {
   return buildOptions;
 }
 
-esbuild.build( createBuildOptions( 'iife', true ) );
-esbuild.build( createBuildOptions( 'iife', false ) );
 esbuild.build( createBuildOptions( 'cjs', true ) );
 esbuild.build( createBuildOptions( 'cjs', false ) );
 esbuild.build( createBuildOptions( 'esm', true ) );
