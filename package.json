@@ -49,8 +49,6 @@
     "dts-bundle": "^0.7.3",
     "esbuild": "^0.28.2",
     "rimraf": "^3.0.0",
-    "ts-node": "^8.6.2",
-    "tslib": "^2.2.0",
     "typedoc": "^0.28.16",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
