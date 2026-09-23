@@ -48,7 +48,6 @@ jobs:
         name: build
         path: |
           dist/
-          ts*/
           types/
 
   docs:
