@@ -31,8 +31,7 @@
     "build-types": "npm run build-types-tsc && npm run build-types-bundle",
     "build-types-tsc": "tsc --declaration --declarationDir ./types --emitDeclarationOnly",
     "build-types-bundle": "node bin/dts-bundle.js",
-    "docs": "typedoc --entryPoints ./src/index.ts --out docs",
-    "gh-pages": "node ./utils/gh-pages.js"
+    "docs": "typedoc --entryPoints ./src/index.ts --out docs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",
@@ -41,7 +40,6 @@
     "cross-env": "^7.0.2",
     "dts-bundle": "^0.7.3",
     "esbuild": "^0.14.21",
-    "gh-pages": "^2.1.1",
     "rimraf": "^3.0.0",
     "ts-node": "^8.6.2",
     "tslib": "^2.2.0",
